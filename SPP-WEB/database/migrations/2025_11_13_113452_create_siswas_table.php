@@ -19,6 +19,8 @@ return new class extends Migration
             $table->text('alamat');
             $table->string('no_telp', 13);
             $table->integer('id_spp');
+            $table->string('username', 25)->unique();
+            $table->string('password');
             $table->timestamps();
 
             $table->foreign('id_kelas')->references('id_kelas')->on('kelas')->onDelete('cascade');

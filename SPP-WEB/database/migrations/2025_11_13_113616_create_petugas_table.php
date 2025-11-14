@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('petugas', function (Blueprint $table) {
             $table->integer('id_petugas')->autoIncrement();
             $table->string('username', 25)->unique();
-            $table->string('password', 32);
+            $table->string('password');
             $table->string('nama_petugas', 35);
             $table->enum('level', ['admin', 'petugas']);
             $table->timestamps();

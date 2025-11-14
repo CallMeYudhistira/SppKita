@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +15,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::middleware(['guest:siswa', 'guest:petugas'])->group(function () {
+    Route::get('/', function () {
+        return redirect('/login');
+    });
+    Route::get('/login', [AuthController::class, 'login'])->name('login');
+    Route::post('/login/proses', [AuthController::class, 'loginProses']);
+});
+
+
+Route::post('/logout', [AuthController::class, 'logout']);
+Route::middleware(['petugas'])->group(function () {
+    Route::get('/petugas/beranda', [HomeController::class, 'petugas']);
+});
+
+Route::middleware(['siswa'])->group(function () {
+    Route::get('/siswa/beranda', [HomeController::class, 'siswa']);
 });

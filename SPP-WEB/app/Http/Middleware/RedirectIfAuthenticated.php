@@ -21,7 +21,13 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
-                return redirect(RouteServiceProvider::HOME);
+                if ($guard == 'petugas') {
+                    return redirect('/petugas/beranda');
+                }
+
+                if ($guard == 'siswa') {
+                    return redirect('/siswa/beranda');
+                }
             }
         }
 
