@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login | SppKita</title>
+    <title>Login | SPP</title>
 
     <link href="{{ asset('bootstrap/css/bootstrap.css') }}" rel="stylesheet">
 
@@ -15,7 +15,7 @@
         }
 
         body {
-            background: #f3f6fd;
+            background: linear-gradient(135deg, #f3f6fd 0%, #f0f3fa 100%);
             height: 100vh;
             display: flex;
             align-items: center;
@@ -64,13 +64,6 @@
         .btn-login:hover {
             background: #2c42d3;
         }
-
-        .footer-text {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 13px;
-            color: #6c757d;
-        }
     </style>
 </head>
 
@@ -81,7 +74,7 @@
         <h2 class="login-title">SppKita</h2>
         <p class="login-sub">Silakan masuk untuk melanjutkan</p>
 
-        <form action="/login/proses" method="post">
+        <form action="/login/proses" method="post" class="mb-4">
             @csrf
 
             <div class="mb-3">
@@ -97,7 +90,7 @@
                         placeholder="Masukkan password..." required autocomplete="off">
 
                     <button type="button" class="btn btn-outline-secondary" style="border: 1px solid #ddd;" id="togglePassword">
-                        👁️
+                        👀
                     </button>
                 </div>
             </div>
@@ -110,16 +103,13 @@
                     const type = password.getAttribute("type") === "password" ? "text" : "password";
                     password.setAttribute("type", type);
 
-                    // Ganti icon
-                    this.textContent = type === "password" ? "👁️" : "🙈";
+                    this.textContent = type === "password" ? "👀" : "🫣";
                 });
             </script>
 
 
             <button type="submit" class="btn btn-primary w-100 btn-login">Login</button>
         </form>
-
-        <p class="footer-text">© 2025 SppKita — Sistem Pembayaran SPP</p>
     </div>
 
 </body>
