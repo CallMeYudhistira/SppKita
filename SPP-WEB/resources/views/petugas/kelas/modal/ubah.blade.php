@@ -11,11 +11,11 @@
                     @method('put')
                     <div class="mb-3">
                         <label class="col-form-label">Nama Kelas</label>
-                        <input type="text" class="form-control" name="nama_kelas" value="{{ $k->nama_kelas }}">
+                        <input type="text" class="form-control" name="nama_kelas" value="{{ $k->nama_kelas }}" autocomplete="off">
                     </div>
                     <div class="mb-3">
                         <label class="col-form-label">Kompetensi Keahlian</label>
-                        <input type="text" class="form-control" name="kompetensi_keahlian" value="{{ $k->kompetensi_keahlian }}">
+                        <input type="text" class="form-control" name="kompetensi_keahlian" value="{{ $k->kompetensi_keahlian }}"> autocomplete="off"
                     </div>
                 </div>
                 <div class="modal-footer">

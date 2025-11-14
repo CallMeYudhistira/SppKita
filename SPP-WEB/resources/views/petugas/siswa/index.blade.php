@@ -1,5 +1,8 @@
 @extends('layouts.app')
 @section('title', 'List | Siswa')
+@section('navbar')
+    @include('layouts.navbar-petugas')
+@endsection
 @section('content')
     <h2>Kelola Data Siswa</h2>
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahData">Tambah</button>
@@ -16,31 +19,31 @@
                         @csrf
                         <div class="mb-3">
                             <label class="col-form-label">NISN</label>
-                            <input type="text" class="form-control" name="nisn">
+                            <input type="text" class="form-control" name="nisn" autocomplete="off">
                         </div>
                         <div class="mb-3">
                             <label class="col-form-label">NIS</label>
-                            <input type="text" class="form-control" name="nis">
+                            <input type="text" class="form-control" name="nis" autocomplete="off">
                         </div>
                         <div class="mb-3">
                             <label class="col-form-label">Nama</label>
-                            <input type="text" class="form-control" name="nama">
+                            <input type="text" class="form-control" name="nama" autocomplete="off">
                         </div>
                         <div class="mb-3">
                             <label class="col-form-label">Alamat</label>
-                            <textarea class="form-control" name="alamat" rows="2"></textarea>
+                            <textarea class="form-control" name="alamat" rows="2" autocomplete="off"></textarea>
                         </div>
                         <div class="mb-3">
                             <label class="col-form-label">Nomor Telepon</label>
-                            <input type="number" class="form-control" name="no_telp">
+                            <input type="number" class="form-control" name="no_telp" autocomplete="off">
                         </div>
                         <div class="mb-3">
                             <label class="col-form-label">Username</label>
-                            <input type="text" class="form-control" name="username">
+                            <input type="text" class="form-control" name="username" autocomplete="off">
                         </div>
                         <div class="mb-3">
                             <label class="col-form-label">Password</label>
-                            <input type="text" class="form-control" name="password">
+                            <input type="text" class="form-control" name="password" autocomplete="off">
                         </div>
                     </div>
                     <div class="modal-footer">

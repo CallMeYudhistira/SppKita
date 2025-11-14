@@ -3,6 +3,8 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KelasController;
+use App\Http\Controllers\SiswaController;
+use App\Http\Controllers\SppController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -34,6 +36,20 @@ Route::middleware(['petugas'])->group(function () {
         Route::post('/tambah', [KelasController::class, 'tambah']);
         Route::put('/ubah/{id}', [KelasController::class, 'ubah']);
         Route::delete('/hapus/{id}', [KelasController::class, 'hapus']);
+    });
+
+    Route::prefix('/spp')->group(function(){
+        Route::get('/', [SppController::class, 'index']);
+        Route::post('/tambah', [SppController::class, 'tambah']);
+        Route::put('/ubah/{id}', [SppController::class, 'ubah']);
+        Route::delete('/hapus/{id}', [SppController::class, 'hapus']);
+    });
+
+    Route::prefix('/siswa')->group(function(){
+        Route::get('/', [SiswaController::class, 'index']);
+        Route::post('/tambah', [SiswaController::class, 'tambah']);
+        Route::put('/ubah/{id}', [SiswaController::class, 'ubah']);
+        Route::delete('/hapus/{id}', [SiswaController::class, 'hapus']);
     });
 });
 
