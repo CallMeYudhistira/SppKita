@@ -12,7 +12,7 @@ class Siswa extends Authenticatable
     protected $primaryKey = 'nisn';
     public $incrementing = false;
     protected $keyType = 'string';
-    protected $fillable = ['nisn', 'nis', 'nama', 'id_kelas', 'alamat', 'no_telp', 'id_spp'];
+    protected $fillable = ['nisn', 'nis', 'nama', 'id_kelas', 'alamat', 'no_telp', 'id_spp', 'username', 'password'];
 
     public function kelas() {
         return $this->belongsTo(Kelas::class, 'id_kelas', 'id_kelas');

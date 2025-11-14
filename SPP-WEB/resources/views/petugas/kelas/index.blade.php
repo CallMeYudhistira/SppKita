@@ -8,7 +8,7 @@
     <button type="button" class="btn btn-primary my-2" data-bs-toggle="modal" data-bs-target="#tambahData">Tambah</button>
     @include('petugas.kelas.modal.tambah')
 
-    <table class="table border-top mt-5">
+    <table class="table border-top mt-4">
         <thead>
             <tr>
                 <th scope="col">#</th>

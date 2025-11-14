@@ -18,7 +18,8 @@
             font-family: 'Elms Sans', sans-serif;
         }
 
-        h1, h2{
+        h1,
+        h2 {
             font-weight: 600;
         }
 
@@ -76,7 +77,7 @@
 
 <body>
 
-        @yield('navbar')
+    @yield('navbar')
 
     <div class="container py-3">
         @yield('content')

@@ -5,53 +5,62 @@
 @endsection
 @section('content')
     <h2>Kelola Data Siswa</h2>
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahData">Tambah</button>
+    <button type="button" class="btn btn-primary my-2" data-bs-toggle="modal" data-bs-target="#tambahData">Tambah</button>
+    @include('petugas.siswa.modal.tambah')
 
-    <div class="modal fade" id="tambahData" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-            <form action="" method="post">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5">Tambah Siswa</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        @csrf
-                        <div class="mb-3">
-                            <label class="col-form-label">NISN</label>
-                            <input type="text" class="form-control" name="nisn" autocomplete="off">
-                        </div>
-                        <div class="mb-3">
-                            <label class="col-form-label">NIS</label>
-                            <input type="text" class="form-control" name="nis" autocomplete="off">
-                        </div>
-                        <div class="mb-3">
-                            <label class="col-form-label">Nama</label>
-                            <input type="text" class="form-control" name="nama" autocomplete="off">
-                        </div>
-                        <div class="mb-3">
-                            <label class="col-form-label">Alamat</label>
-                            <textarea class="form-control" name="alamat" rows="2" autocomplete="off"></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label class="col-form-label">Nomor Telepon</label>
-                            <input type="number" class="form-control" name="no_telp" autocomplete="off">
-                        </div>
-                        <div class="mb-3">
-                            <label class="col-form-label">Username</label>
-                            <input type="text" class="form-control" name="username" autocomplete="off">
-                        </div>
-                        <div class="mb-3">
-                            <label class="col-form-label">Password</label>
-                            <input type="text" class="form-control" name="password" autocomplete="off">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-primary">Kirim</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
+    <div class="table-responsive" style="max-width:100%; overflow-x: scroll; white-space: nowrap;">
+    <table class="table border-top mt-4">
+        <thead>
+            <tr>
+                <th scope="col" style="width: 20%;">#</th>
+                <th scope="col" style="width: 20%;">NISN</th>
+                <th scope="col" style="width: 20%;">NIS</th>
+                <th scope="col" style="width: 20%;">Nama</th>
+                <th scope="col" style="width: 20%;" colspan="2" class="text-center">Kelas</th>
+                <th scope="col" style="width: 20%;">Alamat</th>
+                <th scope="col" style="width: 20%;">Nomor Telepon</th>
+                <th scope="col" style="width: 20%;">SPP</th>
+                <th scope="col" style="width: 20%;">Username</th>
+                <th scope="col" colspan="2" class="text-center" style="width: 10%;">Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($siswa as $i => $s)
+                <tr>
+                    <th scope="row">{{ $i + 1 }}</th>
+                    <td>{{ $s->nisn }}</td>
+                    <td>{{ $s->nis }}</td>
+                    <td>{{ $s->nama }}</td>
+                    <td>{{ $s->kelas->nama_kelas }}</td>
+                    <td>{{ $s->kelas->kompetensi_keahlian }}</td>
+                    <td style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="{{ $s->alamat }}">{{ $s->alamat }}</td>
+                    <td>{{ $s->no_telp }}</td>
+                    <td>{{ 'Rp ' . number_format($s->spp->nominal, '0', ',', '.') }}</td>
+                    <td>{{ $s->username }}</td>
+                    <td>
+                        <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                            data-bs-target="#ubahData{{ $s->nisn }}">Ubah</button>
+                    </td>
+                    <td>
+                        <form action="/siswa/hapus/{{ $s->nisn }}" method="post">
+                            @csrf
+                            @method('delete')
+                            <button type="submit" class="btn btn-danger"
+                                onclick="return confirm('Apakah anda ingin menghapus siswa?')">Hapus</button>
+                        </form>
+                    </td>
+                </tr>
+
+                @include('petugas.siswa.modal.ubah')
+            @endforeach
+        </tbody>
+    </table>
+</div>
+
+
+    @if ($pesan = Session::get('success'))
+        <script>
+            alert('{{ $pesan }}');
+        </script>
+    @endif
 @endsection
