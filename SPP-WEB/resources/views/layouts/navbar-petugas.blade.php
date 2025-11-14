@@ -11,6 +11,7 @@
                 Kelola Data 🗃️
             </button>
             <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="/petugas">Petugas 🧑‍💼</a></li>
                 <li><a class="dropdown-item" href="/kelas">Kelas 🏛️</a></li>
                 <li><a class="dropdown-item" href="/spp">SPP 📃</a></li>
                 <li><a class="dropdown-item" href="/siswa">Siswa 🧑‍🎓</a></li>

@@ -20,7 +20,7 @@ class SiswaController extends Controller
 
     public function tambah(Request $request)
     {
-        $request->validate([
+        $siswa = $request->validate([
             'nisn' => 'required|unique:siswa',
             'nis' => 'required|unique:siswa',
             'nama' => 'required',
@@ -28,28 +28,19 @@ class SiswaController extends Controller
             'alamat' => 'required',
             'no_telp' => 'required',
             'id_spp' => 'required',
-            'username' => 'required',
+            'username' => 'required|unique:siswa',
             'password' => 'required',
         ]);
 
-        Siswa::create([
-            'nisn' => $request->nisn,
-            'nis' => $request->nis,
-            'nama' => $request->nama,
-            'id_kelas' => $request->id_kelas,
-            'alamat' => $request->alamat,
-            'no_telp' => $request->no_telp,
-            'id_spp' => $request->id_spp,
-            'username' => $request->username,
-            'password' => Hash::make($request->password),
-        ]);
+        $siswa['password'] = Hash::make($request->password);
+        Siswa::create($siswa);
 
         return redirect()->back()->with('success', 'Data berhasil ditambah!');
     }
 
     public function ubah(Request $request, $id)
     {
-        $request->validate([
+        $siswa_request = $request->validate([
             'nisn' => 'required',
             'nis' => 'required',
             'nama' => 'required',
@@ -61,18 +52,9 @@ class SiswaController extends Controller
         ]);
 
         $siswa = Siswa::find($id);
-        $siswa->update([
-            'nisn' => $request->nisn,
-            'nis' => $request->nis,
-            'nama' => $request->nama,
-            'id_kelas' => $request->id_kelas,
-            'alamat' => $request->alamat,
-            'no_telp' => $request->no_telp,
-            'id_spp' => $request->id_spp,
-            'username' => $request->username,
-        ]);
+        $siswa->update($siswa_request);
 
-        if($request->password){
+        if ($request->password) {
             $siswa->password = Hash::make($request->password);
             $siswa->save();
         }
