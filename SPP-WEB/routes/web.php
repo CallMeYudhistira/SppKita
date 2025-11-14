@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\KelasController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,6 +28,13 @@ Route::middleware(['guest:siswa', 'guest:petugas'])->group(function () {
 Route::post('/logout', [AuthController::class, 'logout']);
 Route::middleware(['petugas'])->group(function () {
     Route::get('/petugas/beranda', [HomeController::class, 'petugas']);
+
+    Route::prefix('/kelas')->group(function(){
+        Route::get('/', [KelasController::class, 'index']);
+        Route::post('/tambah', [KelasController::class, 'tambah']);
+        Route::put('/ubah/{id}', [KelasController::class, 'ubah']);
+        Route::delete('/hapus/{id}', [KelasController::class, 'hapus']);
+    });
 });
 
 Route::middleware(['siswa'])->group(function () {
