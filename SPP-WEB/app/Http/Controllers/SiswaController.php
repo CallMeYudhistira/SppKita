@@ -52,6 +52,12 @@ class SiswaController extends Controller
         ]);
 
         $siswa = Siswa::find($id);
+        $cekNis = Siswa::where('nis', $request->nis)->first();
+
+        if($cekNis->nisn != $siswa->nisn){
+            return redirect()->back()->with('error', 'NIS tidak boleh sama');
+        }
+
         $siswa->update($siswa_request);
 
         if ($request->password) {
