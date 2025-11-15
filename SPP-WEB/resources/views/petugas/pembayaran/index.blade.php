@@ -5,7 +5,14 @@
 @endsection
 @section('content')
     <h2>Pembayaran SPP</h2>
-    <a href="/pembayaran/riwayat" class="btn btn-secondary my-2">Riwayat Pembayaran</a>
+    <div class="d-flex">
+        <a href="/pembayaran/riwayat" class="btn btn-secondary my-2">Riwayat Pembayaran</a>
+        <form class="d-flex ms-auto my-2" action="/pembayaran/cari" method="get">
+            <input class="form-control me-2" type="search" name="keyword" placeholder="Cari nama siswa 🔍" autocomplete="off"
+                @isset($keyword) value="{{ $keyword }}" @endisset />
+            <button class="btn btn-outline-primary" type="submit">Cari</button>
+        </form>
+    </div>
 
     <table class="table border-top mt-4">
         <thead>
@@ -27,7 +34,8 @@
                     <td>{{ $s->kelas->nama_kelas }} {{ $s->kelas->kompetensi_keahlian }}</td>
                     <td>{{ 'Rp ' . number_format($s->spp->nominal, '0', ',', '.') }}</td>
                     <td class="text-center">
-                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#bayarSPP{{ $s->nisn }}">Bayar</button>
+                        <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                            data-bs-target="#bayarSPP{{ $s->nisn }}">Bayar</button>
                     </td>
                 </tr>
 

@@ -71,6 +71,67 @@ class PembayaranController extends Controller
         return view('petugas.pembayaran.index', compact('siswa', 'bulan', 'pembayaran'));
     }
 
+    public function cari(Request $request)
+    {
+        $keyword = $request->keyword;
+        if (!$keyword) {
+            return redirect('/siswa');
+        }
+        $siswa = Siswa::with('kelas')->with('spp')->where('nama', 'LIKE', '%' . $keyword . '%')->get();
+        $pembayaran = Pembayaran::all();
+        $bulan = [
+            0 => [
+                'no' => '07',
+                'bulan' => 'Juli',
+            ],
+            1 => [
+                'no' => '08',
+                'bulan' => 'Agustus',
+            ],
+            2 => [
+                'no' => '09',
+                'bulan' => 'September',
+            ],
+            3 => [
+                'no' => '10',
+                'bulan' => 'Oktober',
+            ],
+            4 => [
+                'no' => '11',
+                'bulan' => 'November',
+            ],
+            5 => [
+                'no' => '12',
+                'bulan' => 'Desember',
+            ],
+            6 => [
+                'no' => '01',
+                'bulan' => 'Januari',
+            ],
+            7 => [
+                'no' => '02',
+                'bulan' => 'Februari',
+            ],
+            8 => [
+                'no' => '03',
+                'bulan' => 'Maret',
+            ],
+            9 => [
+                'no' => '04',
+                'bulan' => 'April',
+            ],
+            10 => [
+                'no' => '05',
+                'bulan' => 'Mei',
+            ],
+            11 => [
+                'no' => '06',
+                'bulan' => 'Juni',
+            ],
+        ];
+        return view('petugas.pembayaran.index', compact('siswa', 'keyword', 'bulan', 'pembayaran'));
+    }
+
     public function bayar(Request $request, $nisn)
     {
         $request->validate([
