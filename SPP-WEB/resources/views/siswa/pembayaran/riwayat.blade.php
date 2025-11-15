@@ -38,7 +38,7 @@
                         <td>{{ 'Rp ' . number_format($p->total_bayar, '0', ',', '.') }}</td>
                         <td>{{ $p->nama_petugas }}</td>
                         <td class="text-center">
-                            <a href="/siswa/pembayaran/cetak/{{ $p->tgl_bayar }}"
+                            <a href="/siswa/pembayaran/cetak/{{ $p->tgl_bayar }}/{{ $p->tahun_dibayar }}"
                                 class="btn btn-success">Cetak</a>
                         </td>
                     </tr>

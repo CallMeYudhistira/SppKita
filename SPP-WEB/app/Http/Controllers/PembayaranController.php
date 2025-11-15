@@ -135,25 +135,44 @@ class PembayaranController extends Controller
     public function bayar(Request $request, $nisn)
     {
         $request->validate([
-            'bulan_dibayar' => 'required',
-            'bulan_dibayar.*' => 'string',
+            'bulan_dibayar' => 'required|array',
+            'bulan_dibayar.*' => 'string'
         ]);
 
         $siswa = Siswa::find($nisn);
+        if (!$siswa) {
+            return redirect()->back()->with('error', 'Data siswa tidak ditemukan.');
+        }
 
         $id_spp = $siswa->id_spp;
-
         $nominal_spp = $siswa->spp->nominal;
 
-        $tahun = $siswa->spp->tahun;
+        $bulanAwal = ['Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+        $bulanAkhir = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni'];
 
         foreach ($request->bulan_dibayar as $bulan) {
+
+            if (in_array($bulan, $bulanAwal)) {
+                $tahun_dibayar = $siswa->spp->tahun;
+            } else {
+                $tahun_dibayar = $siswa->spp->tahun + 1;
+            }
+
+            $cek = Pembayaran::where('nisn', $siswa->nisn)
+                ->where('bulan_dibayar', $bulan)
+                ->where('tahun_dibayar', $tahun_dibayar)
+                ->exists();
+
+            if ($cek) {
+                continue;
+            }
+
             Pembayaran::create([
                 'id_petugas' => Auth::guard('petugas')->user()->id_petugas,
                 'nisn' => $siswa->nisn,
                 'tgl_bayar' => now(),
                 'bulan_dibayar' => $bulan,
-                'tahun_dibayar' => $tahun,
+                'tahun_dibayar' => $tahun_dibayar,
                 'id_spp' => $id_spp,
                 'jumlah_bayar' => $nominal_spp,
             ]);
@@ -180,9 +199,9 @@ class PembayaranController extends Controller
         return view('petugas.pembayaran.riwayat', compact('pembayaran', 'keyword'));
     }
 
-    public function cetak($nisn, $tanggal)
+    public function cetak($nisn, $tanggal, $tahun)
     {
-        $detail_pembayaran = Pembayaran::with('siswa')->where('nisn', $nisn)->where('tgl_bayar', $tanggal)->get();
+        $detail_pembayaran = Pembayaran::with('siswa')->where('nisn', $nisn)->where('tgl_bayar', $tanggal)->where('tahun_dibayar', $tahun)->get();
         $pembayaran = collect(DB::select("SELECT * FROM riwayat_bayar WHERE nisn = '" . $nisn . "' AND tgl_bayar = '" . $tanggal . "'"))->first();
 
         $pdf = Pdf::loadView('petugas.pembayaran.cetak', compact('pembayaran', 'detail_pembayaran'))->setPaper('a5', 'portrait');

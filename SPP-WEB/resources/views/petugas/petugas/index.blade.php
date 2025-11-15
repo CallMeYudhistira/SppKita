@@ -31,7 +31,7 @@
                     <th scope="row">{{ $i + 1 }}</th>
                     <td>{{ $p->nama_petugas }}</td>
                     <td>{{ $p->username }}</td>
-                    <td>{{ $p->level }}</td>
+                    <td><span class="badge bg-success">{{ $p->level }}</span></td>
                     @if (Auth::guard('petugas')->user()->id_petugas == $p->id_petugas)
                         <td colspan="2">
                             <button class="btn w-100">-</button>

@@ -108,10 +108,10 @@ class SiswaController extends Controller
         return view('siswa.pembayaran.riwayat', compact('pembayaran', 'tanggal'));
     }
 
-    public function cetak($tanggal)
+    public function cetak($tanggal, $tahun)
     {
         $nisn = Auth::guard('siswa')->user()->nisn;
-        $detail_pembayaran = Pembayaran::with('siswa')->where('nisn', $nisn)->where('tgl_bayar', $tanggal)->get();
+        $detail_pembayaran = Pembayaran::with('siswa')->where('nisn', $nisn)->where('tgl_bayar', $tanggal)->where('tahun_dibayar', $tahun)->get();
         $pembayaran = collect(DB::select("SELECT * FROM riwayat_bayar WHERE nisn = '" . $nisn . "' AND tgl_bayar = '" . $tanggal . "'"))->first();
 
         $pdf = Pdf::loadView('siswa.pembayaran.cetak', compact('pembayaran', 'detail_pembayaran'))->setPaper('a5', 'portrait');

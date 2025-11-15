@@ -72,7 +72,7 @@ Route::middleware(['petugas'])->group(function () {
         Route::post('/bayar/{nisn}', [PembayaranController::class, 'bayar']);
         Route::get('/riwayat', [PembayaranController::class, 'riwayat']);
         Route::get('/riwayat/cari', [PembayaranController::class, 'cariRiwayat']);
-        Route::get('/cetak/{nisn}/{tanggal}', [PembayaranController::class, 'cetak']);
+        Route::get('/cetak/{nisn}/{tanggal}/{tahun}', [PembayaranController::class, 'cetak']);
     });
 
     Route::prefix('/laporan')->group(function () {
@@ -88,6 +88,6 @@ Route::middleware(['siswa'])->group(function () {
     Route::prefix('/siswa/pembayaran')->group(function () {
         Route::get('/', [SiswaController::class, 'riwayat']);
         Route::get('/cari', [SiswaController::class, 'cariRiwayat']);
-        Route::get('/cetak/{tanggal}', [SiswaController::class, 'cetak']);
+        Route::get('/cetak/{tanggal}/{tahun}', [SiswaController::class, 'cetak']);
     });
 });

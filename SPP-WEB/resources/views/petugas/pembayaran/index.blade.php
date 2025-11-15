@@ -33,9 +33,21 @@
                     <td>{{ $s->nis }}</td>
                     <td>{{ $s->kelas->nama_kelas }} {{ $s->kelas->kompetensi_keahlian }}</td>
                     <td>{{ 'Rp ' . number_format($s->spp->nominal, '0', ',', '.') }}</td>
+                    @php
+                        $paidMonths = $pembayaran->where('nisn', $s->nisn)->pluck('bulan_dibayar')->toArray();
+                        $sudahLunas = count($paidMonths) >= 12;
+                    @endphp
                     <td class="text-center">
-                        <button type="button" class="btn btn-success" data-bs-toggle="modal"
-                            data-bs-target="#bayarSPP{{ $s->nisn }}">Bayar</button>
+
+                        @if ($sudahLunas)
+                            <span class="badge bg-success">Lunas ✔</span>
+                        @else
+                            <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                data-bs-target="#bayarSPP{{ $s->nisn }}">
+                                Bayar
+                            </button>
+                        @endif
+
                     </td>
                 </tr>
 
