@@ -25,20 +25,20 @@
                         <label class="col-form-label">SPP</label>
                         <input type="text" class="form-control"
                             value="{{ 'Rp ' . number_format($s->spp->nominal, '0', ',', '.') }}" disabled>
-                        <input type="hidden" id="nominalSPP" value="{{ $s->spp->nominal }}">
+                        <input type="hidden" id="nominalSPP{{ $s->nisn }}" value="{{ $s->spp->nominal }}">
                     </div>
                     <div class="mb-3">
-                        <label class="col-form-label">Tahun Ajaran</label>
+                        <label class="col-form-label">Tahun Bayar</label>
                         <input type="text" class="form-control"
-                            value="{{ now()->format('Y') }}/{{ now()->format('Y') + 1 }}" disabled>
+                            value="{{ now()->format('Y') }}" disabled>
                     </div>
                     @php
                         $paidMonths = $pembayaran->where('nisn', $s->nisn)->pluck('bulan_dibayar')->toArray();
                     @endphp
 
                     <div class="mb-3">
-                        <label class="col-form-label">Bulan</label>
-                        <select name="bulan_dibayar[]" class="form-select mb-1" id="bulanSelect" multiple>
+                        <label class="col-form-label">Bulan Yang Akan Bayar</label>
+                        <select name="bulan_dibayar[]" class="form-select mb-1" id="bulanSelect{{ $s->nisn }}" multiple>
                             @foreach ($bulan as $b)
                                 @if (!in_array($b['bulan'], $paidMonths))
                                     <option value="{{ $b['bulan'] }}">
@@ -52,7 +52,7 @@
 
                     <div class="mb-3">
                         <label class="col-form-label">Jumlah Bayar</label>
-                        <input type="number" class="form-control" id="jumlahBayar" readonly>
+                        <input type="number" class="form-control" id="jumlahBayar{{ $s->nisn }}" readonly>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -66,9 +66,9 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const bulanSelect = document.getElementById('bulanSelect');
-        const nominalSPP = parseInt(document.getElementById('nominalSPP').value);
-        const jumlahBayar = document.getElementById('jumlahBayar');
+        const bulanSelect = document.getElementById('bulanSelect{{ $s->nisn }}');
+        const nominalSPP = parseInt(document.getElementById('nominalSPP{{ $s->nisn }}').value);
+        const jumlahBayar = document.getElementById('jumlahBayar{{ $s->nisn }}');
 
         bulanSelect.addEventListener('change', function() {
             let selectedCount = Array.from(bulanSelect.selectedOptions).length;
