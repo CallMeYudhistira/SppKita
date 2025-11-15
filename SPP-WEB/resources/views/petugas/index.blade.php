@@ -4,5 +4,5 @@
     @include('layouts.navbar-petugas')
 @endsection
 @section('content')
-<h1>Petugas</h1>
+    <h1>Petugas</h1>
 @endsection

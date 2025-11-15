@@ -1,0 +1,78 @@
+<div class="modal fade" id="bayarSPP{{ $s->nisn }}" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <form action="/pembayaran/bayar/{{ $s->nisn }}" method="post">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Ubah Siswa</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    @csrf
+                    <div class="mb-3">
+                        <label class="col-form-label">NIS</label>
+                        <input type="text" class="form-control" name="nis" value="{{ $s->nis }}" disabled>
+                    </div>
+                    <div class="mb-3">
+                        <label class="col-form-label">Nama</label>
+                        <input type="text" class="form-control" name="nama" value="{{ $s->nama }}" disabled>
+                    </div>
+                    <div class="mb-3">
+                        <label class="col-form-label">Kelas</label>
+                        <input type="text" class="form-control" name="kelas"
+                            value="{{ $s->kelas->nama_kelas }} {{ $s->kelas->kompetensi_keahlian }}" disabled>
+                    </div>
+                    <div class="mb-3">
+                        <label class="col-form-label">SPP</label>
+                        <input type="text" class="form-control"
+                            value="{{ 'Rp ' . number_format($s->spp->nominal, '0', ',', '.') }}" disabled>
+                        <input type="hidden" id="nominalSPP" value="{{ $s->spp->nominal }}">
+                    </div>
+                    <div class="mb-3">
+                        <label class="col-form-label">Tahun Ajaran</label>
+                        <input type="text" class="form-control"
+                            value="{{ now()->format('Y') }}/{{ now()->format('Y') + 1 }}" disabled>
+                    </div>
+                    @php
+                        // Ambil array bulan yang sudah dibayar untuk siswa ini
+                        $paidMonths = $pembayaran->where('nisn', $s->nisn)->pluck('bulan_dibayar')->toArray();
+                    @endphp
+
+                    <div class="mb-3">
+                        <label class="col-form-label">Bulan</label>
+                        <select name="bulan_dibayar[]" class="form-select" id="bulanSelect" multiple>
+                            @foreach ($bulan as $b)
+                                @if (!in_array($b['bulan'], $paidMonths))
+                                    <option value="{{ $b['bulan'] }}">
+                                        {{ $b['bulan'] }}
+                                    </option>
+                                @endif
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="col-form-label">Jumlah Bayar</label>
+                        <input type="number" class="form-control" id="jumlahBayar" readonly>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Kirim</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const bulanSelect = document.getElementById('bulanSelect');
+        const nominalSPP = parseInt(document.getElementById('nominalSPP').value);
+        const jumlahBayar = document.getElementById('jumlahBayar');
+
+        bulanSelect.addEventListener('change', function() {
+            let selectedCount = Array.from(bulanSelect.selectedOptions).length;
+            jumlahBayar.value = nominalSPP * selectedCount;
+        });
+    });
+</script>

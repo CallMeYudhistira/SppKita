@@ -16,7 +16,7 @@
                 <th scope="col" style="width: 20%;">NISN</th>
                 <th scope="col" style="width: 20%;">NIS</th>
                 <th scope="col" style="width: 20%;">Nama</th>
-                <th scope="col" style="width: 20%;" colspan="2" class="text-center">Kelas</th>
+                <th scope="col" style="width: 20%;">Kelas</th>
                 <th scope="col" style="width: 20%;">Alamat</th>
                 <th scope="col" style="width: 20%;">Nomor Telepon</th>
                 <th scope="col" style="width: 20%;">SPP</th>
@@ -31,8 +31,7 @@
                     <td>{{ $s->nisn }}</td>
                     <td>{{ $s->nis }}</td>
                     <td>{{ $s->nama }}</td>
-                    <td>{{ $s->kelas->nama_kelas }}</td>
-                    <td>{{ $s->kelas->kompetensi_keahlian }}</td>
+                    <td>{{ $s->kelas->nama_kelas }} {{ $s->kelas->kompetensi_keahlian }}</td>
                     <td style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="{{ $s->alamat }}">{{ $s->alamat }}</td>
                     <td>{{ $s->no_telp }}</td>
                     <td>{{ 'Rp ' . number_format($s->spp->nominal, '0', ',', '.') }}</td>
@@ -56,7 +55,6 @@
         </tbody>
     </table>
 </div>
-
 
     @if ($pesan = Session::get('success'))
         <script>

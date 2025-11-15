@@ -3,18 +3,18 @@
         <a class="nav-link active" href="/petugas/beranda">🏠 Beranda</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="#">Link</a>
+        <a class="nav-link" href="/pembayaran">💰 Pembayaran</a>
     </li>
     <li class="nav-item">
         <div class="dropdown">
             <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Kelola Data 🗃️
+                🗃️ Kelola Data
             </button>
             <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="/petugas">Petugas 🧑‍💼</a></li>
-                <li><a class="dropdown-item" href="/kelas">Kelas 🏛️</a></li>
-                <li><a class="dropdown-item" href="/spp">SPP 📃</a></li>
-                <li><a class="dropdown-item" href="/siswa">Siswa 🧑‍🎓</a></li>
+                <li><a class="dropdown-item" href="/petugas">🧑‍💼 Petugas</a></li>
+                <li><a class="dropdown-item" href="/kelas">🏛️ Kelas</a></li>
+                <li><a class="dropdown-item" href="/spp">📃 SPP</a></li>
+                <li><a class="dropdown-item" href="/siswa">🧑‍🎓 Siswa</a></li>
             </ul>
         </div>
     </li>
