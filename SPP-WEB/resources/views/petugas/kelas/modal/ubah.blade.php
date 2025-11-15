@@ -15,7 +15,7 @@
                     </div>
                     <div class="mb-3">
                         <label class="col-form-label">Kompetensi Keahlian</label>
-                        <input type="text" class="form-control" name="kompetensi_keahlian" value="{{ $k->kompetensi_keahlian }}"> autocomplete="off"
+                        <input type="text" class="form-control" name="kompetensi_keahlian" value="{{ $k->kompetensi_keahlian }}" autocomplete="off">
                     </div>
                 </div>
                 <div class="modal-footer">

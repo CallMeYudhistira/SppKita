@@ -70,20 +70,20 @@ class PembayaranController extends Controller
         return view('petugas.pembayaran.index', compact('siswa', 'bulan', 'pembayaran'));
     }
 
-    public function bayar(Request $request, $nis)
+    public function bayar(Request $request, $nisn)
     {
         $request->validate([
             'bulan_dibayar' => 'required',
             'bulan_dibayar.*' => 'string',
         ]);
 
-        $siswa = Siswa::find($nis);
+        $siswa = Siswa::find($nisn);
 
         $id_spp = $siswa->id_spp;
 
         $nominal_spp = $siswa->spp->nominal;
 
-        $tahun = now()->format('Y');
+        $tahun = $siswa->spp->tahun;
 
         foreach ($request->bulan_dibayar as $bulan) {
             Pembayaran::create([
@@ -102,8 +102,16 @@ class PembayaranController extends Controller
 
     public function riwayat()
     {
-        $pembayaran = Pembayaran::with('siswa')->with('petugas')->with('spp')->get();
+        $pembayaran = collect(DB::select('SELECT * FROM riwayat_bayar'));
 
         return view('petugas.pembayaran.riwayat', compact('pembayaran'));
+    }
+
+    public function cetak($nisn, $tanggal)
+    {
+        $detail_pembayaran = Pembayaran::with('siswa')->where('nisn', $nisn)->where('tgl_bayar', $tanggal)->get();
+        $pembayaran = collect(DB::select("SELECT * FROM riwayat_bayar WHERE nisn = '" . $nisn . "' AND tgl_bayar = '" . $tanggal . "'"))->first();
+
+        return view('petugas.pembayaran.cetak', compact('pembayaran', 'detail_pembayaran'));
     }
 }

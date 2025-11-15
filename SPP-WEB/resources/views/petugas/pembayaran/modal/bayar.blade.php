@@ -28,9 +28,8 @@
                         <input type="hidden" id="nominalSPP{{ $s->nisn }}" value="{{ $s->spp->nominal }}">
                     </div>
                     <div class="mb-3">
-                        <label class="col-form-label">Tahun Bayar</label>
-                        <input type="text" class="form-control"
-                            value="{{ now()->format('Y') }}" disabled>
+                        <label class="col-form-label">Tahun Yang Akan Bayar</label>
+                        <input type="text" class="form-control" value="{{ $s->spp->tahun }}" disabled>
                     </div>
                     @php
                         $paidMonths = $pembayaran->where('nisn', $s->nisn)->pluck('bulan_dibayar')->toArray();
