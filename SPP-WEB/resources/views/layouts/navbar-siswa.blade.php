@@ -3,7 +3,7 @@
         <a class="nav-link active" href="/siswa/beranda">🏠 Beranda</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="#">Link</a>
+        <a class="nav-link" href="/pembayaran">🗒️ Riwayat Pembayaran</a>
     </li>
     <li class="nav-item">
         <form action="/logout" method="POST">

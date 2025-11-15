@@ -3,9 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kelas;
+use App\Models\Pembayaran;
 use App\Models\Siswa;
 use App\Models\Spp;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class SiswaController extends Controller
@@ -84,5 +88,33 @@ class SiswaController extends Controller
     {
         Siswa::find($id)->delete();
         return redirect()->back()->with('success', 'Data berhasil dihapus!');
+    }
+
+    public function riwayat()
+    {
+        $pembayaran = collect(DB::select("SELECT * FROM riwayat_bayar WHERE nisn = '" . Auth::guard('siswa')->user()->nisn . "' ORDER BY tgl_bayar DESC"));
+
+        return view('siswa.pembayaran.riwayat', compact('pembayaran'));
+    }
+
+    public function cariRiwayat(Request $request)
+    {
+        $tanggal = $request->tanggal;
+        if (!$tanggal) {
+            return redirect('/pembayaran');
+        }
+
+        $pembayaran = collect(DB::select("SELECT * FROM riwayat_bayar WHERE tgl_bayar LIKE '%" . $tanggal . "%' ORDER BY tgl_bayar DESC"));
+        return view('siswa.pembayaran.riwayat', compact('pembayaran', 'tanggal'));
+    }
+
+    public function cetak($tanggal)
+    {
+        $nisn = Auth::guard('siswa')->user()->nisn;
+        $detail_pembayaran = Pembayaran::with('siswa')->where('nisn', $nisn)->where('tgl_bayar', $tanggal)->get();
+        $pembayaran = collect(DB::select("SELECT * FROM riwayat_bayar WHERE nisn = '" . $nisn . "' AND tgl_bayar = '" . $tanggal . "'"))->first();
+
+        $pdf = Pdf::loadView('siswa.pembayaran.cetak', compact('pembayaran', 'detail_pembayaran'))->setPaper('a5', 'portrait');
+        return $pdf->stream('invoice.pdf');
     }
 }
