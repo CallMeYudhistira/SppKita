@@ -64,6 +64,7 @@ Route::middleware(['petugas'])->group(function () {
     Route::prefix('/pembayaran')->group(function () {
         Route::get('/', [PembayaranController::class, 'index']);
         Route::post('/bayar/{nis}', [PembayaranController::class, 'bayar']);
+        Route::get('/riwayat', [PembayaranController::class, 'riwayat']);
     });
 });
 

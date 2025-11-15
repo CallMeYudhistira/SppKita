@@ -99,4 +99,8 @@ class PembayaranController extends Controller
         return redirect()->back()->with('success', 'Pembayaran berhasil ditambahkan!');
     }
 
+    public function riwayat(){
+        $pembayaran = Pembayaran::with('siswa')->with('petugas')->with('spp')->get();
+        return view('petugas.pembayaran.riwayat', compact('pembayaran'));
+    }
 }
