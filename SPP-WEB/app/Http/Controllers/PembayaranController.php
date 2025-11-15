@@ -75,7 +75,7 @@ class PembayaranController extends Controller
     {
         $keyword = $request->keyword;
         if (!$keyword) {
-            return redirect('/siswa');
+            return redirect('/pembayaran');
         }
         $siswa = Siswa::with('kelas')->with('spp')->where('nama', 'LIKE', '%' . $keyword . '%')->get();
         $pembayaran = Pembayaran::all();
@@ -164,9 +164,20 @@ class PembayaranController extends Controller
 
     public function riwayat()
     {
-        $pembayaran = collect(DB::select('SELECT * FROM riwayat_bayar'));
+        $pembayaran = collect(DB::select('SELECT * FROM riwayat_bayar ORDER BY tgl_bayar DESC'));
 
         return view('petugas.pembayaran.riwayat', compact('pembayaran'));
+    }
+
+    public function cariRiwayat(Request $request)
+    {
+        $keyword = $request->keyword;
+        if (!$keyword) {
+            return redirect('/pembayaran/riwayat');
+        }
+
+        $pembayaran = collect(DB::select("SELECT * FROM riwayat_bayar WHERE nama LIKE '%" . $keyword . "%' ORDER BY tgl_bayar DESC"));
+        return view('petugas.pembayaran.riwayat', compact('pembayaran', 'keyword'));
     }
 
     public function cetak($nisn, $tanggal)

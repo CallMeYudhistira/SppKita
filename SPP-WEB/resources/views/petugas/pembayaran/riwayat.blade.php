@@ -5,9 +5,15 @@
 @endsection
 @section('content')
     <h2>Riwayat Pembayaran SPP</h2>
-    <a href="/pembayaran" class="btn btn-dark my-2">Kembali</a>
-    <div class="mx-3">
-
+    <div class="d-flex">
+        <a href="/pembayaran" class="btn btn-dark my-2">Kembali</a>
+        <form class="d-flex ms-auto my-2" action="/pembayaran/riwayat/cari" method="get">
+            <input class="form-control me-2" type="search" name="keyword" placeholder="Cari nama siswa 🔍" autocomplete="off"
+                @isset($keyword) value="{{ $keyword }}" @endisset />
+            <button class="btn btn-outline-primary" type="submit">Cari</button>
+        </form>
+    </div>
+    <div class="my-3">
         <table class="table border-top mt-4">
             <thead>
                 <tr>
