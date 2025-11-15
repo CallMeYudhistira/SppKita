@@ -60,6 +60,7 @@ Route::middleware(['petugas'])->group(function () {
 
     Route::prefix('/petugas')->group(function () {
         Route::get('/', [PetugasController::class, 'index']);
+        Route::get('/cari', [PetugasController::class, 'cari']);
         Route::post('/tambah', [PetugasController::class, 'tambah']);
         Route::put('/ubah/{id}', [PetugasController::class, 'ubah']);
         Route::delete('/hapus/{id}', [PetugasController::class, 'hapus']);

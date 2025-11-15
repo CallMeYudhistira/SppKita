@@ -14,6 +14,16 @@ class PetugasController extends Controller
         return view('petugas.petugas.index', compact('petugas'));
     }
 
+    public function cari(Request $request)
+    {
+        $keyword = $request->keyword;
+        if (!$keyword) {
+            return redirect('/petugas');
+        }
+        $petugas = Petugas::where('nama_petugas', 'LIKE', '%' . $keyword . '%')->get();
+        return view('petugas.petugas.index', compact('petugas', 'keyword'));
+    }
+
     public function tambah(Request $request)
     {
         $petugas = $request->validate([
