@@ -6,8 +6,18 @@
 @section('content')
     <h2>Laporan Pembayaran SPP</h2>
     <div class="d-flex">
-        <a href="/pembayaran" class="btn btn-dark mr-2 my-2">Cetak PDF</a>
-        <a href="/pembayaran" class="btn btn-dark m-2">Cetak Excel</a>
+        <form action="/laporan/cetak/pdf" method="get">
+            <input type="hidden" name="filter" @isset($filter) value="{{ $filter }}" @endisset>
+            <input type="hidden" name="first" @isset($first) value="{{ $first }}" @endisset>
+            <input type="hidden" name="second" @isset($second) value="{{ $second }}" @endisset>
+            <button type="submit" class="btn btn-secondary mr-2 my-2">Cetak PDF</button>
+        </form>
+        <form action="/laporan/cetak/excel" method="get">
+            <input type="hidden" name="filter" @isset($filter) value="{{ $filter }}" @endisset>
+            <input type="hidden" name="first" @isset($first) value="{{ $first }}" @endisset>
+            <input type="hidden" name="second" @isset($second) value="{{ $second }}" @endisset>
+            <button type="submit" class="btn btn-warning m-2">Cetak Excel</button>
+        </form>
         <form action="/laporan/filter" method="get" class="d-flex align-items-center">
 
             {{-- Dropdown Filter --}}

@@ -72,6 +72,8 @@ Route::middleware(['petugas'])->group(function () {
     Route::prefix('/laporan')->group(function () {
         Route::get('/', [LaporanController::class, 'index']);
         Route::get('/filter', [LaporanController::class, 'filter']);
+        Route::get('/cetak/pdf', [LaporanController::class, 'cetakPDF']);
+        Route::get('/cetak/excel', [LaporanController::class, 'cetakExcel']);
     });
 });
 
