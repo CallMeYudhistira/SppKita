@@ -18,6 +18,18 @@ class SiswaController extends Controller
         return view('petugas.siswa.index', compact('siswa', 'kelas', 'spp'));
     }
 
+    public function cari(Request $request)
+    {
+        $keyword = $request->keyword;
+        if (!$keyword) {
+            return redirect('/siswa');
+        }
+        $siswa = Siswa::with('kelas')->with('spp')->where('nama', 'LIKE', '%' . $keyword . '%')->get();
+        $kelas = Kelas::all();
+        $spp = Spp::all();
+        return view('petugas.siswa.index', compact('siswa', 'keyword', 'kelas', 'spp'));
+    }
+
     public function tambah(Request $request)
     {
         $siswa = $request->validate([
@@ -54,7 +66,7 @@ class SiswaController extends Controller
         $siswa = Siswa::find($id);
         $cekNis = Siswa::where('nis', $request->nis)->first();
 
-        if($cekNis->nisn != $siswa->nisn){
+        if ($cekNis->nisn != $siswa->nisn) {
             return redirect()->back()->with('error', 'NIS tidak boleh sama');
         }
 
