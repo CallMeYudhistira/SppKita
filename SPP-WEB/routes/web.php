@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KelasController;
+use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\PetugasController;
 use App\Http\Controllers\SiswaController;
@@ -66,6 +67,11 @@ Route::middleware(['petugas'])->group(function () {
         Route::post('/bayar/{nisn}', [PembayaranController::class, 'bayar']);
         Route::get('/riwayat', [PembayaranController::class, 'riwayat']);
         Route::get('/cetak/{nisn}/{tanggal}', [PembayaranController::class, 'cetak']);
+    });
+
+    Route::prefix('/laporan')->group(function () {
+        Route::get('/', [LaporanController::class, 'index']);
+        Route::get('/filter', [LaporanController::class, 'filter']);
     });
 });
 

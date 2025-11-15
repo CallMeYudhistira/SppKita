@@ -3,9 +3,6 @@
         <a class="nav-link active" href="/petugas/beranda">🏠 Beranda</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="/pembayaran">💰 Pembayaran</a>
-    </li>
-    <li class="nav-item">
         <div class="dropdown">
             <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                 🗃️ Kelola Data
@@ -17,6 +14,12 @@
                 <li><a class="dropdown-item" href="/siswa">🧑‍🎓 Siswa</a></li>
             </ul>
         </div>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/pembayaran">💰 Pembayaran</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/laporan">🖨️ Laporan</a>
     </li>
     <li class="nav-item">
         <form action="/logout" method="POST">
