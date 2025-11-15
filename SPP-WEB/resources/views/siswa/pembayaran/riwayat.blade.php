@@ -6,7 +6,7 @@
 @section('content')
     <h2>Riwayat Pembayaran SPP</h2>
     <div class="d-flex">
-        <form class="d-flex my-2" action="/pembayaran/cari" method="get">
+        <form class="d-flex my-2" action="/siswa/pembayaran/cari" method="get">
             <input class="form-control me-2" type="date" name="tanggal" autocomplete="off" @isset($tanggal) value="{{ $tanggal }}" @endisset />
             <button class="btn btn-outline-primary" type="submit">Cari</button>
         </form>
@@ -38,7 +38,7 @@
                         <td>{{ 'Rp ' . number_format($p->total_bayar, '0', ',', '.') }}</td>
                         <td>{{ $p->nama_petugas }}</td>
                         <td class="text-center">
-                            <a href="/pembayaran/cetak/{{ $p->tgl_bayar }}"
+                            <a href="/siswa/pembayaran/cetak/{{ $p->tgl_bayar }}"
                                 class="btn btn-success">Cetak</a>
                         </td>
                     </tr>
