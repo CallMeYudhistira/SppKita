@@ -6,6 +6,7 @@ use App\Models\Kelas;
 use App\Models\Pembayaran;
 use App\Models\Siswa;
 use App\Models\Spp;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -112,6 +113,7 @@ class PembayaranController extends Controller
         $detail_pembayaran = Pembayaran::with('siswa')->where('nisn', $nisn)->where('tgl_bayar', $tanggal)->get();
         $pembayaran = collect(DB::select("SELECT * FROM riwayat_bayar WHERE nisn = '" . $nisn . "' AND tgl_bayar = '" . $tanggal . "'"))->first();
 
-        return view('petugas.pembayaran.cetak', compact('pembayaran', 'detail_pembayaran'));
+        $pdf = Pdf::loadView('petugas.pembayaran.cetak', compact('pembayaran', 'detail_pembayaran'))->setPaper('a5', 'portrait');
+        return $pdf->stream('invoice.pdf');
     }
 }

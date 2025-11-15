@@ -132,7 +132,7 @@
             <hr style="border: 0; border-top: 1px solid #dee2e6; margin: 12px 0;">
 
             <div class="small" style="font-size: 13px;">
-                <p><strong>Nis:</strong> {{ $pembayaran->tgl_bayar }}</p>
+                <p><strong>Nis:</strong> {{ $pembayaran->nis }}</p>
                 <p><strong>Nama:</strong> {{ $pembayaran->nama }}</p>
                 <p><strong>Kelas:</strong> {{ $pembayaran->nama_kelas }} {{ $pembayaran->kompetensi_keahlian }}</p>
             </div>
