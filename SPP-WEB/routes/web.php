@@ -36,6 +36,7 @@ Route::middleware(['petugas'])->group(function () {
 
     Route::prefix('/kelas')->group(function () {
         Route::get('/', [KelasController::class, 'index']);
+        Route::get('/cari', [KelasController::class, 'cari']);
         Route::post('/tambah', [KelasController::class, 'tambah']);
         Route::put('/ubah/{id}', [KelasController::class, 'ubah']);
         Route::delete('/hapus/{id}', [KelasController::class, 'hapus']);

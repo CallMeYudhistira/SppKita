@@ -5,8 +5,15 @@
 @endsection
 @section('content')
     <h2>Kelola Data Kelas</h2>
-    <button type="button" class="btn btn-primary my-2" data-bs-toggle="modal" data-bs-target="#tambahData">Tambah</button>
-    @include('petugas.kelas.modal.tambah')
+    <div class="d-flex">
+        <button type="button" class="btn btn-primary my-2" data-bs-toggle="modal" data-bs-target="#tambahData">Tambah</button>
+        @include('petugas.kelas.modal.tambah')
+        <form class="d-flex ms-auto my-2" action="/kelas/cari" method="get">
+            <input class="form-control me-2" type="search" name="keyword" placeholder="Cari 🔍" autocomplete="off"
+                @isset($keyword) value="{{ $keyword }}" @endisset />
+            <button class="btn btn-outline-primary" type="submit">Cari</button>
+        </form>
+    </div>
 
     <table class="table border-top mt-4">
         <thead>

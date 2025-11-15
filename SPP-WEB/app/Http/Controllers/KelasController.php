@@ -12,6 +12,16 @@ class KelasController extends Controller
         return view('petugas.kelas.index', compact('kelas'));
     }
 
+    public function cari(Request $request)
+    {
+        $keyword = $request->keyword;
+        if (!$keyword) {
+            return redirect('/kelas');
+        }
+        $kelas = Kelas::where('nama_kelas', 'LIKE', '%' . $keyword . '%')->get();
+        return view('petugas.kelas.index', compact('kelas', 'keyword'));
+    }
+
     public function tambah(Request $request){
         Kelas::create($request->validate([
             'nama_kelas' => 'required',
