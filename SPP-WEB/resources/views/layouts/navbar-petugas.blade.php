@@ -2,25 +2,29 @@
     <li class="nav-item">
         <a class="nav-link active" href="/petugas/beranda">🏠 Beranda</a>
     </li>
-    <li class="nav-item">
-        <div class="dropdown">
-            <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                🗃️ Kelola Data
-            </button>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="/petugas">🧑‍💼 Petugas</a></li>
-                <li><a class="dropdown-item" href="/kelas">🏛️ Kelas</a></li>
-                <li><a class="dropdown-item" href="/spp">📃 SPP</a></li>
-                <li><a class="dropdown-item" href="/siswa">🧑‍🎓 Siswa</a></li>
-            </ul>
-        </div>
-    </li>
+    @if (Auth::guard('petugas')->user()->level == 'admin')
+        <li class="nav-item">
+            <div class="dropdown">
+                <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    🗃️ Kelola Data
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="/petugas">🧑‍💼 Petugas</a></li>
+                    <li><a class="dropdown-item" href="/kelas">🏛️ Kelas</a></li>
+                    <li><a class="dropdown-item" href="/spp">📃 SPP</a></li>
+                    <li><a class="dropdown-item" href="/siswa">🧑‍🎓 Siswa</a></li>
+                </ul>
+            </div>
+        </li>
+    @endif
     <li class="nav-item">
         <a class="nav-link" href="/pembayaran">💰 Pembayaran</a>
     </li>
-    <li class="nav-item">
-        <a class="nav-link" href="/laporan">🖨️ Laporan</a>
-    </li>
+    @if (Auth::guard('petugas')->user()->level == 'admin')
+        <li class="nav-item">
+            <a class="nav-link" href="/laporan">🖨️ Laporan</a>
+        </li>
+    @endif
     <li class="nav-item">
         <form action="/logout" method="POST">
             @csrf
