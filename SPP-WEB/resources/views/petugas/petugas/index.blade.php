@@ -4,7 +4,7 @@
     @include('layouts.navbar-petugas')
 @endsection
 @section('content')
-    <h2>Kelola Data Siswa</h2>
+    <h2>Kelola Data Petugas</h2>
     <button type="button" class="btn btn-primary my-2" data-bs-toggle="modal" data-bs-target="#tambahData">Tambah</button>
     @include('petugas.petugas.modal.tambah')
 

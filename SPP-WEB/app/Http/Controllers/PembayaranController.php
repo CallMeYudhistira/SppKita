@@ -8,6 +8,7 @@ use App\Models\Siswa;
 use App\Models\Spp;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class PembayaranController extends Controller
 {
@@ -99,8 +100,10 @@ class PembayaranController extends Controller
         return redirect()->back()->with('success', 'Pembayaran berhasil ditambahkan!');
     }
 
-    public function riwayat(){
+    public function riwayat()
+    {
         $pembayaran = Pembayaran::with('siswa')->with('petugas')->with('spp')->get();
+
         return view('petugas.pembayaran.riwayat', compact('pembayaran'));
     }
 }

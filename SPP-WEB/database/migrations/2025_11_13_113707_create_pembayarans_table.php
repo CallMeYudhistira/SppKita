@@ -16,7 +16,7 @@ return new class extends Migration
             $table->integer('id_petugas');
             $table->char('nisn', 10);
             $table->date('tgl_bayar');
-            $table->string('bulan_dibayar', 8);
+            $table->string('bulan_dibayar', 10);
             $table->string('tahun_dibayar', 4);
             $table->integer('id_spp');
             $table->integer('jumlah_bayar');

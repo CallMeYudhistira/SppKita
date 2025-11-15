@@ -33,13 +33,12 @@
                             value="{{ now()->format('Y') }}/{{ now()->format('Y') + 1 }}" disabled>
                     </div>
                     @php
-                        // Ambil array bulan yang sudah dibayar untuk siswa ini
                         $paidMonths = $pembayaran->where('nisn', $s->nisn)->pluck('bulan_dibayar')->toArray();
                     @endphp
 
                     <div class="mb-3">
                         <label class="col-form-label">Bulan</label>
-                        <select name="bulan_dibayar[]" class="form-select" id="bulanSelect" multiple>
+                        <select name="bulan_dibayar[]" class="form-select mb-1" id="bulanSelect" multiple>
                             @foreach ($bulan as $b)
                                 @if (!in_array($b['bulan'], $paidMonths))
                                     <option value="{{ $b['bulan'] }}">
@@ -48,6 +47,7 @@
                                 @endif
                             @endforeach
                         </select>
+                        <small style="color: #999; font-size: 0.8rem;">Tekan CTRL + click untuk memilih lebih dari satu.</small>
                     </div>
 
                     <div class="mb-3">

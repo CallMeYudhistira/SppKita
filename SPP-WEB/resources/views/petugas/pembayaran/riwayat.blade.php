@@ -18,7 +18,7 @@
                 <th scope="col">Bulan Dibayar</th>
                 <th scope="col">Tahun Ajaran</th>
                 <th scope="col">Jumlah Bayar</th>
-                <th scope="col" class="text-center" style="width: 10%;">Detail</th>
+                <th scope="col" class="text-center" style="width: 10%;">Aksi</th>
             </tr>
         </thead>
         <tbody>
@@ -33,7 +33,7 @@
                     <td>{{ $p->tahun_dibayar }}/{{ $p->tahun_dibayar + 1 }}</td>
                     <td>{{ 'Rp ' . number_format($p->jumlah_bayar, '0', ',', '.') }}</td>
                     <td class="text-center">
-                        <a href="/pembayaran/detail/{{ $p->id_pembayaran }}" class="btn btn-success">Detail</a>
+                        <a href="/pembayaran/cetak/{{ $p->id_pembayaran }}" class="btn btn-success">Cetak</a>
                     </td>
                 </tr>
             @endforeach
