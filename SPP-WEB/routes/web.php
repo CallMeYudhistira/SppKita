@@ -44,6 +44,7 @@ Route::middleware(['petugas'])->group(function () {
 
     Route::prefix('/spp')->group(function () {
         Route::get('/', [SppController::class, 'index']);
+        Route::get('/cari', [SppController::class, 'cari']);
         Route::post('/tambah', [SppController::class, 'tambah']);
         Route::put('/ubah/{id}', [SppController::class, 'ubah']);
         Route::delete('/hapus/{id}', [SppController::class, 'hapus']);

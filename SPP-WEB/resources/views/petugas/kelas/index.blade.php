@@ -9,7 +9,7 @@
         <button type="button" class="btn btn-primary my-2" data-bs-toggle="modal" data-bs-target="#tambahData">Tambah</button>
         @include('petugas.kelas.modal.tambah')
         <form class="d-flex ms-auto my-2" action="/kelas/cari" method="get">
-            <input class="form-control me-2" type="search" name="keyword" placeholder="Cari 🔍" autocomplete="off"
+            <input class="form-control me-2" type="search" name="keyword" placeholder="Cari nama 🔍" autocomplete="off"
                 @isset($keyword) value="{{ $keyword }}" @endisset />
             <button class="btn btn-outline-primary" type="submit">Cari</button>
         </form>
