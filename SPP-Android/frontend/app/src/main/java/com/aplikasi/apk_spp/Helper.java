@@ -31,8 +31,8 @@ public class Helper {
 
     public static String IP = "http://192.168.0.117:5001/api/";
 
-    // Authentication
     public static String URLLogin = IP + "Auth/login";
+    public static String URLHome = IP + "Home/";
 
     public static void Alert(String title, String message, Context context){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);

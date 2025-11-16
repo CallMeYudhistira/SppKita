@@ -82,7 +82,7 @@
                 <!-- Container for Cards -->
                 <GridLayout
                     android:id="@+id/gridSiswa"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingHorizontal="10dp"
@@ -119,7 +119,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="0"
-                                android:textSize="28sp"
+                                android:textSize="22sp"
                                 android:textStyle="bold"
                                 android:textColor="#000" />
 
@@ -156,7 +156,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="0"
                                 android:textStyle="bold"
-                                android:textSize="28sp"
+                                android:textSize="22sp"
                                 android:textColor="#000" />
 
                         </LinearLayout>
@@ -187,7 +187,7 @@
                                 android:textSize="14sp" />
 
                             <TextView
-                                android:id="@+id/txtTotalTunggakanSiswa"
+                                android:id="@+id/txtTotalTunggakan"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Rp 0"
@@ -203,7 +203,7 @@
 
                 <GridLayout
                     android:id="@+id/gridPetugas"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingHorizontal="10dp"
@@ -240,7 +240,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="0"
-                                android:textSize="28sp"
+                                android:textSize="22sp"
                                 android:textStyle="bold"
                                 android:textColor="#000" />
 
@@ -277,7 +277,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="0"
                                 android:textStyle="bold"
-                                android:textSize="28sp"
+                                android:textSize="22sp"
                                 android:textColor="#000" />
 
                         </LinearLayout>
@@ -344,7 +344,7 @@
                                 android:textSize="14sp" />
 
                             <TextView
-                                android:id="@+id/txtTotalTunggakan"
+                                android:id="@+id/txtTotalTunggakanSiswa"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Rp 0"
