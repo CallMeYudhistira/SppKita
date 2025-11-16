@@ -4,12 +4,12 @@ plugins {
 
 android {
     namespace = "com.aplikasi.apk_spp"
-    compileSdk = 34
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.aplikasi.apk_spp"
         minSdk = 26
-        targetSdk = 34
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
@@ -32,7 +32,7 @@ android {
 }
 
 dependencies {
-
+    implementation("com.android.volley:volley:1.2.1")
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
