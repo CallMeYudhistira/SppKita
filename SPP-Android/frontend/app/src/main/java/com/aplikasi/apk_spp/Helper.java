@@ -1,14 +1,38 @@
 package com.aplikasi.apk_spp;
 
+import android.content.Context;
+import android.content.DialogInterface;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AlertDialog;
+
 public class Helper {
     public static String token;
-    public static String nisn;
-    public static String id;
+    public static String id;    // atau nisn bagi siswa
     public static String nama;
+    public static String level;
 
-    public static String IP = "http://10.158.181.197:1234/";
+    public static String IP = "http://192.168.0.117:5001/api/";
 
     // Authentication
-    public static String URLLogin = IP + "api/login";
-    public static String URLLogout = IP + "api/logout";
+    public static String URLLogin = IP + "Auth/login";
+    public static String URLLogout = IP + "Auth/logout";
+
+    public static void Alert(String title, String message, Context context){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(title);
+        builder.setMessage(message);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
 }
