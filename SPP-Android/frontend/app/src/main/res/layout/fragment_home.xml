@@ -1,14 +1,379 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".HomeFragment">
+    android:layout_height="match_parent">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/divider1">
 
-</FrameLayout>
+        <TextView
+            android:id="@+id/tvToolbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Beranda"
+            android:textSize="19sp"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:textColor="#222222" />
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/logout"
+            android:layout_gravity="end"
+            android:layout_marginRight="15dp"/>
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <TextView
+        android:id="@+id/divider1"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#ccc"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintBottom_toTopOf="@+id/container"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <LinearLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/divider2"
+        app:layout_constraintTop_toBottomOf="@+id/divider1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <!-- Title -->
+                <TextView
+                    android:id="@+id/txtDashboardTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dashboard -Level-"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="20dp"
+                    android:textColor="#222222" />
+
+                <!-- Container for Cards -->
+                <GridLayout
+                    android:id="@+id/gridSiswa"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="20dp"
+                    android:columnCount="1"
+                    android:rowCount="4"
+                    android:alignmentMode="alignMargins"
+                    android:useDefaultMargins="true">
+
+                    <!-- SPP Per Bulan -->
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="0dp"
+                        android:layout_height="120dp"
+                        app:cardElevation="4dp"
+                        app:cardUseCompatPadding="true"
+                        android:layout_columnWeight="1"
+                        android:layout_rowWeight="1"
+                        app:cardCornerRadius="14dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="SPP Per Bulan"
+                                android:textColor="#555"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/txtNominalSpp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:textSize="28sp"
+                                android:textStyle="bold"
+                                android:textColor="#000" />
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <!-- Total Sudah Bayar -->
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="0dp"
+                        android:layout_height="120dp"
+                        app:cardElevation="4dp"
+                        app:cardUseCompatPadding="true"
+                        android:layout_columnWeight="1"
+                        android:layout_rowWeight="1"
+                        app:cardCornerRadius="14dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Total Sudah Bayar"
+                                android:textColor="#555"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/txtTotalSudahBayar"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:textStyle="bold"
+                                android:textSize="28sp"
+                                android:textColor="#000" />
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <!-- Total Tunggakan -->
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="0dp"
+                        android:layout_height="120dp"
+                        app:cardElevation="4dp"
+                        app:cardUseCompatPadding="true"
+                        android:layout_columnWeight="1"
+                        android:layout_rowWeight="1"
+                        app:cardCornerRadius="14dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Total Tunggakan"
+                                android:textColor="#555"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/txtTotalTunggakanSiswa"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Rp 0"
+                                android:textStyle="bold"
+                                android:textSize="22sp"
+                                android:textColor="#000" />
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                </GridLayout>
+
+                <GridLayout
+                    android:id="@+id/gridPetugas"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="20dp"
+                    android:columnCount="1"
+                    android:rowCount="4"
+                    android:alignmentMode="alignMargins"
+                    android:useDefaultMargins="true">
+
+                    <!-- Total Siswa -->
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="0dp"
+                        android:layout_height="120dp"
+                        app:cardElevation="4dp"
+                        app:cardUseCompatPadding="true"
+                        android:layout_columnWeight="1"
+                        android:layout_rowWeight="1"
+                        app:cardCornerRadius="14dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Total Siswa"
+                                android:textColor="#555"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/txtTotalSiswa"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:textSize="28sp"
+                                android:textStyle="bold"
+                                android:textColor="#000" />
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <!-- Total Transaksi -->
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="0dp"
+                        android:layout_height="120dp"
+                        app:cardElevation="4dp"
+                        app:cardUseCompatPadding="true"
+                        android:layout_columnWeight="1"
+                        android:layout_rowWeight="1"
+                        app:cardCornerRadius="14dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Total Transaksi"
+                                android:textColor="#555"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/txtTotalTransaksi"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:textStyle="bold"
+                                android:textSize="28sp"
+                                android:textColor="#000" />
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <!-- Pembayaran Hari Ini -->
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="0dp"
+                        android:layout_height="120dp"
+                        app:cardElevation="4dp"
+                        app:cardUseCompatPadding="true"
+                        android:layout_columnWeight="1"
+                        android:layout_rowWeight="1"
+                        app:cardCornerRadius="14dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Pembayaran Hari Ini"
+                                android:textColor="#555"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/txtPembayaranHariIni"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Rp 0"
+                                android:textStyle="bold"
+                                android:textSize="22sp"
+                                android:textColor="#000" />
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <!-- Total Tunggakan -->
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="0dp"
+                        android:layout_height="120dp"
+                        app:cardElevation="4dp"
+                        app:cardUseCompatPadding="true"
+                        android:layout_columnWeight="1"
+                        android:layout_rowWeight="1"
+                        app:cardCornerRadius="14dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Total Tunggakan"
+                                android:textColor="#555"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/txtTotalTunggakan"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Rp 0"
+                                android:textStyle="bold"
+                                android:textSize="22sp"
+                                android:textColor="#000" />
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                </GridLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/divider2"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#ccc"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNav"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#fff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/bottom_nav" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
