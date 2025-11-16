@@ -92,8 +92,6 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     String token = response.getString("token");
                     String level = response.getString("level");
-                    Helper.token = token;
-                    Helper.level = level;
 
                     String data = response.getString("users");
                     JSONArray jsonArray = new JSONArray(data);
@@ -103,14 +101,14 @@ public class MainActivity extends AppCompatActivity {
                         String nisn = user.getString("nisn");
                         String nama = user.getString("nama");
 
-                        Helper.id = nisn;
-                        Helper.nama = nama;
+                        Helper helper = new Helper();
+                        helper.save(token, nisn, nama, level);
                     } else if(level.equals("petugas") || level.equals("admin")){
-                        String id = user.getString("id");
+                        String id = user.getString("id_petugas");
                         String nama = user.getString("nama_petugas");
 
-                        Helper.id = id;
-                        Helper.nama = nama;
+                        Helper helper = new Helper();
+                        helper.save(token, id, nama, level);
                     }
 
                     startActivity(new Intent(MainActivity.this, ParentActivity.class));

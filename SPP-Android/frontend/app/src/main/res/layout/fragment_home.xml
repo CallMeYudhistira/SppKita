@@ -24,6 +24,7 @@
             android:textColor="#222222" />
 
         <ImageView
+            android:id="@+id/ivLogout"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@drawable/logout"
@@ -42,19 +43,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 
-    <LinearLayout
-        android:id="@+id/container"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/divider2"
-        app:layout_constraintTop_toBottomOf="@+id/divider1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
         <ScrollView
+            android:id="@+id/container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -69,16 +66,26 @@
                     android:text="Dashboard -Level-"
                     android:textSize="22sp"
                     android:textStyle="bold"
-                    android:layout_marginBottom="20dp"
+                    android:layout_marginBottom="6dp"
+                    android:textColor="#222222" />
+
+                <!-- Sub Title -->
+                <TextView
+                    android:id="@+id/txtDashboardSubTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Halo, -Nama-"
+                    android:textSize="17sp"
+                    android:layout_marginBottom="15dp"
                     android:textColor="#222222" />
 
                 <!-- Container for Cards -->
                 <GridLayout
                     android:id="@+id/gridSiswa"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingHorizontal="20dp"
+                    android:paddingHorizontal="10dp"
                     android:columnCount="1"
                     android:rowCount="4"
                     android:alignmentMode="alignMargins"
@@ -196,10 +203,10 @@
 
                 <GridLayout
                     android:id="@+id/gridPetugas"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingHorizontal="20dp"
+                    android:paddingHorizontal="10dp"
                     android:columnCount="1"
                     android:rowCount="4"
                     android:alignmentMode="alignMargins"
@@ -354,26 +361,5 @@
             </LinearLayout>
 
         </ScrollView>
-
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/divider2"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="#ccc"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNav"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNav"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#fff"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_nav" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -15,11 +15,24 @@ public class Helper {
     public static String nama;
     public static String level;
 
+    public void save(String token, String id, String nama, String level){
+        this.token = token;
+        this.id = id;
+        this.nama = nama;
+        this.level = level;
+    }
+
+    public void flush(){
+        this.token = "";
+        this.id = "";
+        this.nama = "";
+        this.level = "";
+    }
+
     public static String IP = "http://192.168.0.117:5001/api/";
 
     // Authentication
     public static String URLLogin = IP + "Auth/login";
-    public static String URLLogout = IP + "Auth/logout";
 
     public static void Alert(String title, String message, Context context){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);

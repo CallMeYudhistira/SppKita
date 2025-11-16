@@ -1,12 +1,16 @@
 package com.aplikasi.apk_spp;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -55,10 +59,44 @@ public class HomeFragment extends Fragment {
         }
     }
 
+    ImageView ivLogout;
+    TextView txtDashboardTitle, txtDashboardSubTitle;
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+        ivLogout = view.findViewById(R.id.ivLogout);
+        ivLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("Logout");
+                builder.setMessage("Apakah anda ingin logout?");
+                builder.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Helper helper = new Helper();
+                        helper.flush();
+//                        getActivity().startActivity(getContext(), MainActivity.class);
+                        getActivity().finish();
+                    }
+                });
+                builder.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+                builder.show();
+            }
+        });
+
+        txtDashboardTitle = view.findViewById(R.id.txtDashboardTitle);
+        txtDashboardSubTitle = view.findViewById(R.id.txtDashboardSubTitle);
+        txtDashboardTitle.setText("Dashboard " + Helper.level);
+        txtDashboardSubTitle.setText("Halo, " + Helper.nama);
+
+        return view;
     }
 }
