@@ -40,7 +40,7 @@
             </div>
             <div class="card-body">
                 @if ($riwayatTerakhir)
-                    <p><strong>Tanggal:</strong> {{ $riwayatTerakhir->tgl_bayar }}</p>
+                    <p><strong>Tanggal:</strong> {{ \Carbon\Carbon::parse($riwayatTerakhir->tgl_bayar)->isoFormat("dddd, D MMMM Y") }}</p>
                     <p><strong>Bulan Dibayar:</strong>
                         {{ $riwayatTerakhir->bulan_dibayar }} {{ $riwayatTerakhir->tahun_dibayar }}
                     </p>

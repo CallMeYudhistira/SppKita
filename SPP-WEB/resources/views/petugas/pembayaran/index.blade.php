@@ -40,7 +40,7 @@
                     <td class="text-center">
 
                         @if ($sudahLunas)
-                            <span class="badge bg-success">Lunas ✔</span>
+                            <span class="btn">Lunas ✔</span>
                         @else
                             <button type="button" class="btn btn-success" data-bs-toggle="modal"
                                 data-bs-target="#bayarSPP{{ $s->nisn }}">
