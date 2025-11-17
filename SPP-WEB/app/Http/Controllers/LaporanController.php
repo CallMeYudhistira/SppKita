@@ -48,8 +48,9 @@ class LaporanController extends Controller
         $kelas = Kelas::find($id_kelas);
         $bulan = ['Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni'];
         $totalKelas = 0;
+        $tunggakanKelas = 0;
 
-        $pdf = Pdf::loadView('petugas.laporan.cetak', compact('siswa', 'bulan', 'pembayaran', 'kelas', 'totalKelas'))->setPaper('a4', 'landscape');
+        $pdf = Pdf::loadView('petugas.laporan.cetak', compact('siswa', 'bulan', 'pembayaran', 'kelas', 'totalKelas', 'tunggakanKelas'))->setPaper('a4', 'landscape');
         return $pdf->stream('invoice.pdf');
     }
 }
