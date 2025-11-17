@@ -24,6 +24,15 @@ public class AuthController : ControllerBase
     [HttpPost("login")]
     public IActionResult Login([FromBody] Login dto)
     {
+        if (string.IsNullOrWhiteSpace(dto.Password) && string.IsNullOrWhiteSpace(dto.Username))
+            return BadRequest(new { message = "Username dan Password tidak boleh kosong" });
+
+        if (string.IsNullOrWhiteSpace(dto.Username))
+            return BadRequest(new { message = "Username tidak boleh kosong" });
+
+        if (string.IsNullOrWhiteSpace(dto.Password))
+            return BadRequest(new { message = "Password tidak boleh kosong" });
+
         DB.crud($"SELECT * FROM siswa WHERE username = '{dto.Username}'");
         int cekSiswa = DB.ds.Tables[0].Rows.Count;
 
@@ -34,11 +43,13 @@ public class AuthController : ControllerBase
             string dbPass = reader["password"].ToString();
 
             if (!BCrypt.Net.BCrypt.Verify(dto.Password, dbPass))
-                return Unauthorized(new { message = "Password salah" });
+            {
+                return Unauthorized(new { message = "Password Salah" });
+            }
 
             string token = GenerateJwtToken(dto.Username);
 
-            return Ok(new { token, users = JsonConvert.SerializeObject(DB.ds.Tables[0]), level = "siswa"});
+            return Ok(new { token, users = JsonConvert.SerializeObject(DB.ds.Tables[0]), level = "siswa" });
         }
 
         DB.crud($"SELECT * FROM petugas WHERE username = '{dto.Username}'");
@@ -51,14 +62,16 @@ public class AuthController : ControllerBase
             string dbPass = reader["password"].ToString();
 
             if (!BCrypt.Net.BCrypt.Verify(dto.Password, dbPass))
-                return Unauthorized(new { message = "Password salah" });
+            {
+                return Unauthorized(new { message = "Password Salah" });
+            }
 
             string token = GenerateJwtToken(dto.Username);
 
             return Ok(new { token, users = JsonConvert.SerializeObject(DB.ds.Tables[0]), level = reader["level"].ToString() });
         }
 
-        return Unauthorized(new { message = "Username atau Password salah" });
+        return Unauthorized(new { message = "Username Tidak Ditemukan" });
     }
 
     private string GenerateJwtToken(string username)

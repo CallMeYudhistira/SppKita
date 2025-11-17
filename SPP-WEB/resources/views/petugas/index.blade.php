@@ -59,7 +59,7 @@
                         @foreach ($riwayat as $row)
                             <tr>
                                 <td>{{ $row->nisn }}</td>
-                                <td>{{ $row->tgl_bayar }}</td>
+                                <td>{{ \Carbon\Carbon::parse($row->tgl_bayar)->isoFormat("dddd, D MMMM Y") }}</td>
                                 <td>{{ $row->bulan_dibayar }} {{ $row->tahun_dibayar }}</td>
                                 <td>Rp {{ number_format($row->jumlah_bayar) }}</td>
                             </tr>

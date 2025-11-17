@@ -32,11 +32,22 @@ namespace API_SPP.Controllers
                 DB.crud($"SELECT * FROM dashboard_petugas");
                 var result = DB.ds.Tables[0].Rows[0];
 
+                double total_today = 0;
+
+                try
+                {
+                    total_today = Convert.ToDouble(result["total_hari_ini"]);
+                }
+                catch (Exception)
+                {
+                    total_today = 0;
+                }
+
                 return Ok(new
                 {
                     total_siswa = result["total_siswa"],
                     total_transaksi = result["total_transaksi"],
-                    total_hari_ini = result["total_hari_ini"],
+                    total_hari_ini = total_today,
                     total_tunggakan_siswa = result["total_tunggakan_siswa"],
                 });
             }

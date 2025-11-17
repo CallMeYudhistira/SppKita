@@ -128,17 +128,9 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         String responseBody = new String(error.networkResponse.data, "utf-8");
                         JSONObject jsonObject = new JSONObject(responseBody);
-                        JSONArray errorsArray = jsonObject.getJSONArray("message");
+                        String message = jsonObject.getString("message");
 
-                        StringBuilder message = new StringBuilder();
-                        for (int i = 0; i < errorsArray.length(); i++) {
-                            message.append(errorsArray.getString(i));
-                            if (i < errorsArray.length() - 1) {
-                                message.append("\n");
-                            }
-                        }
-
-                        Helper.Alert("Error", message.toString(), MainActivity.this);
+                        Helper.Alert("Error", message, MainActivity.this);
                     } catch (Exception e) {
                         e.printStackTrace();
                         Helper.Alert("Error", "Terjadi kesalahan saat membaca respon server.", MainActivity.this);

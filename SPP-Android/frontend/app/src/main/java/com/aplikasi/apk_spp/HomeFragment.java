@@ -178,24 +178,11 @@ public class HomeFragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 if (error.networkResponse != null && error.networkResponse.data != null) {
-                    try {
-                        String responseBody = new String(error.networkResponse.data, "utf-8");
-                        JSONObject jsonObject = new JSONObject(responseBody);
-                        JSONArray errorsArray = jsonObject.getJSONArray("message");
-
-                        StringBuilder message = new StringBuilder();
-                        for (int i = 0; i < errorsArray.length(); i++) {
-                            message.append(errorsArray.getString(i));
-                            if (i < errorsArray.length() - 1) {
-                                message.append("\n");
-                            }
-                        }
-
-                        Helper.Alert("Error", message.toString(), context);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Helper.Alert("Error", "Terjadi kesalahan saat membaca respon server.", context);
+                    if(error.networkResponse.statusCode == 401){
+                        Helper.Alert("Error", "Token Kedaluwarsa, Silahkan Login Kembali", context);
+                        return;
                     }
+                    Helper.Alert("Error", "Terjadi kesalahan saat membaca respon server.", context);
                 } else {
                     Helper.Alert("Error", "Tidak ada koneksi internet atau server tidak merespon.", context);
                 }
