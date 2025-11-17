@@ -30,7 +30,6 @@
     <table class="table border-top mt-4">
         <thead>
             <tr>
-                <th scope="col">#</th>
                 <th scope="col">Nama</th>
                 <th scope="col">NIS</th>
                 @foreach ($bulan as $b)
@@ -40,9 +39,8 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($siswa as $i => $s)
+            @foreach ($siswa as $s)
                 <tr>
-                    <th scope="row">{{ $i + 1 }}</th>
                     <td>{{ $s->nama }}</td>
                     <td>{{ $s->nis }}</td>
                     @foreach ($bulan as $i => $b)

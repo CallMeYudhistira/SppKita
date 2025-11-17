@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Kelas;
 use App\Models\Pembayaran;
 use App\Models\Siswa;
-use App\Models\Spp;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -79,28 +78,38 @@ class PembayaranController extends Controller
 
     public function riwayat()
     {
-        $pembayaran = collect(DB::select('SELECT * FROM riwayat_bayar ORDER BY tgl_bayar DESC'));
+        $pembayaran = collect(DB::select('SELECT * FROM riwayat_pembayaran'));
+        $kelas = Kelas::all();
 
-        return view('petugas.pembayaran.riwayat', compact('pembayaran'));
+        return view('petugas.pembayaran.riwayat', compact('pembayaran', 'kelas'));
     }
 
     public function cariRiwayat(Request $request)
     {
         $keyword = $request->keyword;
-        if (!$keyword) {
-            return redirect('/pembayaran/riwayat');
+        $id_kelas = $request->id_kelas;
+        $kelas = Kelas::all();
+        $pembayaran = collect(DB::select("SELECT * FROM riwayat_pembayaran WHERE nama LIKE '%" . $keyword . "%'"));
+        if($id_kelas != "semua"){
+            $pembayaran = collect(DB::select("SELECT * FROM riwayat_pembayaran WHERE nama LIKE '%" . $keyword . "%' AND id_kelas = '" . $id_kelas . "'"));
         }
 
-        $pembayaran = collect(DB::select("SELECT * FROM riwayat_bayar WHERE nama LIKE '%" . $keyword . "%' ORDER BY tgl_bayar DESC"));
-        return view('petugas.pembayaran.riwayat', compact('pembayaran', 'keyword'));
+        return view('petugas.pembayaran.riwayat', compact('pembayaran', 'keyword', 'id_kelas', 'kelas'));
     }
 
-    public function cetak($nisn, $tanggal, $tahun)
-    {
-        $detail_pembayaran = Pembayaran::with('siswa')->where('nisn', $nisn)->where('tgl_bayar', $tanggal)->where('tahun_dibayar', $tahun)->get();
-        $pembayaran = collect(DB::select("SELECT * FROM riwayat_bayar WHERE nisn = '" . $nisn . "' AND tgl_bayar = '" . $tanggal . "'"))->first();
+    public function detail($nisn){
+        $pembayaran = Pembayaran::with('petugas')->where('nisn', $nisn)->get();
+        $siswa = collect(DB::select("SELECT * FROM riwayat_pembayaran WHERE nisn = '" . $nisn . "'"))->first();
+        $bulan = ['Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni'];
 
-        $pdf = Pdf::loadView('petugas.pembayaran.cetak', compact('pembayaran', 'detail_pembayaran'))->setPaper('a5', 'portrait');
+        return view('petugas.pembayaran.detail', compact('pembayaran', 'siswa', 'bulan'));
+    }
+
+    public function cetak($id)
+    {
+        $pembayaran = Pembayaran::with('siswa')->with('spp')->with('petugas')->find($id);
+
+        $pdf = Pdf::loadView('petugas.pembayaran.cetak', compact('pembayaran'))->setPaper('a5', 'portrait');
         return $pdf->stream('invoice.pdf');
     }
 }

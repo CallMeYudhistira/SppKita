@@ -119,7 +119,7 @@
 <body class="d-flex flex-column min-vh-100">
     <div class="container py-5 d-flex justify-content-center" style="display: flex; justify-content: center;">
         <div class="card shadow p-4"
-            style="margin-top: 5vh; width: 22rem; font-family: 'Courier New', monospace; background-color: #fff; border: 1px solid #dee2e6; border-radius: 8px; padding: 24px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+            style="margin-top: 5vh; width: 25rem; font-family: 'Courier New', monospace; background-color: #fff; border: 1px solid #dee2e6; border-radius: 8px; padding: 24px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
             <div class="text-center mb-1" style="text-align: center; margin-bottom: 4px;">
                 <h4 class="fw-bold text-uppercase" style="font-weight: bold; text-transform: uppercase; margin: 0;">
                     Pembayaran SPP</h4>
@@ -132,9 +132,9 @@
             <hr style="border: 0; border-top: 1px solid #dee2e6; margin: 12px 0;">
 
             <div class="small" style="font-size: 13px;">
-                <p><strong>Nis:</strong> {{ $pembayaran->nis }}</p>
-                <p><strong>Nama:</strong> {{ $pembayaran->nama }}</p>
-                <p><strong>Kelas:</strong> {{ $pembayaran->nama_kelas }} {{ $pembayaran->kompetensi_keahlian }}</p>
+                <p><strong>Nis:</strong> {{ $pembayaran->siswa->nis }}</p>
+                <p><strong>Nama:</strong> {{ $pembayaran->siswa->nama }}</p>
+                <p><strong>Kelas:</strong> {{ $pembayaran->siswa->kelas->nama_kelas }} {{ $pembayaran->siswa->kelas->kompetensi_keahlian }}</p>
             </div>
 
             <hr style="border: 0; border-top: 1px solid #dee2e6; margin: 12px 0;">
@@ -149,29 +149,18 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($detail_pembayaran as $p)
-                        <tr>
-                            <td>{{ $p->tahun_dibayar }}</td>
-                            <td>{{ $p->bulan_dibayar }}</td>
-                            <td>{{ 'Rp ' . number_format($p->jumlah_bayar, '0', ',', '.') }}</td>
-                        </tr>
-                    @endforeach
+                    <tr>
+                        <td>{{ $pembayaran->tahun_dibayar }}</td>
+                        <td>{{ $pembayaran->bulan_dibayar }}</td>
+                        <td>{{ 'Rp ' . number_format($pembayaran->jumlah_bayar, '0', ',', '.') }}</td>
+                    </tr>
                 </tbody>
             </table>
 
             <hr style="border: 0; border-top: 1px solid #dee2e6; margin: 12px 0;">
 
-            <table class="table table-borderless small mb-0"
-                style="width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 0;">
-                <tr>
-                    <td>Total</td>
-                    <td class="text-end" style="text-align: right;">{{ 'Rp ' . number_format($pembayaran->total_bayar, '0', ',', '.') }}</td>
-                </tr>
-            </table>
-
-            <hr style="border: 0; border-top: 1px solid #dee2e6; margin: 12px 0;">
-
-            <p class="small text-end mb-1" style="font-size: 13px; text-align: right; margin-bottom: 4px;">Petugas: {{ $pembayaran->nama_petugas }}</p>
+            <p class="small text-end mb-1" style="font-size: 13px; text-align: right; margin-bottom: 4px;">Petugas:
+                {{ $pembayaran->petugas->nama_petugas }}</p>
         </div>
     </div>
 </body>

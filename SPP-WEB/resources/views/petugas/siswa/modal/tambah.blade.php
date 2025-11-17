@@ -42,7 +42,7 @@
                             <select name="id_spp" class="form-select">
                                 <option selected disabled>-- Pilih SPP --</option>
                                 @foreach ($spp as $_spp)
-                                <option value="{{ $_spp->id_spp }}">{{ 'Rp ' . number_format($_spp->nominal, '0', ',', '.') }}</option>
+                                <option value="{{ $_spp->id_spp }}">{{ 'Rp ' . number_format($_spp->nominal, '0', ',', '.') }} - {{ $_spp->tahun }}</option>
                                 @endforeach
                             </select>
                         </div>
