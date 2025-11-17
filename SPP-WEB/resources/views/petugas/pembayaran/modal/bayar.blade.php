@@ -35,9 +35,9 @@
                         <label class="col-form-label">Bulan Yang Akan Bayar</label>
                         <select name="bulan_dibayar[]" class="form-select mb-1" id="bulanSelect{{ $s->nisn }}" multiple>
                             @foreach ($bulan as $b)
-                                @if (!in_array($b['bulan'], $paidMonths))
-                                    <option value="{{ $b['bulan'] }}">
-                                        {{ $b['bulan'] }}
+                                @if (!in_array($b, $paidMonths))
+                                    <option value="{{ $b }}">
+                                        {{ $b }}
                                     </option>
                                 @endif
                             @endforeach

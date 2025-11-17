@@ -8,8 +8,21 @@
     <div class="d-flex">
         <a href="/pembayaran/riwayat" class="btn btn-secondary my-2">Riwayat Pembayaran</a>
         <form class="d-flex ms-auto my-2" action="/pembayaran/cari" method="get">
-            <input class="form-control me-2" type="search" name="keyword" placeholder="Cari nama siswa 🔍" autocomplete="off"
-                @isset($keyword) value="{{ $keyword }}" @endisset />
+            <div class="mx-2">
+                <select name="id_kelas" class="form-select" style="width: 350px;" id="id_kelas">
+                    <option selected value="semua">Semua Kelas</option>
+                    @foreach ($kelas as $k)
+                        @php
+                            $nama_kelas = $k->nama_kelas . ' ' . $k->kompetensi_keahlian;
+                        @endphp
+                        <option value="{{ $k->id_kelas }}"
+                            @isset($id_kelas) {{ $id_kelas == $k->id_kelas ? 'selected' : '' }} @endisset>
+                            {{ $nama_kelas }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <input class="form-control me-2" type="search" name="keyword" placeholder="Cari nama siswa 🔍"
+                autocomplete="off" @isset($keyword) value="{{ $keyword }}" @endisset />
             <button class="btn btn-outline-primary" type="submit">Cari</button>
         </form>
     </div>
@@ -20,9 +33,10 @@
                 <th scope="col">#</th>
                 <th scope="col">Nama</th>
                 <th scope="col">NIS</th>
-                <th scope="col">Kelas</th>
-                <th scope="col">SPP</th>
-                <th scope="col" class="text-center" style="width: 10%;">Aksi</th>
+                @foreach ($bulan as $b)
+                    <th scope="col">{{ $b }}</th>
+                @endforeach
+                <th scope="col" class="text-center">Aksi</th>
             </tr>
         </thead>
         <tbody>
@@ -31,14 +45,18 @@
                     <th scope="row">{{ $i + 1 }}</th>
                     <td>{{ $s->nama }}</td>
                     <td>{{ $s->nis }}</td>
-                    <td>{{ $s->kelas->nama_kelas }} {{ $s->kelas->kompetensi_keahlian }}</td>
-                    <td>{{ 'Rp ' . number_format($s->spp->nominal, '0', ',', '.') }}</td>
+                    @foreach ($bulan as $i => $b)
+                        @if (!$pembayaran->where('nisn', $s->nisn)->where('bulan_dibayar', $b)->isEmpty())
+                            <td class="text-center">✅</td>
+                        @else
+                            <td class="text-center">❌</td>
+                        @endif
+                    @endforeach
                     @php
                         $paidMonths = $pembayaran->where('nisn', $s->nisn)->pluck('bulan_dibayar')->toArray();
                         $sudahLunas = count($paidMonths) >= 12;
                     @endphp
                     <td class="text-center">
-
                         @if ($sudahLunas)
                             <span class="btn">Lunas ✔</span>
                         @else
@@ -61,4 +79,12 @@
             alert('{{ $pesan }}');
         </script>
     @endif
+
+    <script>
+        const filter = document.getElementById('id_kelas');
+
+        filter.addEventListener('change', function() {
+            this.form.submit();
+        });
+    </script>
 @endsection

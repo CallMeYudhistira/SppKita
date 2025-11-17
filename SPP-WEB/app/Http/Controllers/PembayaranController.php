@@ -17,119 +17,25 @@ class PembayaranController extends Controller
     {
         $siswa = Siswa::with('kelas')->with('spp')->get();
         $pembayaran = Pembayaran::all();
-        $bulan = [
-            0 => [
-                'no' => '07',
-                'bulan' => 'Juli',
-            ],
-            1 => [
-                'no' => '08',
-                'bulan' => 'Agustus',
-            ],
-            2 => [
-                'no' => '09',
-                'bulan' => 'September',
-            ],
-            3 => [
-                'no' => '10',
-                'bulan' => 'Oktober',
-            ],
-            4 => [
-                'no' => '11',
-                'bulan' => 'November',
-            ],
-            5 => [
-                'no' => '12',
-                'bulan' => 'Desember',
-            ],
-            6 => [
-                'no' => '01',
-                'bulan' => 'Januari',
-            ],
-            7 => [
-                'no' => '02',
-                'bulan' => 'Februari',
-            ],
-            8 => [
-                'no' => '03',
-                'bulan' => 'Maret',
-            ],
-            9 => [
-                'no' => '04',
-                'bulan' => 'April',
-            ],
-            10 => [
-                'no' => '05',
-                'bulan' => 'Mei',
-            ],
-            11 => [
-                'no' => '06',
-                'bulan' => 'Juni',
-            ],
-        ];
+        $kelas = Kelas::all();
+        $bulan = ['Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni'];
 
-        return view('petugas.pembayaran.index', compact('siswa', 'bulan', 'pembayaran'));
+        return view('petugas.pembayaran.index', compact('siswa', 'bulan', 'pembayaran', 'kelas'));
     }
 
     public function cari(Request $request)
     {
         $keyword = $request->keyword;
-        if (!$keyword) {
-            return redirect('/pembayaran');
-        }
+        $id_kelas = $request->id_kelas;
         $siswa = Siswa::with('kelas')->with('spp')->where('nama', 'LIKE', '%' . $keyword . '%')->get();
+        if($id_kelas != "semua"){
+            $siswa = $siswa->where('id_kelas', $id_kelas);
+        }
         $pembayaran = Pembayaran::all();
-        $bulan = [
-            0 => [
-                'no' => '07',
-                'bulan' => 'Juli',
-            ],
-            1 => [
-                'no' => '08',
-                'bulan' => 'Agustus',
-            ],
-            2 => [
-                'no' => '09',
-                'bulan' => 'September',
-            ],
-            3 => [
-                'no' => '10',
-                'bulan' => 'Oktober',
-            ],
-            4 => [
-                'no' => '11',
-                'bulan' => 'November',
-            ],
-            5 => [
-                'no' => '12',
-                'bulan' => 'Desember',
-            ],
-            6 => [
-                'no' => '01',
-                'bulan' => 'Januari',
-            ],
-            7 => [
-                'no' => '02',
-                'bulan' => 'Februari',
-            ],
-            8 => [
-                'no' => '03',
-                'bulan' => 'Maret',
-            ],
-            9 => [
-                'no' => '04',
-                'bulan' => 'April',
-            ],
-            10 => [
-                'no' => '05',
-                'bulan' => 'Mei',
-            ],
-            11 => [
-                'no' => '06',
-                'bulan' => 'Juni',
-            ],
-        ];
-        return view('petugas.pembayaran.index', compact('siswa', 'keyword', 'bulan', 'pembayaran'));
+        $kelas = Kelas::all();
+        $bulan = ['Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni'];
+
+        return view('petugas.pembayaran.index', compact('siswa', 'keyword', 'bulan', 'pembayaran', 'kelas', 'id_kelas'));
     }
 
     public function bayar(Request $request, $nisn)
@@ -147,20 +53,10 @@ class PembayaranController extends Controller
         $id_spp = $siswa->id_spp;
         $nominal_spp = $siswa->spp->nominal;
 
-        $bulanAwal = ['Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-        $bulanAkhir = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni'];
-
         foreach ($request->bulan_dibayar as $bulan) {
-
-            if (in_array($bulan, $bulanAwal)) {
-                $tahun_dibayar = $siswa->spp->tahun;
-            } else {
-                $tahun_dibayar = $siswa->spp->tahun + 1;
-            }
-
             $cek = Pembayaran::where('nisn', $siswa->nisn)
                 ->where('bulan_dibayar', $bulan)
-                ->where('tahun_dibayar', $tahun_dibayar)
+                ->where('tahun_dibayar', $siswa->spp->tahun)
                 ->exists();
 
             if ($cek) {
@@ -172,7 +68,7 @@ class PembayaranController extends Controller
                 'nisn' => $siswa->nisn,
                 'tgl_bayar' => now(),
                 'bulan_dibayar' => $bulan,
-                'tahun_dibayar' => $tahun_dibayar,
+                'tahun_dibayar' => $siswa->spp->tahun,
                 'id_spp' => $id_spp,
                 'jumlah_bayar' => $nominal_spp,
             ]);

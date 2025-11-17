@@ -19,7 +19,6 @@
             <button type="submit" class="btn btn-warning m-2">Cetak Excel</button>
         </form>
         <form action="/laporan/filter" method="get" class="d-flex align-items-center">
-
             {{-- Dropdown Filter --}}
             <div class="mx-2">
                 <select name="filter" class="form-select my-2" style="width: 250px;" id="filter">

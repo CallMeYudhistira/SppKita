@@ -15,7 +15,13 @@
                     </div>
                     <div class="mb-3">
                         <label class="col-form-label">Kompetensi Keahlian</label>
-                        <input type="text" class="form-control" name="kompetensi_keahlian" value="{{ $k->kompetensi_keahlian }}" autocomplete="off">
+                        <select name="kompetensi_keahlian" class="form-select">
+                            <option disabled>-- Pilih Kompetensi Keahlian --</option>
+                            <option value="Rekayasa Perangkat Lunak" {{ $k->kompetensi_keahlian == "Rekayasa Perangkat Lunak" ? 'selected' : '' }}>Rekayasa Perangkat Lunak</option>
+                            <option value="Teknik Elektronika Industri" {{ $k->kompetensi_keahlian == "Teknik Elektronika Industri" ? 'selected' : '' }}>Teknik Elektronika Industri</option>
+                            <option value="Teknik Komputer dan Jaringan" {{ $k->kompetensi_keahlian == "Teknik Komputer dan Jaringan" ? 'selected' : '' }}>Teknik Komputer dan Jaringan</option>
+                            <option value="Teknik Pendingin dan Tata Udara" {{ $k->kompetensi_keahlian == "Teknik Pendingin dan Tata Udara" ? 'selected' : '' }}>Teknik Pendingin dan Tata Udara</option>
+                        </select>
                     </div>
                 </div>
                 <div class="modal-footer">

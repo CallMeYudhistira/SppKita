@@ -14,7 +14,13 @@
                     </div>
                     <div class="mb-3">
                         <label class="col-form-label">Kompetensi Keahlian</label>
-                        <input type="text" class="form-control" name="kompetensi_keahlian" autocomplete="off">
+                        <select name="kompetensi_keahlian" class="form-select">
+                            <option selected disabled>-- Pilih Kompetensi Keahlian --</option>
+                            <option value="Rekayasa Perangkat Lunak">Rekayasa Perangkat Lunak</option>
+                            <option value="Teknik Elektronika Industri">Teknik Elektronika Industri</option>
+                            <option value="Teknik Komputer dan Jaringan">Teknik Komputer dan Jaringan</option>
+                            <option value="Teknik Pendingin dan Tata Udara">Teknik Pendingin dan Tata Udara</option>
+                        </select>
                     </div>
                 </div>
                 <div class="modal-footer">
