@@ -1,54 +1,110 @@
 @extends('layouts.app')
-@section('title', 'Riwayat Bayar | SPP')
+@section('title', 'Detail Bayar | SPP')
 @section('navbar')
     @include('layouts.navbar-siswa')
 @endsection
 @section('content')
-    <h2>Riwayat Pembayaran SPP</h2>
-    <div class="d-flex">
-        <form class="d-flex my-2" action="/siswa/pembayaran/cari" method="get">
-            <input class="form-control me-2" type="date" name="tanggal" autocomplete="off" @isset($tanggal) value="{{ $tanggal }}" @endisset />
-            <button class="btn btn-outline-primary" type="submit">Cari</button>
-        </form>
+    <h2>Riwayat Pembayaran</h2>
+    <div style="margin: auto; margin-top: 3vh; margin-bottom: 6vh;">
+        <div class="row align-items-center m-2">
+            <div class="col-2">
+                NISN
+            </div>
+            <div class="col-4">
+                : {{ $siswa->nisn }}
+            </div>
+            <div class="col-2">
+                NIS
+            </div>
+            <div class="col-4">
+                : {{ $siswa->nis }}
+            </div>
+        </div>
+        <div class="row align-items-center m-2">
+            <div class="col-2">
+                Nama
+            </div>
+            <div class="col-4">
+                : {{ $siswa->nama }}
+            </div>
+            <div class="col-2">
+                Kelas
+            </div>
+            <div class="col-4">
+                : {{ $siswa->nama_kelas }} {{ $siswa->kompetensi_keahlian }}
+            </div>
+        </div>
+        <div class="row align-items-center m-2">
+            <div class="col-2">
+                Nominal SPP
+            </div>
+            <div class="col-4">
+                : {{ 'Rp ' . number_format($siswa->nominal, '0', ',', '.') }} - {{ $siswa->tahun }}
+            </div>
+            <div class="col-2">
+                Bulan Dibayar
+            </div>
+            <div class="col-4">
+                : {{ $siswa->bulan_dibayar }}
+            </div>
+        </div>
+        <div class="row align-items-center m-2">
+            <div class="col-2">
+                Total Dibayar
+            </div>
+            <div class="col-4">
+                : {{ 'Rp ' . number_format($siswa->total_bayar, '0', ',', '.') }}
+            </div>
+            <div class="col-2">
+                Tunggakan
+            </div>
+            <div class="col-4">
+                : {{ 'Rp ' . number_format(($siswa->total_bayar - $siswa->nominal * 12) * -1, '0', ',', '.') }}
+            </div>
+        </div>
     </div>
     <div class="my-3">
         <table class="table border-top mt-4">
             <thead>
                 <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Nama</th>
-                    <th scope="col">NIS</th>
-                    <th scope="col">Kelas</th>
+                    <th scope="col">Bulan Dibayar</th>
                     <th scope="col">Tanggal Bayar</th>
-                    <th scope="col">Tahun Bayar</th>
-                    <th scope="col">Jumlah Bayar</th>
                     <th scope="col">Nama Petugas</th>
                     <th scope="col" class="text-center" style="width: 10%;">Aksi</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($pembayaran as $i => $p)
-                    <tr>
-                        <th scope="row">{{ $i + 1 }}</th>
-                        <td>{{ $p->nama }}</td>
-                        <td>{{ $p->nis }}</td>
-                        <td>{{ $p->nama_kelas }} {{ $p->kompetensi_keahlian }}</td>
-                        <td>{{ \Carbon\Carbon::parse($p->tgl_bayar)->isoFormat('dddd, D MMMM Y') }}</td>
-                        <td>{{ $p->tahun_dibayar }}</td>
-                        <td>{{ 'Rp ' . number_format($p->total_bayar, '0', ',', '.') }}</td>
-                        <td>{{ $p->nama_petugas }}</td>
-                        <td class="text-center">
-                            <a href="/siswa/pembayaran/cetak/{{ $p->tgl_bayar }}/{{ $p->tahun_dibayar }}"
-                                class="btn btn-success">Cetak</a>
-                        </td>
-                    </tr>
+                @foreach ($bulan as $b)
+                    @php
+                        $p = $pembayaran->firstWhere('bulan_dibayar', $b);
+                    @endphp
+
+                    @if ($p)
+                        <tr>
+                            <td>{{ $b }}</td>
+                            <td>{{ \Carbon\Carbon::parse($p->tgl_bayar)->isoFormat('dddd, DD MMMM Y') }}</td>
+                            <td>{{ $p->petugas->nama_petugas }}</td>
+                            <td class="text-center">
+                                <a href="/siswa/pembayaran/cetak/{{ $p->id_pembayaran }}" class="btn btn-success">Cetak</a>
+                            </td>
+                        </tr>
+                    @else
+                        <tr>
+                            <td>{{ $b }}</td>
+                            <td colspan="3">
+                                <span class="btn">Belum Bayar ❌</span>
+                            </td>
+                        </tr>
+                    @endif
                 @endforeach
+
             </tbody>
         </table>
+    </div>
 
-        @if ($pesan = Session::get('success'))
-            <script>
-                alert('{{ $pesan }}');
-            </script>
-        @endif
-    @endsection
+    @if ($pesan = Session::get('success'))
+        <script>
+            alert('{{ $pesan }}');
+        </script>
+    @endif
+@endsection

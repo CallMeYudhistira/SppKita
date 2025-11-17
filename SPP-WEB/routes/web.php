@@ -86,8 +86,7 @@ Route::middleware(['petugas'])->group(function () {
 Route::middleware(['siswa'])->group(function () {
     Route::get('/siswa/beranda', [HomeController::class, 'siswa']);
     Route::prefix('/siswa/pembayaran')->group(function () {
-        Route::get('/', [SiswaController::class, 'riwayat']);
-        Route::get('/cari', [SiswaController::class, 'cariRiwayat']);
-        Route::get('/cetak/{tanggal}/{tahun}', [SiswaController::class, 'cetak']);
+        Route::get('/detail/{nis}', [SiswaController::class, 'detail']);
+        Route::get('/cetak/{id}', [SiswaController::class, 'cetak']);
     });
 });

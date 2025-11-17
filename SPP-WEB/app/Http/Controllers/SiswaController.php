@@ -90,31 +90,19 @@ class SiswaController extends Controller
         return redirect()->back()->with('success', 'Data berhasil dihapus!');
     }
 
-    public function riwayat()
-    {
-        $pembayaran = collect(DB::select("SELECT * FROM riwayat_bayar WHERE nisn = '" . Auth::guard('siswa')->user()->nisn . "' ORDER BY tgl_bayar DESC"));
+    public function detail($nisn){
+        $pembayaran = Pembayaran::with('petugas')->where('nisn', $nisn)->get();
+        $siswa = collect(DB::select("SELECT * FROM riwayat_pembayaran WHERE nisn = '" . $nisn . "'"))->first();
+        $bulan = ['Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni'];
 
-        return view('siswa.pembayaran.riwayat', compact('pembayaran'));
+        return view('siswa.pembayaran.riwayat', compact('pembayaran', 'siswa', 'bulan'));
     }
 
-    public function cariRiwayat(Request $request)
+    public function cetak($id)
     {
-        $tanggal = $request->tanggal;
-        if (!$tanggal) {
-            return redirect('/pembayaran');
-        }
+        $pembayaran = Pembayaran::with('siswa')->with('spp')->with('petugas')->find($id);
 
-        $pembayaran = collect(DB::select("SELECT * FROM riwayat_bayar WHERE tgl_bayar LIKE '%" . $tanggal . "%' ORDER BY tgl_bayar DESC"));
-        return view('siswa.pembayaran.riwayat', compact('pembayaran', 'tanggal'));
-    }
-
-    public function cetak($tanggal, $tahun)
-    {
-        $nisn = Auth::guard('siswa')->user()->nisn;
-        $detail_pembayaran = Pembayaran::with('siswa')->where('nisn', $nisn)->where('tgl_bayar', $tanggal)->where('tahun_dibayar', $tahun)->get();
-        $pembayaran = collect(DB::select("SELECT * FROM riwayat_bayar WHERE nisn = '" . $nisn . "' AND tgl_bayar = '" . $tanggal . "'"))->first();
-
-        $pdf = Pdf::loadView('siswa.pembayaran.cetak', compact('pembayaran', 'detail_pembayaran'))->setPaper('a5', 'portrait');
+        $pdf = Pdf::loadView('siswa.pembayaran.cetak', compact('pembayaran'))->setPaper('a5', 'portrait');
         return $pdf->stream('invoice.pdf');
     }
 }

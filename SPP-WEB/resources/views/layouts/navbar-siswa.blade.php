@@ -3,7 +3,7 @@
         <a class="nav-link active" href="/siswa/beranda">🏠 Beranda</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="/siswa/pembayaran">🗒️ Riwayat Pembayaran</a>
+        <a class="nav-link" href="/siswa/pembayaran/detail/{{ Auth::guard('siswa')->user()->nisn }}">🗒️ Riwayat Pembayaran</a>
     </li>
     <li class="nav-item">
         <form action="/logout" method="POST">
