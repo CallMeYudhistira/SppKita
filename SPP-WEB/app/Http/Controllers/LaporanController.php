@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kelas;
+use App\Models\Pembayaran;
+use App\Models\Siswa;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -11,157 +14,42 @@ class LaporanController extends Controller
 {
     public function index()
     {
-        $pembayaran = collect(DB::select('SELECT * FROM riwayat_bayar'));
+        $siswa = Siswa::with('kelas')->with('spp')->get();
+        $pembayaran = Pembayaran::all();
+        $kelas = Kelas::all();
+        $bulan = ['Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni'];
 
-        return view('petugas.laporan.index', compact('pembayaran'));
+        return view('petugas.laporan.index', compact('siswa', 'bulan', 'pembayaran', 'kelas'));
     }
 
-    public function filter(Request $request)
+    public function cari(Request $request)
     {
-        $filter = $request->filter ?? 'all';
-
-        $query = DB::table('riwayat_bayar');
-
-        if ($filter == 'today') {
-            $query->whereDate('tgl_bayar', Carbon::today());
+        $id_kelas = $request->id_kelas;
+        $siswa = Siswa::with('kelas')->with('spp')->get();
+        if($id_kelas != "semua"){
+            $siswa = $siswa->where('id_kelas', $id_kelas);
         }
+        $pembayaran = Pembayaran::all();
+        $kelas = Kelas::all();
+        $bulan = ['Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni'];
 
-        if ($filter == 'month') {
-            $query->whereMonth('tgl_bayar', Carbon::now()->month)
-                ->whereYear('tgl_bayar', Carbon::now()->year);
-        }
-
-        if ($filter == 'year') {
-            $query->whereYear('tgl_bayar', Carbon::now()->year);
-        }
-
-        if ($filter == 'manual') {
-            $first = $request->first;
-            $second = $request->second;
-
-            if ($first && $second) {
-                $query->whereBetween('tgl_bayar', [$first, $second]);
-            } else {
-                return redirect('/laporan');
-            }
-        }
-
-        $pembayaran = $query->get();
-
-        return view('petugas.laporan.index', [
-            'pembayaran' => $pembayaran,
-            'first' => $request->first,
-            'second' => $request->second,
-            'filter' => $filter,
-        ]);
+        return view('petugas.laporan.index', compact('siswa', 'bulan', 'pembayaran', 'kelas', 'id_kelas'));
     }
 
-    public function cetakExcel(Request $request)
-    {
-        $fileName = 'rekap_pembayaran_' . date('Y-m-d_H-i-s') . '.xls';
-        $filter = $request->filter ?? 'all';
+    public function cetak(Request $request) {
+        $id_kelas = $request->id_kelas;
 
-        $query = DB::table('laporan');
-
-        if ($filter == 'today') {
-            $query->whereDate('tgl_bayar', Carbon::today());
+        if($id_kelas == ""){
+            return redirect()->back()->with('error', 'Pilih Kelas Terlebih Dahulu!');
         }
 
-        if ($filter == 'month') {
-            $query->whereMonth('tgl_bayar', Carbon::now()->month)
-                ->whereYear('tgl_bayar', Carbon::now()->year);
-        }
+        $siswa = Siswa::with('kelas')->with('spp')->where('id_kelas', $id_kelas)->get();
+        $pembayaran = Pembayaran::all();
+        $kelas = Kelas::find($id_kelas);
+        $bulan = ['Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni'];
+        $totalKelas = 0;
 
-        if ($filter == 'year') {
-            $query->whereYear('tgl_bayar', Carbon::now()->year);
-        }
-
-        if ($filter == 'manual') {
-            $first = $request->first;
-            $second = $request->second;
-
-            if ($first && $second) {
-                $query->whereBetween('tgl_bayar', [$first, $second]);
-            }
-        }
-
-        $pembayaran = $query->orderBy('tgl_bayar', 'DESC')->get();
-
-        $headers = [
-            'Content-Type' => 'application/vnd.ms-excel',
-            'Content-Disposition' => "attachment; filename=\"$fileName\"",
-        ];
-
-        $callback = function () use ($pembayaran) {
-            echo "<table border='1'>";
-            echo "<tr>
-                <th>Tanggal Bayar</th>
-                <th>NIS</th>
-                <th>Nama</th>
-                <th>Kelas</th>
-                <th>Tahun Dibayar</th>
-                <th>Bulan Dibayar</th>
-                <th>Total Bayar</th>
-                <th>Nama Petugas</th>
-            </tr>";
-            foreach ($pembayaran as $p) {
-                echo "<tr>
-                    <td>" . Carbon::parse($p->tgl_bayar)->isoFormat('DD/MMM/Y') . "</td>
-                    <td>{$p->nis}</td>
-                    <td>{$p->nama}</td>
-                    <td>{$p->nama_kelas} {$p->kompetensi_keahlian}</td>
-                    <td>{$p->tahun_dibayar}</td>
-                    <td>{$p->bulan_dibayar}</td>
-                    <td>{$p->total_bayar}</td>
-                    <td>{$p->nama_petugas}</td>
-                </tr>";
-            }
-            echo "</table>";
-        };
-
-        return response()->stream($callback, 200, $headers);
-    }
-
-    public function cetakPDF(Request $request)
-    {
-        $filter = $request->filter ?? 'all';
-
-        $query = DB::table('laporan');
-
-        if ($filter == 'today') {
-            $filter = "Hari ini";
-            $query->whereDate('tgl_bayar', Carbon::today());
-        }
-
-        if ($filter == 'month') {
-            $filter = "Bulan ini";
-            $query->whereMonth('tgl_bayar', Carbon::now()->month)
-                ->whereYear('tgl_bayar', Carbon::now()->year);
-        }
-
-        if ($filter == 'year') {
-            $filter = "Tahun ini";
-            $query->whereYear('tgl_bayar', Carbon::now()->year);
-        }
-
-        $first = '-';
-        $second = '-';
-        if ($filter == 'manual') {
-            $first = $request->first;
-            $second = $request->second;
-
-            if ($first != '-' && $second != '-') {
-                $query->whereBetween('tgl_bayar', [$first, $second]);
-            }
-        }
-
-        if($filter == 'all'){
-            $filter = "Semua";
-        }
-
-        $pembayaran = $query->orderBy('tgl_bayar', 'DESC')->get();
-
-        $pdf = Pdf::loadView('petugas.laporan.cetak', compact('pembayaran', 'filter', 'first', 'second'))->setPaper('a4', 'landscape');
-        return $pdf->stream('rekap_pembayaran_' . date('Y-m-d_H-i-s') . '.pdf');
+        $pdf = Pdf::loadView('petugas.laporan.cetak', compact('siswa', 'bulan', 'pembayaran', 'kelas', 'totalKelas'))->setPaper('a4', 'landscape');
+        return $pdf->stream('invoice.pdf');
     }
 }

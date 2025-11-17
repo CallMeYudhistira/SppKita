@@ -15,14 +15,6 @@ class HomeController extends Controller
         $totalSiswa = Siswa::count();
         $totalTransaksi = Pembayaran::count();
         $totalPembayaranHariIni = Pembayaran::whereDate('tgl_bayar', now()->toDateString())->sum('jumlah_bayar');
-        $totalTunggakan = DB::table('spp')
-            ->leftJoin('siswa', 'spp.id_spp', '=', 'siswa.id_spp')
-            ->leftJoin('pembayaran', function ($join) {
-                $join->on('pembayaran.nisn', '=', 'siswa.nisn');
-            })
-            ->select('spp.tahun', 'spp.nominal')
-            ->get()
-            ->sum('nominal') - Pembayaran::sum('jumlah_bayar');
 
         $riwayat = Pembayaran::latest()->take(5)->get();
 
@@ -30,7 +22,6 @@ class HomeController extends Controller
             'totalSiswa',
             'totalTransaksi',
             'totalPembayaranHariIni',
-            'totalTunggakan',
             'riwayat'
         ));
     }

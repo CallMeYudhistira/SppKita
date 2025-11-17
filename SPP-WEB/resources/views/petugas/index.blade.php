@@ -11,31 +11,24 @@
 
         <div class="row">
 
-            <div class="col-md-3 mb-3">
+            <div class="col-md-4 mb-3">
                 <div class="card shadow-sm p-3">
                     <h6>Total Siswa</h6>
                     <h3>{{ $totalSiswa }}</h3>
                 </div>
             </div>
 
-            <div class="col-md-3 mb-3">
+            <div class="col-md-4 mb-3">
                 <div class="card shadow-sm p-3">
                     <h6>Total Transaksi</h6>
                     <h3>{{ $totalTransaksi }}</h3>
                 </div>
             </div>
 
-            <div class="col-md-3 mb-3">
+            <div class="col-md-4 mb-3">
                 <div class="card shadow-sm p-3">
                     <h6>Pembayaran Hari Ini</h6>
                     <h3>Rp {{ number_format($totalPembayaranHariIni) }}</h3>
-                </div>
-            </div>
-
-            <div class="col-md-3 mb-3">
-                <div class="card shadow-sm p-3">
-                    <h6>Total Tunggakan</h6>
-                    <h3>Rp {{ number_format($totalTunggakan) }}</h3>
                 </div>
             </div>
 

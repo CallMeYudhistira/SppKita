@@ -50,6 +50,7 @@
         th {
             background-color: #f0f0f0;
             font-weight: bold;
+            text-align: left;
         }
 
         .no-border td {
@@ -78,49 +79,73 @@
 </head>
 
 <body>
-    <h2 class="center">LAPORAN PEMBAYARAN</h2>
-    <br>
-    <br>
-    <table class="header">
-        <tr>
-            <td class="header-title">Periode :
-            @if ($filter)
-            {{ $filter }}
-            @else
-            {{ $first }} - {{ $second }}
-            @endif
-            </td>
-        </tr>
-    </table>
+    <h2 class="center">LAPORAN PEMBAYARAN SPP</h2>
+    <h3 class="center">Kelas {{ $kelas->nama_kelas }} {{ $kelas->kompetensi_keahlian }}</h3>
     <br>
     <!-- Tabel Data Penjualan -->
     <table>
         <thead>
             <tr>
-                <th style="width: 18%;">Tanggal Bayar</th>
-                <th>NIS</th>
-                <th>Nama</th>
-                <th>Kelas</th>
-                <th>Tahun Dibayar</th>
-                <th>Bulan Dibayar</th>
-                <th>Total Bayar</th>
-                <th>Nama Petugas</th>
+                <th scope="col">NIS</th>
+                <th scope="col">Nama</th>
+                @foreach ($bulan as $b)
+                    <th scope="col">{{ $b }}</th>
+                @endforeach
+                <th scope="col">Total</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($pembayaran as $p)
-            <tr>
-                <td>{{ \Carbon\Carbon::parse($p->tgl_bayar)->translatedFormat('d-M-Y') }}</td>
-                <td>{{ $p->nis }}</td>
-                <td>{{ $p->nama }}</td>
-                <td>{{ $p->nama_kelas }} {{ $p->kompetensi_keahlian }}</td>
-                <td>{{ $p->tahun_dibayar }}</td>
-                <td>{{ $p->bulan_dibayar }}</td>
-                <td>{{ number_format($p->total_bayar, 0, ',', '.') }}</td>
-                <td>{{ $p->nama_petugas }}</td>
-            </tr>
+            @php $totalKelas = 0; @endphp
+
+            @foreach ($siswa as $s)
+                @php
+                    // total per siswa
+                    $totalSiswa = 0;
+                @endphp
+
+                <tr>
+                    <td>{{ $s->nis }}</td>
+                    <td>{{ $s->nama }}</td>
+
+                    @foreach ($bulan as $b)
+                        @php
+                            $bayar = $pembayaran->where('nisn', $s->nisn)->where('bulan_dibayar', $b)->first();
+                        @endphp
+
+                        @if ($bayar)
+                            <td>
+                                {{ 'Rp ' . number_format($s->spp->nominal, 0, ',', '.') }}
+                            </td>
+
+                            @php
+                                $totalSiswa += $s->spp->nominal;
+                            @endphp
+                        @else
+                            <td>Rp 0</td>
+                        @endif
+                    @endforeach
+
+                    {{-- Tampilkan total per siswa --}}
+                    <td class="bold">
+                        {{ 'Rp ' . number_format($totalSiswa, 0, ',', '.') }}
+                    </td>
+                </tr>
+
+                @php
+                    // Tambahkan ke total kelas
+                    $totalKelas += $totalSiswa;
+                @endphp
             @endforeach
+
+            {{-- TOTAL KELAS --}}
+            <tr class="bold">
+                <td colspan="14"></td>
+                <td>
+                    {{ 'Rp ' . number_format($totalKelas, 0, ',', '.') }}
+                </td>
+            </tr>
         </tbody>
+
     </table>
     <br>
     <div class="footer center">

@@ -6,93 +6,65 @@
 @section('content')
     <h2>Laporan Pembayaran SPP</h2>
     <div class="d-flex">
-        <form action="/laporan/cetak/pdf" method="get">
-            <input type="hidden" name="filter" @isset($filter) value="{{ $filter }}" @endisset>
-            <input type="hidden" name="first" @isset($first) value="{{ $first }}" @endisset>
-            <input type="hidden" name="second" @isset($second) value="{{ $second }}" @endisset>
-            <button type="submit" class="btn btn-secondary mr-2 my-2">Cetak PDF</button>
+        <form action="/laporan/cetak" method="get" class="my-2">
+            <input type="hidden" name="id_kelas" @isset($id_kelas) value="{{ $id_kelas }}" @endisset>
+            <button type="submit" class="btn btn-success">Cetak</button>
         </form>
-        <form action="/laporan/cetak/excel" method="get">
-            <input type="hidden" name="filter" @isset($filter) value="{{ $filter }}" @endisset>
-            <input type="hidden" name="first" @isset($first) value="{{ $first }}" @endisset>
-            <input type="hidden" name="second" @isset($second) value="{{ $second }}" @endisset>
-            <button type="submit" class="btn btn-warning m-2">Cetak Excel</button>
-        </form>
-        <form action="/laporan/filter" method="get" class="d-flex align-items-center">
-            {{-- Dropdown Filter --}}
+        <form class="d-flex ms-auto my-2" action="/laporan/cari" method="get">
             <div class="mx-2">
-                <select name="filter" class="form-select my-2" style="width: 250px;" id="filter">
-                    <option value="all" {{ ($filter ?? '') == 'all' ? 'selected' : '' }}>Semua</option>
-                    <option value="today" {{ ($filter ?? '') == 'today' ? 'selected' : '' }}>Hari ini</option>
-                    <option value="month" {{ ($filter ?? '') == 'month' ? 'selected' : '' }}>Bulan ini</option>
-                    <option value="year" {{ ($filter ?? '') == 'year' ? 'selected' : '' }}>Tahun ini</option>
-                    <option value="manual"{{ ($filter ?? '') == 'manual' ? 'selected' : '' }}>Tanggal</option>
+                <select name="id_kelas" class="form-select" style="width: 350px;" id="id_kelas">
+                    <option selected value="semua">Semua Kelas</option>
+                    @foreach ($kelas as $k)
+                        @php
+                            $nama_kelas = $k->nama_kelas . ' ' . $k->kompetensi_keahlian;
+                        @endphp
+                        <option value="{{ $k->id_kelas }}"
+                            @isset($id_kelas) {{ $id_kelas == $k->id_kelas ? 'selected' : '' }} @endisset>
+                            {{ $nama_kelas }}</option>
+                    @endforeach
                 </select>
             </div>
-
-            {{-- Form Tanggal Manual --}}
-            <div id="tanggal" class="ms-auto {{ ($filter ?? '') == 'manual' ? '' : 'd-none' }}">
-                <div class="d-flex m-2 align-items-center">
-                    <input class="form-control" type="date" name="first" value="{{ $first ?? '' }}" />
-
-                    <label class="mx-2">>></label>
-
-                    <input class="form-control" type="date" name="second" value="{{ $second ?? '' }}" />
-
-                    <button class="btn btn-outline-primary mx-2" type="submit">Filter</button>
-                </div>
-            </div>
         </form>
-
     </div>
 
     <table class="table border-top mt-4">
         <thead>
             <tr>
-                <th scope="col">#</th>
-                <th scope="col">Nama</th>
                 <th scope="col">NIS</th>
-                <th scope="col">Kelas</th>
-                <th scope="col">Tanggal Bayar</th>
-                <th scope="col">Tahun Bayar</th>
-                <th scope="col">Jumlah Bayar</th>
-                <th scope="col">Nama Petugas</th>
+                <th scope="col">Nama</th>
+                @foreach ($bulan as $b)
+                    <th scope="col">{{ $b }}</th>
+                @endforeach
             </tr>
         </thead>
         <tbody>
-            @foreach ($pembayaran as $i => $p)
+            @foreach ($siswa as $s)
                 <tr>
-                    <th scope="row">{{ $i + 1 }}</th>
-                    <td>{{ $p->nama }}</td>
-                    <td>{{ $p->nis }}</td>
-                    <td>{{ $p->nama_kelas }} {{ $p->kompetensi_keahlian }}</td>
-                    <td>{{ \Carbon\Carbon::parse($p->tgl_bayar)->isoFormat('dddd, D MMMM Y') }}</td>
-                    <td>{{ $p->tahun_dibayar }}</td>
-                    <td>{{ 'Rp ' . number_format($p->total_bayar, '0', ',', '.') }}</td>
-                    <td>{{ $p->nama_petugas }}</td>
+                    <td>{{ $s->nis }}</td>
+                    <td>{{ $s->nama }}</td>
+                    @foreach ($bulan as $i => $b)
+                        @if (!$pembayaran->where('nisn', $s->nisn)->where('bulan_dibayar', $b)->isEmpty())
+                            <td class="text-center">✅</td>
+                        @else
+                            <td class="text-center">❌</td>
+                        @endif
+                    @endforeach
                 </tr>
             @endforeach
         </tbody>
     </table>
 
-    @if ($pesan = Session::get('success'))
+    @if ($pesan = Session::get('error'))
         <script>
             alert('{{ $pesan }}');
         </script>
     @endif
 
     <script>
-        const filter = document.getElementById('filter');
-        const tanggalBox = document.getElementById('tanggal');
+        const filter = document.getElementById('id_kelas');
 
         filter.addEventListener('change', function() {
-            if (this.value === 'manual') {
-                tanggalBox.classList.remove('d-none');
-            } else {
-                tanggalBox.classList.add('d-none');
-                this.form.submit(); // auto submit kecuali manual
-            }
+            this.form.submit();
         });
     </script>
-
 @endsection

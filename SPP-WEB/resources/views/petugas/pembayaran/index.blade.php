@@ -30,8 +30,8 @@
     <table class="table border-top mt-4">
         <thead>
             <tr>
-                <th scope="col">Nama</th>
                 <th scope="col">NIS</th>
+                <th scope="col">Nama</th>
                 @foreach ($bulan as $b)
                     <th scope="col">{{ $b }}</th>
                 @endforeach
@@ -41,8 +41,8 @@
         <tbody>
             @foreach ($siswa as $s)
                 <tr>
-                    <td>{{ $s->nama }}</td>
                     <td>{{ $s->nis }}</td>
+                    <td>{{ $s->nama }}</td>
                     @foreach ($bulan as $i => $b)
                         @if (!$pembayaran->where('nisn', $s->nisn)->where('bulan_dibayar', $b)->isEmpty())
                             <td class="text-center">✅</td>
