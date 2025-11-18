@@ -50,8 +50,7 @@ public class SiswaAdapter extends BaseAdapter {
         TextView tvNama = view.findViewById(R.id.tvNama);
         TextView tvKelas = view.findViewById(R.id.tvKelas);
         TextView tvNominal = view.findViewById(R.id.tvNominal);
-        TextView lunas = view.findViewById(R.id.lunas);
-        Button btnBayar = view.findViewById(R.id.btnBayar);
+        Button btnCek = view.findViewById(R.id.btnCek);
 
         tvNisn.setText(siswa.getNisn());
         tvNis.setText(siswa.getNis());
@@ -59,13 +58,12 @@ public class SiswaAdapter extends BaseAdapter {
         tvKelas.setText(siswa.getNama_kelas() + " " + siswa.getKompetensi_keahlian());
         tvNominal.setText(format.format(siswa.getNominal()));
 
-        if(siswa.getStatus_pembayaran().equals("lunas")){
-            lunas.setVisibility(View.VISIBLE);
-            btnBayar.setVisibility(View.GONE);
-        } else if(siswa.getStatus_pembayaran().equals("belum lunas")){
-            lunas.setVisibility(View.GONE);
-            btnBayar.setVisibility(View.VISIBLE);
-        }
+        btnCek.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                
+            }
+        });
 
         return view;
     }

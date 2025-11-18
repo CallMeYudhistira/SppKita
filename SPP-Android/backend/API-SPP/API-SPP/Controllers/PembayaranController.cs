@@ -15,19 +15,27 @@ namespace API_SPP.Controllers
     public class PembayaranController : ControllerBase
     {
         [HttpGet]
-        public IActionResult index()
+        public IActionResult GetPembayaran([FromQuery] string nama, [FromQuery] string kelas)
         {
-            DB.crud($"SELECT * FROM list_pembayaran");
+            string query = "SELECT * FROM list_pembayaran WHERE 1=1";
 
-            return Ok(new { siswa = JsonConvert.SerializeObject(DB.ds.Tables[0]), });
-        }
+            if (!string.IsNullOrEmpty(nama) || nama == "")
+                query += $" AND nama LIKE '%{nama}%'";
 
-        [HttpGet("{nama}")]
-        public IActionResult search(string nama)
-        {
-            DB.crud($"SELECT * FROM list_pembayaran WHERE nama LIKE '%{nama}%'");
+            if (!string.IsNullOrEmpty(kelas) || kelas == "")
+                query += $" AND id_kelas = '{kelas}'";
 
-            return Ok(new { siswa = JsonConvert.SerializeObject(DB.ds.Tables[0]), });
+            DB.crud(query);
+            var siswaList = JsonConvert.SerializeObject(DB.ds.Tables[0]);
+
+            DB.crud("SELECT * FROM kelas");
+            var kelasList = JsonConvert.SerializeObject(DB.ds.Tables[0]);
+
+            return Ok(new
+            {
+                siswa = siswaList,
+                kelas = kelasList
+            });
         }
     }
 }

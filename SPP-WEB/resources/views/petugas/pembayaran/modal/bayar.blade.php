@@ -3,7 +3,7 @@
         <form action="/pembayaran/bayar/{{ $s->nisn }}" method="post">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5">Ubah Siswa</h1>
+                    <h1 class="modal-title fs-5">Bayar SPP</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -24,7 +24,7 @@
                     <div class="mb-3">
                         <label class="col-form-label">SPP</label>
                         <input type="text" class="form-control"
-                            value="{{ 'Rp ' . number_format($s->spp->nominal, '0', ',', '.') }}" disabled>
+                            value="{{ 'Rp ' . number_format($s->spp->nominal, '0', ',', '.') }} - {{ $s->spp->tahun }}" disabled>
                         <input type="hidden" id="nominalSPP{{ $s->nisn }}" value="{{ $s->spp->nominal }}">
                     </div>
                     @php
