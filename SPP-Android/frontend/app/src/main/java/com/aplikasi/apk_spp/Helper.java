@@ -34,6 +34,7 @@ public class Helper {
     public static String URLLogin = IP + "Auth/login";
     public static String URLHome = IP + "Home/";
     public static String URLGetSiswa = IP + "Pembayaran";
+    public static String URLGetDetail = IP + "Pembayaran/detail/";
 
     public static void Alert(String title, String message, Context context){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);

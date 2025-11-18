@@ -1,8 +1,11 @@
 package com.aplikasi.apk_spp;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import android.text.Editable;
@@ -13,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 
@@ -59,12 +63,10 @@ public class PembayaranFragment extends Fragment {
         }
     }
 
-    // UI
     EditText etSearch;
     ListView listView;
     Spinner dropdown_kelas;
 
-    // Data
     List<Siswa> siswaList;
     SiswaAdapter adapter;
 
@@ -72,12 +74,41 @@ public class PembayaranFragment extends Fragment {
     String idKelas = "";
     String namaSiswa = "";
 
-    // FLAG AGAR SPINNER TIDAK LOOPING
+    ImageView ivLogout;
+
     boolean isSpinnerInitialized = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_pembayaran, container, false);
+
+        ivLogout = view.findViewById(R.id.ivLogout);
+        ivLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("Logout");
+                builder.setMessage("Apakah anda ingin logout?");
+                builder.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Helper helper = new Helper();
+                        helper.flush();
+
+                        Intent intent = new Intent(getActivity(), MainActivity.class);
+                        startActivity(intent);
+                        getActivity().finish();
+                    }
+                });
+                builder.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+                builder.show();
+            }
+        });
 
         etSearch = view.findViewById(R.id.etSearch);
         listView = view.findViewById(R.id.listView);
@@ -85,7 +116,6 @@ public class PembayaranFragment extends Fragment {
 
         siswaList = new ArrayList<>();
 
-        // Search nama siswa real-time
         etSearch.addTextChangedListener(new TextWatcher() {
             @Override public void afterTextChanged(Editable editable) { }
             @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
@@ -97,10 +127,8 @@ public class PembayaranFragment extends Fragment {
             }
         });
 
-        // Load awal
         loadData(getContext(), "?nama=" + namaSiswa + "&kelas=" + idKelas);
 
-        // Adapter spinner
         ArrayAdapter<String> kelasAdapter =
                 new ArrayAdapter<>(getContext(),
                         android.R.layout.simple_spinner_dropdown_item,
@@ -108,22 +136,16 @@ public class PembayaranFragment extends Fragment {
 
         dropdown_kelas.setAdapter(kelasAdapter);
 
-
-        // ============================
-        // ANTI LOOPING SPINNER
-        // ============================
         if (!isSpinnerInitialized) {
             isSpinnerInitialized = true;
 
             dropdown_kelas.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-
                     if (position >= idKelasList.size()) return;
 
                     idKelas = idKelasList.get(position);
 
-                    // Load ulang jika user memilih
                     loadData(getContext(), "?nama=" + namaSiswa + "&kelas=" + idKelas);
                 }
 
@@ -138,11 +160,9 @@ public class PembayaranFragment extends Fragment {
     private void loadData(Context context, String search) {
         siswaList.clear();
 
-        // Siapkan array kelas
         kelasList = new ArrayList<>();
         idKelasList = new ArrayList<>();
 
-        // Default opsi "Semua Kelas"
         kelasList.add("Semua Kelas");
         idKelasList.add("");
 
@@ -151,9 +171,6 @@ public class PembayaranFragment extends Fragment {
                     try {
                         JSONObject object = new JSONObject(response);
 
-                        // ============================
-                        // Parsing Data Siswa
-                        // ============================
                         String siswa = object.getString("siswa");
                         JSONArray siswaArray = new JSONArray(siswa);
 
@@ -171,12 +188,21 @@ public class PembayaranFragment extends Fragment {
                             ));
                         }
 
-                        adapter = new SiswaAdapter(context, siswaList);
+                        adapter = new SiswaAdapter(context, siswaList, nisn -> {
+                            DetailFragment detail = new DetailFragment();
+                            Bundle b = new Bundle();
+                            b.putString("nisn", nisn);
+                            detail.setArguments(b);
+
+                            requireActivity().getSupportFragmentManager()
+                                    .beginTransaction()
+                                    .replace(R.id.frame_container, detail)
+                                    .addToBackStack(null)
+                                    .commit();
+                        });
+
                         listView.setAdapter(adapter);
 
-                        // ============================
-                        // Parsing Data Kelas
-                        // ============================
                         String kelas = object.getString("kelas");
                         JSONArray kelasArray = new JSONArray(kelas);
 

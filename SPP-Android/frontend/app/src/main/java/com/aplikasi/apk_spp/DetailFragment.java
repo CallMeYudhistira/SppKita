@@ -1,12 +1,38 @@
 package com.aplikasi.apk_spp;
 
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -55,10 +81,135 @@ public class DetailFragment extends Fragment {
         }
     }
 
+    String nisn = "";
+    ImageView ivLogout, ivBack;
+    TextView tvNis, tvNisn, tvNama, tvKelas, tvNominal;
+    Button btnCek;
+    ListView listView;
+    List<Detail> detailList;
+    DetailAdapter adapter;
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_detail, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_detail, container, false);
+
+        detailList = new ArrayList<>();
+        listView = view.findViewById(R.id.listView);
+
+        tvNis = view.findViewById(R.id.tvNis);
+        tvNisn = view.findViewById(R.id.tvNisn);
+        tvNama = view.findViewById(R.id.tvNama);
+        tvKelas = view.findViewById(R.id.tvKelas);
+        tvNominal = view.findViewById(R.id.tvNominal);
+        btnCek = view.findViewById(R.id.btnCek);
+
+        if (getArguments() != null) {
+            nisn = getArguments().getString("nisn", "");
+        }
+
+        loadSiswa(getContext());
+
+        ivBack = view.findViewById(R.id.ivBack);
+        ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, new PembayaranFragment()).commit();
+            }
+        });
+
+        ivLogout = view.findViewById(R.id.ivLogout);
+        ivLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("Logout");
+                builder.setMessage("Apakah anda ingin logout?");
+                builder.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Helper helper = new Helper();
+                        helper.flush();
+
+                        Intent intent = new Intent(getActivity(), MainActivity.class);
+                        startActivity(intent);
+                        getActivity().finish();
+                    }
+                });
+                builder.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+                builder.show();
+            }
+        });
+
+        return view;
+    }
+
+    private void loadSiswa(Context context) {
+        StringRequest request = new StringRequest(Request.Method.GET, Helper.URLHome + Helper.level + "/" + Helper.id, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    NumberFormat format = NumberFormat.getCurrencyInstance(new Locale("ID", "id"));
+
+                    String jsonString = jsonObject.getString("pembayaran");
+                    JSONArray data = new JSONArray(jsonString);
+                    JSONObject pembayaran = data.getJSONObject(0);
+                    tvNis.setText(pembayaran.getString("nis"));
+                    tvNisn.setText(pembayaran.getString("nisn"));
+                    tvNama.setText(pembayaran.getString("nama"));
+                    tvKelas.setText(pembayaran.getString("nama_kelas") + " " + pembayaran.getString("kompetensi_keahlian"));
+                    tvNominal.setText(format.format(pembayaran.getDouble("nominal")));
+
+                    jsonString = jsonObject.getString("siswa");
+                    data = new JSONArray(jsonString);
+                    for (int i = 0; i < data.length(); i++) {
+                        JSONObject siswa = data.getJSONObject(i);
+                        detailList.add(new Detail(
+                                siswa.getString("id_pembayaran"),
+                                siswa.getString("bulan_dibayar"),
+                                siswa.getString("tanggal_dibayar"),
+                                siswa.getString("nama_petugas")
+                        ));
+                    }
+
+                    adapter = new DetailAdapter(context, detailList);
+                    listView.setAdapter(adapter);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Helper.Alert("Error JSON", e.getMessage(), context);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if (error.networkResponse != null && error.networkResponse.data != null) {
+                    if(error.networkResponse.statusCode == 401){
+                        Helper.Alert("Error", "Token Kedaluwarsa, Silahkan Login Kembali", context);
+                        return;
+                    }
+                    Helper.Alert("Error", "Terjadi kesalahan saat membaca respon server.", context);
+                } else {
+                    Helper.Alert("Error", "Tidak ada koneksi internet atau server tidak merespon.", context);
+                }
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Accept", "application/json");
+                headers.put("Content-Type", "application/json");
+                headers.put("Authorization", "Bearer " + Helper.token);
+                return headers;
+            }
+        };
+
+        RequestQueue queue = Volley.newRequestQueue(context);
+        queue.add(request);
     }
 }

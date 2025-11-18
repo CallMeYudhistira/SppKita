@@ -1,6 +1,8 @@
 package com.aplikasi.apk_spp;
 
+import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +15,19 @@ import java.util.List;
 import java.util.Locale;
 
 public class SiswaAdapter extends BaseAdapter {
+
+    public interface OnCekClickListener {
+        void onCekClick(String nisn);
+    }
+
     private Context context;
     private List<Siswa> siswaList;
+    private OnCekClickListener listener;
 
-    public SiswaAdapter(Context context, List<Siswa> siswaList) {
+    public SiswaAdapter(Context context, List<Siswa> siswaList, OnCekClickListener listener) {
         this.context = context;
         this.siswaList = siswaList;
+        this.listener = listener;
     }
 
     @Override
@@ -58,10 +67,9 @@ public class SiswaAdapter extends BaseAdapter {
         tvKelas.setText(siswa.getNama_kelas() + " " + siswa.getKompetensi_keahlian());
         tvNominal.setText(format.format(siswa.getNominal()));
 
-        btnCek.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                
+        btnCek.setOnClickListener(v -> {
+            if (listener != null){
+                listener.onCekClick(siswa.getNisn());
             }
         });
 
