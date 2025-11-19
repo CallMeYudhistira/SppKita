@@ -16,7 +16,7 @@ class LevelPetugas
      */
     public function handle(Request $request, Closure $next, $level): Response
     {
-        if(Auth::guard('petugas') != $level){
+        if(Auth::guard('petugas')->user()->level != $level){
             return redirect()->back()->with('error', 'Anda Tidak Memiliki Hak Akses!');
         }
 
