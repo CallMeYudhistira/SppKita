@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Data;
 using API_SPP.Helpers;
 
 namespace API_SPP.Controllers
@@ -14,41 +12,55 @@ namespace API_SPP.Controllers
     public class HomeController : ControllerBase
     {
         [HttpGet("{level}/{id}")]
-        public IActionResult dashboard(string level, string id)
+        public IActionResult Dashboard(string level, string id)
         {
-            if(level == "siswa")
-            {
-                DB.crud($"CALL dashboard_siswa('{id}')");
-                var result = DB.ds.Tables[0].Rows[0];
+            DB db = new DB();
 
-                return Ok(new { 
-                    nominal_spp = result["nominal_spp"],
-                    total_sudah_bayar = result["total_sudah_bayar"],
-                    total_tunggakan = result["total_tunggakan"],
+            if (level == "siswa")
+            {
+                DataTable dt = db.Query($"CALL dashboard_siswa('{id}')");
+
+                if (dt.Rows.Count == 0)
+                {
+                    return NotFound(new { message = "Data tidak ditemukan." });
+                }
+
+                var row = dt.Rows[0];
+
+                return Ok(new
+                {
+                    nominal_spp = row["nominal_spp"],
+                    total_sudah_bayar = row["total_sudah_bayar"],
+                    total_tunggakan = row["total_tunggakan"],
                 });
             }
             else
             {
-                DB.crud($"SELECT * FROM dashboard_petugas");
-                var result = DB.ds.Tables[0].Rows[0];
+                DataTable dt = db.Query("SELECT * FROM dashboard_petugas");
 
-                double total_today = 0;
+                if (dt.Rows.Count == 0)
+                {
+                    return NotFound(new { message = "Data tidak ditemukan." });
+                }
+
+                var row = dt.Rows[0];
+
+                double total_today;
 
                 try
                 {
-                    total_today = Convert.ToDouble(result["total_hari_ini"]);
+                    total_today = Convert.ToDouble(row["total_hari_ini"]);
                 }
-                catch (Exception)
+                catch
                 {
                     total_today = 0;
                 }
 
                 return Ok(new
                 {
-                    total_siswa = result["total_siswa"],
-                    total_transaksi = result["total_transaksi"],
+                    total_siswa = row["total_siswa"],
+                    total_transaksi = row["total_transaksi"],
                     total_hari_ini = total_today,
-                    total_tunggakan_siswa = result["total_tunggakan_siswa"],
                 });
             }
         }

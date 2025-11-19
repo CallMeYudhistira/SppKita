@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using MySql.Data.MySqlClient;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -9,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using API_SPP.Models;
 using API_SPP.Helpers;
 using Newtonsoft.Json;
+using System.Data;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -33,14 +33,14 @@ public class AuthController : ControllerBase
         if (string.IsNullOrWhiteSpace(dto.Password))
             return BadRequest(new { message = "Password tidak boleh kosong" });
 
-        DB.crud($"SELECT * FROM siswa WHERE username = '{dto.Username}'");
-        int cekSiswa = DB.ds.Tables[0].Rows.Count;
+        DB db = new DB();
 
-        if (cekSiswa == 1)
+        DataTable dtSiswa = db.Query($"SELECT * FROM siswa WHERE username = '{dto.Username}'");
+
+        if (dtSiswa.Rows.Count == 1)
         {
-            var reader = DB.ds.Tables[0].Rows[0];
-
-            string dbPass = reader["password"].ToString();
+            var row = dtSiswa.Rows[0];
+            string dbPass = row["password"].ToString();
 
             if (!BCrypt.Net.BCrypt.Verify(dto.Password, dbPass))
             {
@@ -49,17 +49,20 @@ public class AuthController : ControllerBase
 
             string token = GenerateJwtToken(dto.Username);
 
-            return Ok(new { token, users = JsonConvert.SerializeObject(DB.ds.Tables[0]), level = "siswa" });
+            return Ok(new
+            {
+                token,
+                users = JsonConvert.SerializeObject(dtSiswa),
+                level = "siswa"
+            });
         }
 
-        DB.crud($"SELECT * FROM petugas WHERE username = '{dto.Username}'");
-        int cekPetugas = DB.ds.Tables[0].Rows.Count;
+        DataTable dtPetugas = db.Query($"SELECT * FROM petugas WHERE username = '{dto.Username}'");
 
-        if (cekPetugas == 1)
+        if (dtPetugas.Rows.Count == 1)
         {
-            var reader = DB.ds.Tables[0].Rows[0];
-
-            string dbPass = reader["password"].ToString();
+            var row = dtPetugas.Rows[0];
+            string dbPass = row["password"].ToString();
 
             if (!BCrypt.Net.BCrypt.Verify(dto.Password, dbPass))
             {
@@ -68,7 +71,12 @@ public class AuthController : ControllerBase
 
             string token = GenerateJwtToken(dto.Username);
 
-            return Ok(new { token, users = JsonConvert.SerializeObject(DB.ds.Tables[0]), level = reader["level"].ToString() });
+            return Ok(new
+            {
+                token,
+                users = JsonConvert.SerializeObject(dtPetugas),
+                level = row["level"].ToString()
+            });
         }
 
         return Unauthorized(new { message = "Username Tidak Ditemukan" });

@@ -83,8 +83,8 @@ public class DetailFragment extends Fragment {
 
     String nisn = "";
     ImageView ivLogout, ivBack;
-    TextView tvNis, tvNisn, tvNama, tvKelas, tvNominal;
-    Button btnCek;
+    TextView tvNis, tvNisn, tvNama, tvKelas, tvNominal, tvBulanDibayar, tvTotalDibayar, tvTunggakan;
+    Button btnCetakKartu, btnBayar;
     ListView listView;
     List<Detail> detailList;
     DetailAdapter adapter;
@@ -101,7 +101,11 @@ public class DetailFragment extends Fragment {
         tvNama = view.findViewById(R.id.tvNama);
         tvKelas = view.findViewById(R.id.tvKelas);
         tvNominal = view.findViewById(R.id.tvNominal);
-        btnCek = view.findViewById(R.id.btnCek);
+        tvBulanDibayar = view.findViewById(R.id.tvBulanDibayar);
+        tvTotalDibayar = view.findViewById(R.id.tvTotalDibayar);
+        tvTunggakan = view.findViewById(R.id.tvTunggakan);
+        btnCetakKartu = view.findViewById(R.id.btnCetakKartu);
+        btnBayar = view.findViewById(R.id.btnBayar);
 
         if (getArguments() != null) {
             nisn = getArguments().getString("nisn", "");
@@ -149,7 +153,7 @@ public class DetailFragment extends Fragment {
     }
 
     private void loadSiswa(Context context) {
-        StringRequest request = new StringRequest(Request.Method.GET, Helper.URLHome + Helper.level + "/" + Helper.id, new Response.Listener<String>() {
+        StringRequest request = new StringRequest(Request.Method.GET, Helper.URLGetDetail + nisn, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
@@ -163,17 +167,25 @@ public class DetailFragment extends Fragment {
                     tvNisn.setText(pembayaran.getString("nisn"));
                     tvNama.setText(pembayaran.getString("nama"));
                     tvKelas.setText(pembayaran.getString("nama_kelas") + " " + pembayaran.getString("kompetensi_keahlian"));
-                    tvNominal.setText(format.format(pembayaran.getDouble("nominal")));
+                    tvNominal.setText(format.format(pembayaran.getDouble("nominal")) + " - " + pembayaran.getString("tahun"));
+                    tvBulanDibayar.setText(pembayaran.getString("bulan_dibayar") + " dari 12 Bulan");
+                    if (pembayaran.getDouble("total_bayar") == 0) {
+                        tvTotalDibayar.setText("0");
+                        tvTunggakan.setText("0");
+                    } else {
+                        tvTotalDibayar.setText(format.format(pembayaran.getDouble("total_bayar")));
+                        tvTunggakan.setText(format.format(pembayaran.getDouble("nominal") * 12 - pembayaran.getDouble("total_bayar")));
+                    }
 
-                    jsonString = jsonObject.getString("siswa");
-                    data = new JSONArray(jsonString);
+                    data = jsonObject.getJSONArray("hasil");
                     for (int i = 0; i < data.length(); i++) {
                         JSONObject siswa = data.getJSONObject(i);
                         detailList.add(new Detail(
                                 siswa.getString("id_pembayaran"),
                                 siswa.getString("bulan_dibayar"),
-                                siswa.getString("tanggal_dibayar"),
-                                siswa.getString("nama_petugas")
+                                siswa.getString("tgl_bayar"),
+                                siswa.getString("nama_petugas"),
+                                siswa.getString("pesan")
                         ));
                     }
 

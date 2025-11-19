@@ -1,12 +1,6 @@
+C:\Users\yushi\Desktop\Kejuruan\PKK\Kelas 12\UKK\SPP-Android\backend\API-SPP\API-SPP\bin\Debug\net5.0\API-SPP.exe
 C:\Users\yushi\Desktop\Kejuruan\PKK\Kelas 12\UKK\SPP-Android\backend\API-SPP\API-SPP\bin\Debug\net5.0\appsettings.Development.json
 C:\Users\yushi\Desktop\Kejuruan\PKK\Kelas 12\UKK\SPP-Android\backend\API-SPP\API-SPP\bin\Debug\net5.0\appsettings.json
-C:\Users\yushi\Desktop\Kejuruan\PKK\Kelas 12\UKK\SPP-Android\backend\API-SPP\API-SPP\bin\Debug\net5.0\API-SPP.exe
-C:\Users\yushi\Desktop\Kejuruan\PKK\Kelas 12\UKK\SPP-Android\backend\API-SPP\API-SPP\bin\Debug\net5.0\API-SPP.deps.json
-C:\Users\yushi\Desktop\Kejuruan\PKK\Kelas 12\UKK\SPP-Android\backend\API-SPP\API-SPP\bin\Debug\net5.0\API-SPP.runtimeconfig.json
-C:\Users\yushi\Desktop\Kejuruan\PKK\Kelas 12\UKK\SPP-Android\backend\API-SPP\API-SPP\bin\Debug\net5.0\API-SPP.runtimeconfig.dev.json
-C:\Users\yushi\Desktop\Kejuruan\PKK\Kelas 12\UKK\SPP-Android\backend\API-SPP\API-SPP\bin\Debug\net5.0\API-SPP.dll
-C:\Users\yushi\Desktop\Kejuruan\PKK\Kelas 12\UKK\SPP-Android\backend\API-SPP\API-SPP\bin\Debug\net5.0\ref\API-SPP.dll
-C:\Users\yushi\Desktop\Kejuruan\PKK\Kelas 12\UKK\SPP-Android\backend\API-SPP\API-SPP\bin\Debug\net5.0\API-SPP.pdb
 C:\Users\yushi\Desktop\Kejuruan\PKK\Kelas 12\UKK\SPP-Android\backend\API-SPP\API-SPP\bin\Debug\net5.0\BCrypt.Net-Next.dll
 C:\Users\yushi\Desktop\Kejuruan\PKK\Kelas 12\UKK\SPP-Android\backend\API-SPP\API-SPP\bin\Debug\net5.0\BouncyCastle.Cryptography.dll
 C:\Users\yushi\Desktop\Kejuruan\PKK\Kelas 12\UKK\SPP-Android\backend\API-SPP\API-SPP\bin\Debug\net5.0\Google.Protobuf.dll
@@ -45,7 +39,6 @@ C:\Users\yushi\Desktop\Kejuruan\PKK\Kelas 12\UKK\SPP-Android\backend\API-SPP\API
 C:\Users\yushi\Desktop\Kejuruan\PKK\Kelas 12\UKK\SPP-Android\backend\API-SPP\API-SPP\bin\Debug\net5.0\runtimes\win-x64\native\krb5_64.dll
 C:\Users\yushi\Desktop\Kejuruan\PKK\Kelas 12\UKK\SPP-Android\backend\API-SPP\API-SPP\bin\Debug\net5.0\runtimes\win-x64\native\krbcc64.dll
 C:\Users\yushi\Desktop\Kejuruan\PKK\Kelas 12\UKK\SPP-Android\backend\API-SPP\API-SPP\bin\Debug\net5.0\runtimes\win\lib\netstandard2.0\System.Security.AccessControl.dll
-C:\Users\yushi\Desktop\Kejuruan\PKK\Kelas 12\UKK\SPP-Android\backend\API-SPP\API-SPP\obj\Debug\net5.0\API-SPP.csprojAssemblyReference.cache
 C:\Users\yushi\Desktop\Kejuruan\PKK\Kelas 12\UKK\SPP-Android\backend\API-SPP\API-SPP\obj\Debug\net5.0\API-SPP.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\yushi\Desktop\Kejuruan\PKK\Kelas 12\UKK\SPP-Android\backend\API-SPP\API-SPP\obj\Debug\net5.0\API-SPP.AssemblyInfoInputs.cache
 C:\Users\yushi\Desktop\Kejuruan\PKK\Kelas 12\UKK\SPP-Android\backend\API-SPP\API-SPP\obj\Debug\net5.0\API-SPP.AssemblyInfo.cs
@@ -60,4 +53,11 @@ C:\Users\yushi\Desktop\Kejuruan\PKK\Kelas 12\UKK\SPP-Android\backend\API-SPP\API
 C:\Users\yushi\Desktop\Kejuruan\PKK\Kelas 12\UKK\SPP-Android\backend\API-SPP\API-SPP\obj\Debug\net5.0\API-SPP.dll
 C:\Users\yushi\Desktop\Kejuruan\PKK\Kelas 12\UKK\SPP-Android\backend\API-SPP\API-SPP\obj\Debug\net5.0\ref\API-SPP.dll
 C:\Users\yushi\Desktop\Kejuruan\PKK\Kelas 12\UKK\SPP-Android\backend\API-SPP\API-SPP\obj\Debug\net5.0\API-SPP.pdb
+C:\Users\yushi\Desktop\Kejuruan\PKK\Kelas 12\UKK\SPP-Android\backend\API-SPP\API-SPP\bin\Debug\net5.0\API-SPP.deps.json
+C:\Users\yushi\Desktop\Kejuruan\PKK\Kelas 12\UKK\SPP-Android\backend\API-SPP\API-SPP\bin\Debug\net5.0\API-SPP.runtimeconfig.json
+C:\Users\yushi\Desktop\Kejuruan\PKK\Kelas 12\UKK\SPP-Android\backend\API-SPP\API-SPP\bin\Debug\net5.0\API-SPP.runtimeconfig.dev.json
+C:\Users\yushi\Desktop\Kejuruan\PKK\Kelas 12\UKK\SPP-Android\backend\API-SPP\API-SPP\bin\Debug\net5.0\API-SPP.dll
+C:\Users\yushi\Desktop\Kejuruan\PKK\Kelas 12\UKK\SPP-Android\backend\API-SPP\API-SPP\bin\Debug\net5.0\ref\API-SPP.dll
+C:\Users\yushi\Desktop\Kejuruan\PKK\Kelas 12\UKK\SPP-Android\backend\API-SPP\API-SPP\bin\Debug\net5.0\API-SPP.pdb
 C:\Users\yushi\Desktop\Kejuruan\PKK\Kelas 12\UKK\SPP-Android\backend\API-SPP\API-SPP\obj\Debug\net5.0\API-SPP.genruntimeconfig.cache
+C:\Users\yushi\Desktop\Kejuruan\PKK\Kelas 12\UKK\SPP-Android\backend\API-SPP\API-SPP\obj\Debug\net5.0\API-SPP.csprojAssemblyReference.cache

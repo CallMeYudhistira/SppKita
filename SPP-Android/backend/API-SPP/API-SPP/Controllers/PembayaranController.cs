@@ -1,35 +1,35 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using API_SPP.Helpers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using API_SPP.Helpers;
 using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Data;
 
 namespace API_SPP.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class PembayaranController : ControllerBase
     {
         [HttpGet]
         public IActionResult GetPembayaran([FromQuery] string nama, [FromQuery] string kelas)
         {
+            DB db = new DB();
+
             string query = "SELECT * FROM list_pembayaran WHERE 1=1";
 
-            if (!string.IsNullOrEmpty(nama) || nama == "")
+            if (!string.IsNullOrEmpty(nama))
                 query += $" AND nama LIKE '%{nama}%'";
 
-            if (!string.IsNullOrEmpty(kelas) || kelas == "")
+            if (!string.IsNullOrEmpty(kelas))
                 query += $" AND id_kelas = '{kelas}'";
 
-            DB.crud(query);
-            var siswaList = JsonConvert.SerializeObject(DB.ds.Tables[0]);
+            DataTable siswaTable = db.Query(query);
+            string siswaList = JsonConvert.SerializeObject(siswaTable);
 
-            DB.crud("SELECT * FROM kelas");
-            var kelasList = JsonConvert.SerializeObject(DB.ds.Tables[0]);
+            DataTable kelasTable = db.Query("SELECT * FROM kelas");
+            string kelasList = JsonConvert.SerializeObject(kelasTable);
 
             return Ok(new
             {
@@ -41,15 +41,63 @@ namespace API_SPP.Controllers
         [HttpGet("detail/{nisn}")]
         public IActionResult Detail(string nisn)
         {
-            DB.crud($"SELECT * FROM riwayat_pembayaran WHERE nisn = '{nisn}'");
-            var pembayaran = JsonConvert.SerializeObject(DB.ds.Tables[0]);
+            DB db = new DB();
 
-            DB.crud($"SELECT * FROM pembayaran INNER JOIN petugas WHERE nisn = '{nisn}'");
-            var siswa = JsonConvert.SerializeObject(DB.ds.Tables[0]);
+            DataTable dtPembayaran = db.Query(
+                $"SELECT * FROM riwayat_pembayaran WHERE nisn = '{nisn}' LIMIT 1"
+            );
+            string pembayaran = JsonConvert.SerializeObject(dtPembayaran);
 
-            var bulan = new[]{ "Juli", "Agustus", "September", "Oktober", "November", "Desember", "Januari", "Februari", "Maret", "April", "Mei", "Juni" };
+            string queryBase =
+                $"SELECT p.id_pembayaran, p.bulan_dibayar, p.tgl_bayar, t.nama_petugas " +
+                $"FROM pembayaran p " +
+                $"INNER JOIN petugas t ON p.id_petugas = t.id_petugas " +
+                $"WHERE p.nisn = '{nisn}'";
 
-            return Ok(new { pembayaran, siswa, bulan });
+            var bulan = new[] {
+                "Juli","Agustus","September","Oktober","November","Desember",
+                "Januari","Februari","Maret","April","Mei","Juni"
+            };
+
+            List<Dictionary<string, string>> hasil = new List<Dictionary<string, string>>();
+
+            foreach (var b in bulan)
+            {
+                DataTable dt = db.Query(queryBase + $" AND bulan_dibayar = '{b}'");
+                Dictionary<string, string> obj;
+
+                if (dt.Rows.Count == 0)
+                {
+                    obj = new Dictionary<string, string>
+                    {
+                        ["pesan"] = "Belum Bayar",
+                        ["id_pembayaran"] = "",
+                        ["bulan_dibayar"] = b,
+                        ["tgl_bayar"] = "",
+                        ["nama_petugas"] = "",
+                    };
+                }
+                else
+                {
+                    var row = dt.Rows[0];
+                    obj = new Dictionary<string, string>
+                    {
+                        ["pesan"] = "",
+                        ["id_pembayaran"] = row["id_pembayaran"].ToString(),
+                        ["bulan_dibayar"] = b,
+                        ["tgl_bayar"] = row["tgl_bayar"].ToString(),
+                        ["nama_petugas"] = row["nama_petugas"].ToString(),
+                    };
+                }
+
+                hasil.Add(obj);
+            }
+
+            return Ok(new
+            {
+                pembayaran,
+                hasil
+            });
         }
     }
 }

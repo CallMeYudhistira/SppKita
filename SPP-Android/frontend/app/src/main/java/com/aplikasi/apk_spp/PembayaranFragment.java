@@ -22,7 +22,6 @@ import android.widget.Spinner;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -45,19 +44,19 @@ public class PembayaranFragment extends Fragment {
 
     public PembayaranFragment() { }
 
-    public static PembayaranFragment newInstance(String param1, String param2) {
+    public static PembayaranFragment newInstance(String param1, String param2)
+    {
         PembayaranFragment fragment = new PembayaranFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+        Bundle args = new Bundle(); args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2); fragment.setArguments(args);
         return fragment;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
+    @Override public void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
+        if (getArguments() != null)
+        {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
@@ -70,101 +69,129 @@ public class PembayaranFragment extends Fragment {
     List<Siswa> siswaList;
     SiswaAdapter adapter;
 
-    ArrayList<String> kelasList, idKelasList;
+    ArrayList<String> kelasList = new ArrayList<>();
+    ArrayList<String> idKelasList = new ArrayList<>();
+
     String idKelas = "";
     String namaSiswa = "";
 
     ImageView ivLogout;
 
-    boolean isSpinnerInitialized = false;
+    boolean kelasLoaded = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_pembayaran, container, false);
 
         ivLogout = view.findViewById(R.id.ivLogout);
-        ivLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setTitle("Logout");
-                builder.setMessage("Apakah anda ingin logout?");
-                builder.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        Helper helper = new Helper();
-                        helper.flush();
-
-                        Intent intent = new Intent(getActivity(), MainActivity.class);
-                        startActivity(intent);
-                        getActivity().finish();
-                    }
-                });
-                builder.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                });
-                builder.show();
-            }
-        });
-
         etSearch = view.findViewById(R.id.etSearch);
         listView = view.findViewById(R.id.listView);
         dropdown_kelas = view.findViewById(R.id.dropdown_kelas);
 
         siswaList = new ArrayList<>();
 
+        kelasList.add("Semua Kelas");
+        idKelasList.add("");
+
+        loadKelas(getContext());
+        loadSiswa(getContext());
+
         etSearch.addTextChangedListener(new TextWatcher() {
-            @Override public void afterTextChanged(Editable editable) { }
-            @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void afterTextChanged(Editable s) {}
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                namaSiswa = charSequence.toString();
-                loadData(getContext(), "?nama=" + namaSiswa + "&kelas=" + idKelas);
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                namaSiswa = s.toString();
+                loadSiswa(getContext());
             }
         });
 
-        loadData(getContext(), "?nama=" + namaSiswa + "&kelas=" + idKelas);
+        dropdown_kelas.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                idKelas = idKelasList.get(position);
+                loadSiswa(getContext());
+            }
 
-        ArrayAdapter<String> kelasAdapter =
-                new ArrayAdapter<>(getContext(),
-                        android.R.layout.simple_spinner_dropdown_item,
-                        kelasList);
+            @Override public void onNothingSelected(AdapterView<?> parent) {}
+        });
 
-        dropdown_kelas.setAdapter(kelasAdapter);
+        ivLogout.setOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setTitle("Logout")
+                    .setMessage("Apakah anda ingin logout?")
+                    .setPositiveButton("Ya", (dialog, i) -> {
+                        Helper helper = new Helper();
+                        helper.flush();
 
-        if (!isSpinnerInitialized) {
-            isSpinnerInitialized = true;
-
-            dropdown_kelas.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                    if (position >= idKelasList.size()) return;
-
-                    idKelas = idKelasList.get(position);
-
-                    loadData(getContext(), "?nama=" + namaSiswa + "&kelas=" + idKelas);
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> adapterView) { }
-            });
-        }
+                        Intent intent = new Intent(getActivity(), MainActivity.class);
+                        startActivity(intent);
+                        getActivity().finish();
+                    })
+                    .setNegativeButton("Tidak", (dialog, i) -> dialog.dismiss())
+                    .show();
+        });
 
         return view;
     }
 
-    private void loadData(Context context, String search) {
-        siswaList.clear();
+    private void loadKelas(Context context) {
 
-        kelasList = new ArrayList<>();
-        idKelasList = new ArrayList<>();
+        if (kelasLoaded) return;
 
-        kelasList.add("Semua Kelas");
-        idKelasList.add("");
+        StringRequest request = new StringRequest(Request.Method.GET, Helper.URLGetSiswa,
+                response -> {
+                    try {
+                        JSONObject object = new JSONObject(response);
+
+                        String kelas = object.getString("kelas");
+                        JSONArray kelasArray = new JSONArray(kelas);
+
+                        for (int i = 0; i < kelasArray.length(); i++) {
+                            JSONObject json = kelasArray.getJSONObject(i);
+
+                            String id = json.getString("id_kelas");
+                            String nama = json.getString("nama_kelas");
+                            String kompetensi = json.getString("kompetensi_keahlian");
+
+                            kelasList.add(nama + " " + kompetensi);
+                            idKelasList.add(id);
+                        }
+
+                        ArrayAdapter<String> kelasAdapter =
+                                new ArrayAdapter<>(context,
+                                        android.R.layout.simple_spinner_dropdown_item,
+                                        kelasList);
+
+                        dropdown_kelas.setAdapter(kelasAdapter);
+
+                        kelasLoaded = true;
+
+                    } catch (JSONException e) {
+                        Helper.Alert("Error JSON", e.getMessage(), context);
+                    }
+                },
+                error -> {
+                    Helper.Alert("Error", "Gagal memuat kelas", context);
+                }) {
+
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Accept", "application/json");
+                headers.put("Content-Type", "application/json");
+                headers.put("Authorization", "Bearer " + Helper.token);
+                return headers;
+            }
+        };
+
+        Volley.newRequestQueue(context).add(request);
+    }
+
+    private void loadSiswa(Context context) {
+
+        String search = "?nama=" + namaSiswa + "&kelas=" + idKelas;
 
         StringRequest request = new StringRequest(Request.Method.GET, Helper.URLGetSiswa + search,
                 response -> {
@@ -173,6 +200,7 @@ public class PembayaranFragment extends Fragment {
 
                         String siswa = object.getString("siswa");
                         JSONArray siswaArray = new JSONArray(siswa);
+                        siswaList = new ArrayList<>();
 
                         for (int i = 0; i < siswaArray.length(); i++) {
                             JSONObject json = siswaArray.getJSONObject(i);
@@ -203,33 +231,12 @@ public class PembayaranFragment extends Fragment {
 
                         listView.setAdapter(adapter);
 
-                        String kelas = object.getString("kelas");
-                        JSONArray kelasArray = new JSONArray(kelas);
-
-                        for (int i = 0; i < kelasArray.length(); i++) {
-                            JSONObject json = kelasArray.getJSONObject(i);
-
-                            String id = json.getString("id_kelas");
-                            String nama = json.getString("nama_kelas");
-                            String kompetensi = json.getString("kompetensi_keahlian");
-
-                            kelasList.add(nama + " " + kompetensi);
-                            idKelasList.add(id);
-                        }
-
                     } catch (JSONException e) {
-                        e.printStackTrace();
                         Helper.Alert("Error JSON", e.getMessage(), context);
                     }
                 },
                 error -> {
-
-                    if (error.networkResponse != null && error.networkResponse.statusCode == 401) {
-                        Helper.Alert("Error", "Token Kedaluwarsa, Silahkan Login Kembali", context);
-                        return;
-                    }
-
-                    Helper.Alert("Error", "Tidak dapat memuat data", context);
+                    Helper.Alert("Error", "Tidak dapat memuat siswa", context);
                 }) {
 
             @Override
@@ -242,7 +249,6 @@ public class PembayaranFragment extends Fragment {
             }
         };
 
-        RequestQueue queue = Volley.newRequestQueue(context);
-        queue.add(request);
+        Volley.newRequestQueue(context).add(request);
     }
 }

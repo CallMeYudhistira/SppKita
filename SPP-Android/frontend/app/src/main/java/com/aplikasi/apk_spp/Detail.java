@@ -5,12 +5,14 @@ public class Detail {
     private String bulan_dibayar;
     private String tanggal_dibayar;
     private String nama_petugas;
+    private String pesan;
 
-    public Detail(String id_pembayaran, String bulan_dibayar, String tanggal_dibayar, String nama_petugas) {
+    public Detail(String id_pembayaran, String bulan_dibayar, String tanggal_dibayar, String nama_petugas, String pesan) {
         this.id_pembayaran = id_pembayaran;
         this.bulan_dibayar = bulan_dibayar;
         this.tanggal_dibayar = tanggal_dibayar;
         this.nama_petugas = nama_petugas;
+        this.pesan = pesan;
     }
 
     public String getId_pembayaran() {
@@ -27,5 +29,9 @@ public class Detail {
 
     public String getNama_petugas() {
         return nama_petugas;
+    }
+
+    public String getPesan() {
+        return pesan;
     }
 }

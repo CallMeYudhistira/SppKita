@@ -80,7 +80,7 @@ public class HomeFragment extends Fragment {
     }
 
     ImageView ivLogout;
-    TextView txtDashboardTitle, txtDashboardSubTitle, txtNominalSpp, txtTotalSudahBayar, txtTotalTunggakanSiswa, txtPembayaranHariIni, txtTotalTunggakan, txtTotalTransaksi, txtTotalSiswa;
+    TextView txtDashboardTitle, txtDashboardSubTitle, txtNominalSpp, txtTotalSudahBayar, txtPembayaranHariIni, txtTotalTunggakan, txtTotalTransaksi, txtTotalSiswa;
     GridLayout gridPetugas, gridSiswa;
 
 
@@ -96,7 +96,6 @@ public class HomeFragment extends Fragment {
         gridSiswa = view.findViewById(R.id.gridSiswa);
         txtPembayaranHariIni = view.findViewById(R.id.txtPembayaranHariIni);
         txtTotalTransaksi = view.findViewById(R.id.txtTotalTransaksi);
-        txtTotalTunggakanSiswa = view.findViewById(R.id.txtTotalTunggakanSiswa);
         txtTotalSiswa = view.findViewById(R.id.txtTotalSiswa);
 
         loadHome(getContext());
@@ -159,11 +158,9 @@ public class HomeFragment extends Fragment {
                         String total_siswa = jsonObject.getString("total_siswa");
                         String total_transaksi = jsonObject.getString("total_transaksi");
                         Double total_hari_ini = jsonObject.getDouble("total_hari_ini");
-                        Double total_tunggakan_siswa = jsonObject.getDouble("total_tunggakan_siswa");
 
                         txtPembayaranHariIni.setText(format.format(total_hari_ini));
                         txtTotalTransaksi.setText(total_transaksi);
-                        txtTotalTunggakanSiswa.setText(format.format(total_tunggakan_siswa));
                         txtTotalSiswa.setText(total_siswa);
                         gridPetugas.setVisibility(View.VISIBLE);
                         gridSiswa.setVisibility(View.GONE);

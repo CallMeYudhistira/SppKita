@@ -8,7 +8,10 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 
 public class DetailAdapter extends BaseAdapter {
     private Context context;
@@ -47,9 +50,16 @@ public class DetailAdapter extends BaseAdapter {
         TextView tvPetugas = view.findViewById(R.id.tvPetugas);
         Button btnCetak = view.findViewById(R.id.btnCetak);
 
-        tvBulan.setText(detail.getBulan_dibayar());
-        tvTanggal.setText(detail.getTanggal_dibayar());
-        tvPetugas.setText(detail.getNama_petugas());
+        if (!detail.getPesan().isEmpty()) {
+            tvBulan.setText(detail.getBulan_dibayar());
+            tvTanggal.setText(detail.getPesan());
+            tvPetugas.setText("");
+        } else {
+            tvBulan.setText(detail.getBulan_dibayar());
+            tvTanggal.setText(detail.getTanggal_dibayar().replace("00:00:00", ""));
+            tvPetugas.setText(detail.getNama_petugas());
+        }
+
         btnCetak.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
