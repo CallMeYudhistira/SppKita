@@ -34,53 +34,59 @@ Route::post('/logout', [AuthController::class, 'logout']);
 Route::middleware(['petugas'])->group(function () {
     Route::get('/petugas/beranda', [HomeController::class, 'petugas']);
 
-    Route::prefix('/kelas')->group(function () {
-        Route::get('/', [KelasController::class, 'index']);
-        Route::get('/cari', [KelasController::class, 'cari']);
-        Route::post('/tambah', [KelasController::class, 'tambah']);
-        Route::put('/ubah/{id}', [KelasController::class, 'ubah']);
-        Route::delete('/hapus/{id}', [KelasController::class, 'hapus']);
-    });
+    Route::middleware('level:admin')->group(function () {
+        Route::prefix('/kelas')->group(function () {
+            Route::get('/', [KelasController::class, 'index']);
+            Route::get('/cari', [KelasController::class, 'cari']);
+            Route::post('/tambah', [KelasController::class, 'tambah']);
+            Route::put('/ubah/{id}', [KelasController::class, 'ubah']);
+            Route::delete('/hapus/{id}', [KelasController::class, 'hapus']);
+        });
 
-    Route::prefix('/spp')->group(function () {
-        Route::get('/', [SppController::class, 'index']);
-        Route::get('/cari', [SppController::class, 'cari']);
-        Route::post('/tambah', [SppController::class, 'tambah']);
-        Route::put('/ubah/{id}', [SppController::class, 'ubah']);
-        Route::delete('/hapus/{id}', [SppController::class, 'hapus']);
-    });
+        Route::prefix('/spp')->group(function () {
+            Route::get('/', [SppController::class, 'index']);
+            Route::get('/cari', [SppController::class, 'cari']);
+            Route::post('/tambah', [SppController::class, 'tambah']);
+            Route::put('/ubah/{id}', [SppController::class, 'ubah']);
+            Route::delete('/hapus/{id}', [SppController::class, 'hapus']);
+        });
 
-    Route::prefix('/siswa')->group(function () {
-        Route::get('/', [SiswaController::class, 'index']);
-        Route::get('/cari', [SiswaController::class, 'cari']);
-        Route::post('/tambah', [SiswaController::class, 'tambah']);
-        Route::put('/ubah/{id}', [SiswaController::class, 'ubah']);
-        Route::delete('/hapus/{id}', [SiswaController::class, 'hapus']);
-    });
+        Route::prefix('/siswa')->group(function () {
+            Route::get('/', [SiswaController::class, 'index']);
+            Route::get('/cari', [SiswaController::class, 'cari']);
+            Route::post('/tambah', [SiswaController::class, 'tambah']);
+            Route::put('/ubah/{id}', [SiswaController::class, 'ubah']);
+            Route::delete('/hapus/{id}', [SiswaController::class, 'hapus']);
+        });
 
-    Route::prefix('/petugas')->group(function () {
-        Route::get('/', [PetugasController::class, 'index']);
-        Route::get('/cari', [PetugasController::class, 'cari']);
-        Route::post('/tambah', [PetugasController::class, 'tambah']);
-        Route::put('/ubah/{id}', [PetugasController::class, 'ubah']);
-        Route::delete('/hapus/{id}', [PetugasController::class, 'hapus']);
+        Route::prefix('/petugas')->group(function () {
+            Route::get('/', [PetugasController::class, 'index']);
+            Route::get('/cari', [PetugasController::class, 'cari']);
+            Route::post('/tambah', [PetugasController::class, 'tambah']);
+            Route::put('/ubah/{id}', [PetugasController::class, 'ubah']);
+            Route::delete('/hapus/{id}', [PetugasController::class, 'hapus']);
+        });
     });
 
     Route::prefix('/pembayaran')->group(function () {
         Route::get('/', [PembayaranController::class, 'index']);
         Route::get('/cari', [PembayaranController::class, 'cari']);
-        Route::delete('/hapus/{id}', [PembayaranController::class, 'hapus']);
         Route::post('/bayar/{nisn}', [PembayaranController::class, 'bayar']);
         Route::get('/riwayat', [PembayaranController::class, 'riwayat']);
         Route::get('/riwayat/cari', [PembayaranController::class, 'cariRiwayat']);
-        Route::get('/riwayat/gagal', [PembayaranController::class, 'gagal']);
-        Route::get('/riwayat/gagal/filter', [PembayaranController::class, 'filterGagal']);
+
+        Route::middleware('level:admin')->group(function () {
+            Route::delete('/hapus/{id}', [PembayaranController::class, 'hapus']);
+            Route::get('/riwayat/gagal', [PembayaranController::class, 'gagal']);
+            Route::get('/riwayat/gagal/filter', [PembayaranController::class, 'filterGagal']);
+        });
+
         Route::get('/detail/{nisn}', [PembayaranController::class, 'detail']);
         Route::get('/cetak/{id}', [PembayaranController::class, 'cetak']);
         Route::get('/cetak/kartu/{nisn}', [PembayaranController::class, 'cetakKartu']);
     });
 
-    Route::prefix('/laporan')->group(function () {
+    Route::middleware('level:admin')->prefix('/laporan')->group(function () {
         Route::get('/', [LaporanController::class, 'index']);
         Route::get('/cari', [LaporanController::class, 'cari']);
         Route::get('/cetak', [LaporanController::class, 'cetak']);

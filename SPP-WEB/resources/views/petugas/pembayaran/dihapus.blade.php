@@ -40,10 +40,4 @@
             </tbody>
         </table>
     </div>
-
-    @if ($pesan = Session::get('success'))
-        <script>
-            alert('{{ $pesan }}');
-        </script>
-    @endif
 @endsection

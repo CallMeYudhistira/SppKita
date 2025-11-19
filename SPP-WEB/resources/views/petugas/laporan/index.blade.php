@@ -54,12 +54,6 @@
         </tbody>
     </table>
 
-    @if ($pesan = Session::get('error'))
-        <script>
-            alert('{{ $pesan }}');
-        </script>
-    @endif
-
     <script>
         const filter = document.getElementById('id_kelas');
 

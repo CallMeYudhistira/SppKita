@@ -72,12 +72,6 @@
         </tbody>
     </table>
 
-    @if ($pesan = Session::get('success'))
-        <script>
-            alert('{{ $pesan }}');
-        </script>
-    @endif
-
     <script>
         const filter = document.getElementById('id_kelas');
 

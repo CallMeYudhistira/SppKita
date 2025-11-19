@@ -56,11 +56,4 @@
             @endforeach
         </tbody>
     </table>
-
-
-    @if ($pesan = Session::get('success'))
-        <script>
-            alert('{{ $pesan }}');
-        </script>
-    @endif
 @endsection

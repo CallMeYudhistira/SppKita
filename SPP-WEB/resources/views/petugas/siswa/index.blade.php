@@ -63,16 +63,4 @@
             </tbody>
         </table>
     </div>
-
-    @if ($pesan = Session::get('success'))
-        <script>
-            alert('{{ $pesan }}');
-        </script>
-    @endif
-
-    @if ($pesan = Session::get('error'))
-        <script>
-            alert('{{ $pesan }}');
-        </script>
-    @endif
 @endsection

@@ -93,7 +93,7 @@
                                 <td>{{ \Carbon\Carbon::parse($p->tgl_bayar)->isoFormat('dddd, DD MMMM Y') }}</td>
                                 <td>{{ $p->petugas->nama_petugas }}</td>
                                 <td class="text-center">
-                                    <a href="/pembayaran/cetak/{{ $p->id_pembayaran }}" class="btn btn-success"
+                                    <a href="/siswa/pembayaran/cetak/{{ $p->id_pembayaran }}" class="btn btn-success"
                                         target="_blank">Cetak</a>
                                 </td>
                             </tr>
@@ -110,11 +110,5 @@
                 </tbody>
             </table>
         </div>
-
-        @if ($pesan = Session::get('success'))
-            <script>
-                alert('{{ $pesan }}');
-            </script>
-        @endif
     @endif
 @endsection
