@@ -34,7 +34,7 @@
                     <th scope="col">Nama</th>
                     <th scope="col">Kelas</th>
                     <th scope="col">Nominal SPP</th>
-                    <th scope="col">Bulan Dibayar</th>
+                    <th scope="col">Bulan Sudah Dibayar</th>
                     <th scope="col">Total Dibayar</th>
                     <th scope="col" class="text-center" style="width: 10%;">Aksi</th>
                 </tr>
@@ -46,7 +46,7 @@
                         <td>{{ $p->nama }}</td>
                         <td>{{ $p->nama_kelas }} {{ $p->kompetensi_keahlian }}</td>
                         <td>{{ 'Rp ' . number_format($p->nominal, '0', ',', '.') }} - {{ $p->tahun }}</td>
-                        <td>{{ $p->bulan_dibayar }}</td>
+                        <td>{{ $p->bulan_dibayar }} dari 12 Bulan</td>
                         <td>{{ 'Rp ' . number_format($p->total_bayar, '0', ',', '.') }}</td>
                         <td class="text-center">
                             <a href="/pembayaran/detail/{{ $p->nisn }}" class="btn btn-success">Detail</a>

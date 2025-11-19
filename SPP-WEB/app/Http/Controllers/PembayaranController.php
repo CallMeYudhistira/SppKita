@@ -27,7 +27,7 @@ class PembayaranController extends Controller
         $keyword = $request->keyword;
         $id_kelas = $request->id_kelas;
         $siswa = Siswa::with('kelas')->with('spp')->where('nama', 'LIKE', '%' . $keyword . '%')->get();
-        if($id_kelas != "semua"){
+        if ($id_kelas != "semua") {
             $siswa = $siswa->where('id_kelas', $id_kelas);
         }
         $pembayaran = Pembayaran::all();
@@ -73,7 +73,7 @@ class PembayaranController extends Controller
             ]);
         }
 
-        return redirect()->back()->with('success', 'Pembayaran berhasil ditambahkan!');
+        return redirect('/pembayaran/detail/' . $nisn)->with('success', 'Pembayaran berhasil ditambahkan!');
     }
 
     public function riwayat()
@@ -90,19 +90,21 @@ class PembayaranController extends Controller
         $id_kelas = $request->id_kelas;
         $kelas = Kelas::all();
         $pembayaran = collect(DB::select("SELECT * FROM riwayat_pembayaran WHERE nama LIKE '%" . $keyword . "%'"));
-        if($id_kelas != "semua"){
+        if ($id_kelas != "semua") {
             $pembayaran = collect(DB::select("SELECT * FROM riwayat_pembayaran WHERE nama LIKE '%" . $keyword . "%' AND id_kelas = '" . $id_kelas . "'"));
         }
 
         return view('petugas.pembayaran.riwayat', compact('pembayaran', 'keyword', 'id_kelas', 'kelas'));
     }
 
-    public function detail($nisn){
+    public function detail($nisn)
+    {
+        $s = Siswa::with('kelas')->with('spp')->where('nisn', $nisn)->first();
         $pembayaran = Pembayaran::with('petugas')->where('nisn', $nisn)->get();
         $siswa = collect(DB::select("SELECT * FROM riwayat_pembayaran WHERE nisn = '" . $nisn . "'"))->first();
         $bulan = ['Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni'];
 
-        return view('petugas.pembayaran.detail', compact('pembayaran', 'siswa', 'bulan'));
+        return view('petugas.pembayaran.detail', compact('pembayaran', 'siswa', 'bulan', 's'));
     }
 
     public function cetak($id)
@@ -111,5 +113,14 @@ class PembayaranController extends Controller
 
         $pdf = Pdf::loadView('petugas.pembayaran.cetak', compact('pembayaran'))->setPaper('a5', 'portrait');
         return $pdf->stream('invoice.pdf');
+    }
+
+    public function cetakKartu($nisn)
+    {
+        $pembayaran = Pembayaran::with('petugas')->where('nisn', $nisn)->get();
+        $siswa = collect(DB::select("SELECT * FROM riwayat_pembayaran WHERE nisn = '" . $nisn . "'"))->first();
+        $bulan = ['Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni'];
+
+        return view('petugas.pembayaran.kartu', compact('pembayaran', 'siswa', 'bulan'));
     }
 }

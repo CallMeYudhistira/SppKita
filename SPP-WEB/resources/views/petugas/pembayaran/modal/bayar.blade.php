@@ -24,7 +24,8 @@
                     <div class="mb-3">
                         <label class="col-form-label">SPP</label>
                         <input type="text" class="form-control"
-                            value="{{ 'Rp ' . number_format($s->spp->nominal, '0', ',', '.') }} - {{ $s->spp->tahun }}" disabled>
+                            value="{{ 'Rp ' . number_format($s->spp->nominal, '0', ',', '.') }} - {{ $s->spp->tahun }}"
+                            disabled>
                         <input type="hidden" id="nominalSPP{{ $s->nisn }}" value="{{ $s->spp->nominal }}">
                     </div>
                     @php
@@ -33,7 +34,8 @@
 
                     <div class="mb-3">
                         <label class="col-form-label">Bulan Yang Akan Bayar</label>
-                        <select name="bulan_dibayar[]" class="form-select mb-1" id="bulanSelect{{ $s->nisn }}" multiple>
+                        <select name="bulan_dibayar[]" class="form-select mb-1" id="bulanSelect{{ $s->nisn }}"
+                            multiple>
                             @foreach ($bulan as $b)
                                 @if (!in_array($b, $paidMonths))
                                     <option value="{{ $b }}">
@@ -42,7 +44,8 @@
                                 @endif
                             @endforeach
                         </select>
-                        <small style="color: #999; font-size: 0.8rem;">Tekan CTRL + click untuk memilih lebih dari satu.</small>
+                        <small style="color: #999; font-size: 0.8rem;">Tekan CTRL + click untuk memilih lebih dari
+                            satu.</small>
                     </div>
 
                     <div class="mb-3">

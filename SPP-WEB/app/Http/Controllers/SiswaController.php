@@ -105,4 +105,13 @@ class SiswaController extends Controller
         $pdf = Pdf::loadView('siswa.pembayaran.cetak', compact('pembayaran'))->setPaper('a5', 'portrait');
         return $pdf->stream('invoice.pdf');
     }
+
+    public function cetakKartu($nisn)
+    {
+        $pembayaran = Pembayaran::with('petugas')->where('nisn', $nisn)->get();
+        $siswa = collect(DB::select("SELECT * FROM riwayat_pembayaran WHERE nisn = '" . $nisn . "'"))->first();
+        $bulan = ['Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni'];
+
+        return view('siswa.pembayaran.kartu', compact('pembayaran', 'siswa', 'bulan'));
+    }
 }

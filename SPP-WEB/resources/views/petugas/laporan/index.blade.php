@@ -6,7 +6,7 @@
 @section('content')
     <h2>Laporan Pembayaran SPP</h2>
     <div class="d-flex">
-        <form action="/laporan/cetak" method="get" class="my-2">
+        <form action="/laporan/cetak" method="get" class="my-2" target="_blank">
             <input type="hidden" name="id_kelas" @isset($id_kelas) value="{{ $id_kelas }}" @endisset>
             <button type="submit" class="btn btn-success">Cetak</button>
         </form>

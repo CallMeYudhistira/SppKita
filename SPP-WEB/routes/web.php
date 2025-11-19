@@ -74,6 +74,7 @@ Route::middleware(['petugas'])->group(function () {
         Route::get('/riwayat/cari', [PembayaranController::class, 'cariRiwayat']);
         Route::get('/detail/{nisn}', [PembayaranController::class, 'detail']);
         Route::get('/cetak/{id}', [PembayaranController::class, 'cetak']);
+        Route::get('/cetak/kartu/{nisn}', [PembayaranController::class, 'cetakKartu']);
     });
 
     Route::prefix('/laporan')->group(function () {
@@ -88,5 +89,6 @@ Route::middleware(['siswa'])->group(function () {
     Route::prefix('/siswa/pembayaran')->group(function () {
         Route::get('/detail/{nis}', [SiswaController::class, 'detail']);
         Route::get('/cetak/{id}', [SiswaController::class, 'cetak']);
+        Route::get('/cetak/kartu/{nisn}', [SiswaController::class, 'cetakKartu']);
     });
 });
