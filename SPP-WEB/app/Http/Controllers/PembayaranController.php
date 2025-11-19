@@ -123,4 +123,36 @@ class PembayaranController extends Controller
 
         return view('petugas.pembayaran.kartu', compact('pembayaran', 'siswa', 'bulan'));
     }
+
+    public function hapus($id)
+    {
+        Pembayaran::find($id)->delete();
+        return redirect()->back()->with('success', 'Hapus Transaksi Berhasil!');
+    }
+
+    public function gagal()
+    {
+        $kelas = Kelas::all();
+        $pembayaran = Pembayaran::onlyTrashed()->with('siswa')->get();
+
+        return view('petugas.pembayaran.dihapus', compact('kelas', 'pembayaran'));
+    }
+
+    public function filterGagal(Request $request)
+    {
+        $dari = $request->dari;
+        $sampai = $request->sampai;
+
+        if (!$dari && !$sampai) {
+            return redirect('/pembayaran/riwayat/gagal');
+        }
+
+        $pembayaran = Pembayaran::onlyTrashed()
+            ->with('siswa')
+            ->whereBetween('tgl_bayar', [$dari, $sampai])
+            ->get();
+
+        return view('petugas.pembayaran.dihapus', compact('pembayaran', 'dari', 'sampai'));
+    }
+
 }

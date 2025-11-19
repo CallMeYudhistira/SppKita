@@ -7,6 +7,7 @@
     <h2>Riwayat Pembayaran SPP</h2>
     <div class="d-flex">
         <a href="/pembayaran" class="btn btn-dark my-2">Kembali</a>
+        <a href="/pembayaran/riwayat/gagal" class="btn btn-danger m-2">Transaksi Yang Dihapus</a>
         <form class="d-flex ms-auto my-2" action="/pembayaran/riwayat/cari" method="get">
             <div class="mx-2">
                 <select name="id_kelas" class="form-select" style="width: 350px;" id="id_kelas">

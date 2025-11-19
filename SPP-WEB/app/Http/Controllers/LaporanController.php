@@ -39,7 +39,7 @@ class LaporanController extends Controller
     public function cetak(Request $request) {
         $id_kelas = $request->id_kelas;
 
-        if($id_kelas == ""){
+        if($id_kelas == "" || $id_kelas == "semua"){
             return redirect()->back()->with('error', 'Pilih Kelas Terlebih Dahulu!');
         }
 

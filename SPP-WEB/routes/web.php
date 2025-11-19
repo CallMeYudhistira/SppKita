@@ -69,9 +69,12 @@ Route::middleware(['petugas'])->group(function () {
     Route::prefix('/pembayaran')->group(function () {
         Route::get('/', [PembayaranController::class, 'index']);
         Route::get('/cari', [PembayaranController::class, 'cari']);
+        Route::delete('/hapus/{id}', [PembayaranController::class, 'hapus']);
         Route::post('/bayar/{nisn}', [PembayaranController::class, 'bayar']);
         Route::get('/riwayat', [PembayaranController::class, 'riwayat']);
         Route::get('/riwayat/cari', [PembayaranController::class, 'cariRiwayat']);
+        Route::get('/riwayat/gagal', [PembayaranController::class, 'gagal']);
+        Route::get('/riwayat/gagal/filter', [PembayaranController::class, 'filterGagal']);
         Route::get('/detail/{nisn}', [PembayaranController::class, 'detail']);
         Route::get('/cetak/{id}', [PembayaranController::class, 'cetak']);
         Route::get('/cetak/kartu/{nisn}', [PembayaranController::class, 'cetakKartu']);

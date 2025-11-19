@@ -78,7 +78,7 @@
                     <th scope="col">Bulan Dibayar</th>
                     <th scope="col">Tanggal Bayar</th>
                     <th scope="col">Nama Petugas</th>
-                    <th scope="col" class="text-center" style="width: 10%;">Aksi</th>
+                    <th scope="col" class="text-center" style="width: 10%;" colspan="2">Aksi</th>
                 </tr>
             </thead>
             <tbody>
@@ -92,14 +92,23 @@
                             <td>{{ $b }}</td>
                             <td>{{ \Carbon\Carbon::parse($p->tgl_bayar)->isoFormat('dddd, DD MMMM Y') }}</td>
                             <td>{{ $p->petugas->nama_petugas }}</td>
-                            <td class="text-center">
+                            <td class="{{ Auth::guard('petugas')->user()->level == 'petugas' ? 'text-center' : '' }}">
                                 <a href="/pembayaran/cetak/{{ $p->id_pembayaran }}" class="btn btn-success" target="_blank">Cetak</a>
                             </td>
+                            @if (Auth::guard('petugas')->user()->level == 'admin')
+                            <td>
+                            <form action="/pembayaran/hapus/{{ $p->id_pembayaran }}" method="post">
+                                @csrf
+                                @method('delete')
+                                <button type="submit" class="btn btn-danger" onclick="return confirm('Apakah anda yakin ingin menghapus transaksi?')">Hapus</button>
+                            </form>
+                        </td>
+                            @endif
                         </tr>
                     @else
                         <tr>
                             <td>{{ $b }}</td>
-                            <td colspan="3">
+                            <td colspan="4">
                                 <span class="btn">Belum Bayar ❌</span>
                             </td>
                         </tr>

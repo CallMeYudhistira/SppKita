@@ -21,6 +21,7 @@ return new class extends Migration
             $table->integer('id_spp');
             $table->integer('jumlah_bayar');
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('id_petugas')->references('id_petugas')->on('petugas')->onDelete('cascade');
             $table->foreign('nisn')->references('nisn')->on('siswa')->onDelete('cascade');

@@ -15,7 +15,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="col-form-label">NIS</label>
-                            <input type="text" class="form-control" name="nis" autocomplete="off" value="{{ $s->nis }}">
+                            <input type="text" class="form-control" name="nis" autocomplete="off" value="{{ $s->nis }}" readonly>
                         </div>
                         <div class="mb-3">
                             <label class="col-form-label">Nama</label>
