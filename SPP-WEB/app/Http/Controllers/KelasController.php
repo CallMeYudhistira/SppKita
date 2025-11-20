@@ -23,6 +23,11 @@ class KelasController extends Controller
     }
 
     public function tambah(Request $request){
+        $check = Kelas::where('nama_kelas', $request->nama_kelas)->where('kompetensi_keahlian', $request->kompetensi_keahlian)->first();
+        if($check){
+            return redirect()->back()->with('error', 'Kelas Tersebut Sudah Ada');
+        }
+
         Kelas::create($request->validate([
             'nama_kelas' => 'required',
             'kompetensi_keahlian' => 'required',
@@ -31,6 +36,11 @@ class KelasController extends Controller
     }
 
     public function ubah(Request $request, $id){
+        $check = Kelas::where('nama_kelas', $request->nama_kelas)->where('kompetensi_keahlian', $request->kompetensi_keahlian)->first();
+        if($check && $id != $check->id_kelas){
+            return redirect()->back()->with('error', 'Kelas Tersebut Sudah Ada');
+        }
+
         Kelas::find($id)->update($request->validate([
             'nama_kelas' => 'required',
             'kompetensi_keahlian' => 'required',
