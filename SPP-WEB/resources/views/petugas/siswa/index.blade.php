@@ -9,8 +9,21 @@
         <button type="button" class="btn btn-primary my-2" data-bs-toggle="modal" data-bs-target="#tambahData">Tambah</button>
         @include('petugas.siswa.modal.tambah')
         <form class="d-flex ms-auto my-2" action="/siswa/cari" method="get">
-            <input class="form-control me-2" type="search" name="keyword" placeholder="Cari nama 🔍" autocomplete="off"
-                @isset($keyword) value="{{ $keyword }}" @endisset />
+            <div class="mx-2">
+                <select name="id_kelas" class="form-select" style="width: 350px;" id="id_kelas">
+                    <option selected value="semua">Semua Kelas</option>
+                    @foreach ($kelas as $k)
+                        @php
+                            $nama_kelas = $k->nama_kelas . ' ' . $k->kompetensi_keahlian;
+                        @endphp
+                        <option value="{{ $k->id_kelas }}"
+                            @isset($id_kelas) {{ $id_kelas == $k->id_kelas ? 'selected' : '' }} @endisset>
+                            {{ $nama_kelas }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <input class="form-control me-2" type="search" name="keyword" placeholder="Cari nama siswa 🔍"
+                autocomplete="off" @isset($keyword) value="{{ $keyword }}" @endisset />
             <button class="btn btn-outline-primary" type="submit">Cari</button>
         </form>
     </div>
@@ -63,4 +76,12 @@
             </tbody>
         </table>
     </div>
+
+    <script>
+        const filter = document.getElementById('id_kelas');
+
+        filter.addEventListener('change', function() {
+            this.form.submit();
+        });
+    </script>
 @endsection

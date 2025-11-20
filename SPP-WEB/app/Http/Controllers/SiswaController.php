@@ -25,13 +25,14 @@ class SiswaController extends Controller
     public function cari(Request $request)
     {
         $keyword = $request->keyword;
-        if (!$keyword) {
-            return redirect('/siswa');
-        }
+        $id_kelas = $request->id_kelas;
         $siswa = Siswa::with('kelas')->with('spp')->where('nama', 'LIKE', '%' . $keyword . '%')->get();
+        if ($id_kelas != "semua") {
+            $siswa = $siswa->where('id_kelas', $id_kelas);
+        }
         $kelas = Kelas::all();
         $spp = Spp::all();
-        return view('petugas.siswa.index', compact('siswa', 'keyword', 'kelas', 'spp'));
+        return view('petugas.siswa.index', compact('siswa', 'keyword', 'kelas', 'spp', 'id_kelas'));
     }
 
     public function tambah(Request $request)
