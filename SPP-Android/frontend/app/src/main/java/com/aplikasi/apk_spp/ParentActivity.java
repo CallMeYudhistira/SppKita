@@ -48,7 +48,14 @@ public class ParentActivity extends AppCompatActivity {
                 Fragment selectedFragment = null;
 
                 if (item.getItemId() == R.id.payment){
-                    selectedFragment = new PembayaranFragment();
+                    if (Helper.level.equals("siswa")){
+                        selectedFragment = new DetailFragment();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("nisn", Helper.id);
+                        selectedFragment.setArguments(bundle);
+                    } else {
+                        selectedFragment = new PembayaranFragment();
+                    }
                 } else if (item.getItemId() == R.id.home){
                     selectedFragment = new HomeFragment();
                 }

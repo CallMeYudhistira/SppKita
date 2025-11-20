@@ -83,7 +83,7 @@ public class DetailFragment extends Fragment {
 
     String nisn = "", id_spp = "";
     ImageView ivLogout, ivBack;
-    TextView tvNis, tvNisn, tvNama, tvKelas, tvNominal, tvBulanDibayar, tvTotalDibayar, tvTunggakan;
+    TextView tvNis, tvNisn, tvNama, tvKelas, tvNominal, tvBulanDibayar, tvTotalDibayar, tvTunggakan, tvToobar;
     Button btnCetakKartu, btnBayar;
     ListView listView;
     List<Detail> detailList;
@@ -107,6 +107,12 @@ public class DetailFragment extends Fragment {
         tvTunggakan = view.findViewById(R.id.tvTunggakan);
         btnCetakKartu = view.findViewById(R.id.btnCetakKartu);
         btnBayar = view.findViewById(R.id.btnBayar);
+
+        if(Helper.level.equals("siswa")){
+            btnBayar.setVisibility(View.GONE);
+            tvToobar = view.findViewById(R.id.tvToolbar);
+            tvToobar.setText("Riwayat Pembayaran");
+        }
 
         if (getArguments() != null) {
             nisn = getArguments().getString("nisn", "");

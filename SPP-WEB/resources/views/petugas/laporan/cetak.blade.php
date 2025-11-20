@@ -80,7 +80,8 @@
 
 <body>
     <h2 class="center">LAPORAN PEMBAYARAN SPP</h2>
-    <h3 class="center">Kelas {{ $kelas->nama_kelas }} {{ $kelas->kompetensi_keahlian }}</h3>
+    <h3 class="center">SMK TI PEMBANGUNAN KOTA CIMAHI</h3>
+    <p class="center">Kelas {{ $kelas->nama_kelas }} {{ $kelas->kompetensi_keahlian }}</p>
     <br>
     <!-- Tabel Data Penjualan -->
     <table>

@@ -128,8 +128,9 @@
 
         <div class="header">
             <h1>KARTU SPP</h1>
-            <h2>SMK MAX LITERASI LEVEL BOSS</h2>
-            <p>123 Jl. Ilusi, Kota Fiksi<br>123-456-7890</p>
+            <h2>SMK TI PEMBANGUNAN CIMAHI</h2>
+            <p style="text-transform: capitalize;">JL. H. BAKAR NO. 18 B / JL. CISEUPAN kOTA CIMAHI</p>
+            <p style="margin-top: -5px;">085293939191</p>
         </div>
 
         <hr>
