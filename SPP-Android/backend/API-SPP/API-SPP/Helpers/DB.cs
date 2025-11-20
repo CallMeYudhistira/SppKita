@@ -20,5 +20,15 @@ namespace API_SPP.Helpers
                 return dt;
             }
         }
+
+        public int Execute(string sql)
+        {
+            using (var conn = new MySqlConnection(_connString))
+            using (var cmd = new MySqlCommand(sql, conn))
+            {
+                conn.Open();
+                return cmd.ExecuteNonQuery();
+            }
+        }
     }
 }

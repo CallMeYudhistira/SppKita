@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -34,7 +35,7 @@ import java.util.Map;
 
 public class BayarFragment extends Fragment {
 
-    String nisn, nis, nama, kelas;
+    String nisn, nis, nama, kelas, id_spp;
     Double nominal, total;
 
     TextView tvNis, tvNama, tvKelas, pilihBulan, tvTotal;
@@ -75,6 +76,7 @@ public class BayarFragment extends Fragment {
             nis = getArguments().getString("nis", "");
             nama = getArguments().getString("nama", "");
             kelas = getArguments().getString("kelas", "");
+            id_spp = getArguments().getString("id_spp", "");
             nominal = getArguments().getDouble("nominal", 0);
 
             tvNis.setText(nis);
@@ -152,6 +154,31 @@ public class BayarFragment extends Fragment {
             }
         });
 
+        btnBayar.setOnClickListener(v -> {
+            if (indexBulan.size() == 0) {
+                Helper.Alert("Peringatan", "Silakan pilih bulan dulu!", getContext());
+                return;
+            }
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setTitle("Konfirmasi Pembayaran");
+            builder.setMessage("Yakin ingin melakukan pembayaran?");
+            builder.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    kirimPembayaran();
+                }
+            });
+            builder.setNegativeButton("Batal", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            });
+            builder.show();
+        });
+
+
         return view;
     }
 
@@ -201,4 +228,66 @@ public class BayarFragment extends Fragment {
         RequestQueue queue = Volley.newRequestQueue(context);
         queue.add(request);
     }
+
+    private void kirimPembayaran() {
+        String url = Helper.URLPostPembayaran;
+
+        try {
+            JSONObject body = new JSONObject();
+            body.put("nisn", nisn);
+            body.put("id_spp", id_spp);
+            body.put("id_petugas", Helper.id);
+            body.put("nominal", nominal);
+
+            JSONArray arr = new JSONArray();
+            for (int i = 0; i < indexBulan.size(); i++) {
+                arr.put(bulanList.get(indexBulan.get(i)));
+            }
+            body.put("bulan", arr);
+
+            StringRequest request = new StringRequest(Request.Method.POST, url,
+                    response -> {
+                        Helper.Alert("Sukses", "Pembayaran berhasil disimpan!", getContext());
+
+                        DetailFragment detailFragment = new DetailFragment();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("nisn", nisn);
+                        detailFragment.setArguments(bundle);
+
+                        getActivity().getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.frame_container, detailFragment)
+                                .commit();
+                    },
+                    error -> {
+                        Helper.Alert("Error", "Gagal mengirim pembayaran", getContext());
+                    }) {
+
+                @Override
+                public byte[] getBody() {
+                    return body.toString().getBytes();
+                }
+
+                @Override
+                public String getBodyContentType() {
+                    return "application/json; charset=utf-8";
+                }
+
+                @Override
+                public Map<String, String> getHeaders() {
+                    Map<String, String> headers = new HashMap<>();
+                    headers.put("Accept", "application/json");
+                    headers.put("Content-Type", "application/json");
+                    headers.put("Authorization", "Bearer " + Helper.token);
+                    return headers;
+                }
+            };
+
+            Volley.newRequestQueue(getContext()).add(request);
+
+        } catch (Exception e) {
+            Helper.Alert("Error JSON", e.getMessage(), getContext());
+        }
+    }
+
 }

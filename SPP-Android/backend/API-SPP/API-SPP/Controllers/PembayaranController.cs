@@ -1,7 +1,9 @@
 ﻿using API_SPP.Helpers;
+using API_SPP.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Data;
 
@@ -9,7 +11,7 @@ namespace API_SPP.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class PembayaranController : ControllerBase
     {
         [HttpGet]
@@ -136,6 +138,44 @@ namespace API_SPP.Controllers
             }
 
             return Ok(new { bulan = bulanList });
+        }
+
+        [HttpPost("bayar")]
+        public IActionResult Store([FromBody] PembayaranRequest req)
+        {
+            DB db = new DB();
+            if (req == null || req.bulan == null || req.bulan.Count == 0)
+                return BadRequest(new { message = "Request tidak valid!" });
+
+            try
+            {
+                // Ambil tahun dari tabel spp
+                var dtTahun = db.Query($"SELECT tahun FROM spp WHERE id_spp = {req.id_spp} LIMIT 1");
+
+                if (dtTahun.Rows.Count == 0)
+                    return BadRequest(new { message = "ID SPP tidak ditemukan!" });
+
+                string tahun = dtTahun.Rows[0]["tahun"].ToString();
+
+                // Loop insert pembayaran
+                foreach (var b in req.bulan)
+                {
+                    string sql = $@"
+                    INSERT INTO pembayaran 
+                    (id_petugas, nisn, tgl_bayar, bulan_dibayar, tahun_dibayar, id_spp, jumlah_bayar, created_at)
+                    VALUES
+                    ({req.id_petugas}, '{req.nisn}', CURDATE(), '{b}', '{tahun}', {req.id_spp}, {req.nominal}, NOW())
+                ";
+
+                    db.Execute(sql);
+                }
+
+                return Ok(new { status = true, message = "Pembayaran berhasil disimpan!" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = ex.Message });
+            }
         }
     }
 }

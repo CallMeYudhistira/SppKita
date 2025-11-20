@@ -81,7 +81,7 @@ public class DetailFragment extends Fragment {
         }
     }
 
-    String nisn = "";
+    String nisn = "", id_spp = "";
     ImageView ivLogout, ivBack;
     TextView tvNis, tvNisn, tvNama, tvKelas, tvNominal, tvBulanDibayar, tvTotalDibayar, tvTunggakan;
     Button btnCetakKartu, btnBayar;
@@ -159,6 +159,7 @@ public class DetailFragment extends Fragment {
                 bundle.putString("nis", tvNis.getText().toString());
                 bundle.putString("nama", tvNama.getText().toString());
                 bundle.putString("kelas", tvKelas.getText().toString());
+                bundle.putString("id_spp", id_spp);
                 bundle.putDouble("nominal", nominal);
                 bayarFragment.setArguments(bundle);
 
@@ -181,6 +182,7 @@ public class DetailFragment extends Fragment {
                     JSONArray data = new JSONArray(jsonString);
                     JSONObject pembayaran = data.getJSONObject(0);
                     nominal = pembayaran.getDouble("nominal");
+                    id_spp = pembayaran.getString("id_spp");
 
                     tvNis.setText(pembayaran.getString("nis"));
                     tvNisn.setText(pembayaran.getString("nisn"));
