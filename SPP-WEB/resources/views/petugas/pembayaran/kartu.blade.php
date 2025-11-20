@@ -16,17 +16,14 @@
             padding: 30px;
         }
 
-        /* Membuat ukuran lebih kecil agar pas saat print */
         .card {
             background: white;
             width: 650px;
-            /* Diperkecil */
             margin: auto;
             padding: 25px;
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 
-            /* SKALA PRINT */
             transform: scale(0.90);
             transform-origin: top center;
         }
@@ -83,7 +80,6 @@
             text-align: center;
             font-size: 15px;
             border: 1px solid #c2c8e2;
-            /* ini wajib */
             -webkit-print-color-adjust: exact;
             print-color-adjust: exact;
         }
@@ -101,7 +97,6 @@
             width: 25%;
         }
 
-        /* AGAR TIDAK TERPOTONG SAAT PRINT */
         @media print {
             body {
                 padding: 0;

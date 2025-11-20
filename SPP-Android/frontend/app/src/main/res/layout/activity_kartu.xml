@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#E8EEF5">
+
+    <LinearLayout
+        android:id="@+id/sppView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="12dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/card_bg"
+            android:padding="12dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="KARTU SPP"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textSize="22sp"
+                android:textColor="#000"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="SMK TI PEMBANGUNAN CIMAHI"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:textColor="#000"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="JL. H. BAKAR NO. 18 B / JL. CISEUPAN KOTA CIMAHI\n085293939191"
+                android:gravity="center"
+                android:textSize="12sp"
+                android:textColor="#000"
+                android:paddingBottom="10dp"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#000"
+                android:layout_marginBottom="3dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="3dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textAlignment="textStart"
+                    android:text="NIS : "
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp"/>
+
+                <TextView
+                    android:id="@+id/tvNis"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="- NIS Siswa -"
+                    android:textAlignment="textStart"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="3dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Nama Siswa : "
+                    android:textAlignment="textStart"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp"/>
+
+                <TextView
+                    android:id="@+id/tvNama"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textAlignment="textStart"
+                    android:text="- Nama Siswa -"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="3dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Kelas : "
+                    android:textAlignment="textStart"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp"/>
+
+                <TextView
+                    android:id="@+id/tvKelas"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textAlignment="textStart"
+                    android:text="- Kelas Siswa -"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="6dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:background="#334CCF">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="30dp"
+                        android:gravity="center"
+                        android:text="Bulan"
+                        android:textColor="#fff"
+                        android:textSize="12sp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="30dp"
+                        android:text="Jumlah"
+                        android:gravity="center"
+                        android:textColor="#fff"
+                        android:textSize="12sp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="30dp"
+                        android:text="Tanggal Bayar"
+                        android:gravity="center"
+                        android:textColor="#fff"
+                        android:textSize="12sp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:text="Petugas"
+                        android:textColor="#fff"
+                        android:gravity="center"
+                        android:textSize="12sp"
+                        android:paddingRight="5dp"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
+
+                <ListView
+                    android:id="@+id/listView"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:divider="#00000000" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:layout_marginTop="20dp">
+
+        <LinearLayout
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:layout_margin="12dp">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:background="@drawable/btn_bg"
+                android:textColor="@color/white"
+                android:id="@+id/btnSave"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:backgroundTint="#4CAF50"
+                android:layout_marginRight="7dp"
+                android:text="Save" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:background="@drawable/btn_bg"
+                android:textColor="@color/white"
+                android:id="@+id/btnShare"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:backgroundTint="#3F51B5"
+                android:layout_marginLeft="7dp"
+                android:text="Share" />
+
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:background="@drawable/btn_bg"
+            android:textColor="@color/white"
+            android:id="@+id/btnClose"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="12dp"
+            android:backgroundTint="#000"
+            android:text="Selesai" />
+
+    </LinearLayout>
+
+</LinearLayout>

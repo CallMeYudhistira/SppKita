@@ -29,7 +29,7 @@ public class Helper {
         this.level = "";
     }
 
-    public static String IP = "http://10.109.96.197:5001/api/";
+    public static String IP = "http://192.168.0.117:5001/api/";
 
     public static String URLLogin = IP + "Auth/login";
     public static String URLHome = IP + "Home/";
@@ -38,6 +38,7 @@ public class Helper {
     public static String URLGetInvoice = IP + "Pembayaran/cetak/";
     public static String URLGetBulan = IP + "Pembayaran/bulan/";
     public static String URLPostPembayaran = IP + "Pembayaran/bayar";
+    public static String URLGetKartu = IP + "Pembayaran/kartu/";
 
     public static void Alert(String title, String message, Context context){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);

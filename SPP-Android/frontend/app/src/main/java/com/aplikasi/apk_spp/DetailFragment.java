@@ -173,6 +173,16 @@ public class DetailFragment extends Fragment {
             }
         });
 
+        btnCetakKartu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), KartuActivity.class);
+                intent.putExtra("nisn", nisn);
+                getContext().startActivity(intent);
+                getActivity().finish();
+            }
+        });
+
         return view;
     }
 

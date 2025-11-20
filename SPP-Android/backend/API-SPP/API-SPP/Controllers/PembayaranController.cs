@@ -177,5 +177,67 @@ namespace API_SPP.Controllers
                 return StatusCode(500, new { message = ex.Message });
             }
         }
+
+        [HttpGet("kartu/{nisn}")]
+        public IActionResult Kartu(string nisn)
+        {
+            DB db = new DB();
+
+            DataTable dtPembayaran = db.Query(
+                $"SELECT * FROM riwayat_pembayaran WHERE nisn = '{nisn}' LIMIT 1"
+            );
+            string pembayaran = JsonConvert.SerializeObject(dtPembayaran);
+
+            string queryBase =
+                $"SELECT p.id_pembayaran, p.bulan_dibayar, p.tgl_bayar, t.nama_petugas, p.jumlah_bayar " +
+                $"FROM pembayaran p " +
+                $"INNER JOIN petugas t ON p.id_petugas = t.id_petugas " +
+                $"WHERE p.nisn = '{nisn}'";
+
+            var bulan = new[] {
+                "Juli","Agustus","September","Oktober","November","Desember",
+                "Januari","Februari","Maret","April","Mei","Juni"
+            };
+
+            List<Dictionary<string, string>> hasil = new List<Dictionary<string, string>>();
+
+            foreach (var b in bulan)
+            {
+                DataTable dt = db.Query(queryBase + $" AND bulan_dibayar = '{b}'");
+                Dictionary<string, string> obj;
+
+                if (dt.Rows.Count == 0)
+                {
+                    obj = new Dictionary<string, string>
+                    {
+                        ["pesan"] = "Belum Bayar",
+                        ["jumlah_bayar"] = "0.0",
+                        ["bulan_dibayar"] = b,
+                        ["tgl_bayar"] = "",
+                        ["nama_petugas"] = "",
+                    };
+                }
+                else
+                {
+                    var row = dt.Rows[0];
+                    obj = new Dictionary<string, string>
+                    {
+                        ["pesan"] = "",
+                        ["jumlah_bayar"] = row["jumlah_bayar"].ToString(),
+                        ["bulan_dibayar"] = b,
+                        ["tgl_bayar"] = row["tgl_bayar"].ToString(),
+                        ["nama_petugas"] = row["nama_petugas"].ToString(),
+                    };
+                }
+
+                hasil.Add(obj);
+            }
+
+            return Ok(new
+            {
+                pembayaran,
+                hasil
+            });
+        }
     }
 }
