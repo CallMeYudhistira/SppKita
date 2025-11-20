@@ -88,6 +88,7 @@ public class DetailFragment extends Fragment {
     ListView listView;
     List<Detail> detailList;
     DetailAdapter adapter;
+    Double nominal;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -149,6 +150,22 @@ public class DetailFragment extends Fragment {
             }
         });
 
+        btnBayar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                BayarFragment bayarFragment = new BayarFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("nisn", nisn);
+                bundle.putString("nis", tvNis.getText().toString());
+                bundle.putString("nama", tvNama.getText().toString());
+                bundle.putString("kelas", tvKelas.getText().toString());
+                bundle.putDouble("nominal", nominal);
+                bayarFragment.setArguments(bundle);
+
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, bayarFragment).commit();
+            }
+        });
+
         return view;
     }
 
@@ -163,11 +180,13 @@ public class DetailFragment extends Fragment {
                     String jsonString = jsonObject.getString("pembayaran");
                     JSONArray data = new JSONArray(jsonString);
                     JSONObject pembayaran = data.getJSONObject(0);
+                    nominal = pembayaran.getDouble("nominal");
+
                     tvNis.setText(pembayaran.getString("nis"));
                     tvNisn.setText(pembayaran.getString("nisn"));
                     tvNama.setText(pembayaran.getString("nama"));
                     tvKelas.setText(pembayaran.getString("nama_kelas") + " " + pembayaran.getString("kompetensi_keahlian"));
-                    tvNominal.setText(format.format(pembayaran.getDouble("nominal")) + " - " + pembayaran.getString("tahun"));
+                    tvNominal.setText(format.format(nominal) + " - " + pembayaran.getString("tahun"));
                     tvBulanDibayar.setText(pembayaran.getString("bulan_dibayar") + " dari 12 Bulan");
                     if (pembayaran.getDouble("total_bayar") == 0) {
                         tvTotalDibayar.setText("0");

@@ -9,7 +9,7 @@ namespace API_SPP.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class PembayaranController : ControllerBase
     {
         [HttpGet]
@@ -109,6 +109,33 @@ namespace API_SPP.Controllers
             string invoice = JsonConvert.SerializeObject(dt);
 
             return Ok(new { invoice });
+        }
+
+        [HttpGet("bulan/{nisn}")]
+        public IActionResult GetBulan(string nisn)
+        {
+            DB db = new DB();
+
+            string queryBase = $"SELECT id_pembayaran, bulan_dibayar FROM pembayaran WHERE nisn = '{nisn}' AND deleted_at IS NULL";
+
+            var bulan = new[] {
+                "Juli","Agustus","September","Oktober","November","Desember",
+                "Januari","Februari","Maret","April","Mei","Juni"
+            };
+
+            List<string> bulanList = new List<string>();
+
+            foreach (var b in bulan)
+            {
+                DataTable dt = db.Query(queryBase + $" AND bulan_dibayar = '{b}'");
+
+                if (dt.Rows.Count == 0)
+                {
+                    bulanList.Add(b);
+                }
+            }
+
+            return Ok(new { bulan = bulanList });
         }
     }
 }
