@@ -5,8 +5,13 @@
     <meta charset="UTF-8">
     <title>Kartu SPP Siswa</title>
     <style>
+        @font-face {
+            font-family: 'Elms Sans';
+            src: url('{{ asset('font/static/ElmsSans-Regular.ttf') }}') format('truetype');
+        }
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Elms Sans', sans-serif;
             background-color: #e7f0f3;
             padding: 30px;
         }
