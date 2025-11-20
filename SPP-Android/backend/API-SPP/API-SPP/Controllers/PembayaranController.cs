@@ -99,5 +99,16 @@ namespace API_SPP.Controllers
                 hasil
             });
         }
+
+        [HttpGet("cetak/{id_pembayaran}")]
+        public IActionResult CetakInvoice(string id_pembayaran)
+        {
+            DB db = new DB();
+
+            DataTable dt = db.Query($"CALL cetak_invoice('{id_pembayaran}')");
+            string invoice = JsonConvert.SerializeObject(dt);
+
+            return Ok(new { invoice });
+        }
     }
 }

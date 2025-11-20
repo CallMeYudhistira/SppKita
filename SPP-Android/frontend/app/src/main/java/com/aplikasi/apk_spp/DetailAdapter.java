@@ -1,12 +1,15 @@
 package com.aplikasi.apk_spp;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -63,7 +66,14 @@ public class DetailAdapter extends BaseAdapter {
         btnCetak.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                
+                if(detail.getPesan().isEmpty()){
+                    Intent intent = new Intent(context, InvoiceActivity.class);
+                    intent.putExtra("id_pembayaran", detail.getId_pembayaran());
+                    context.startActivity(intent);
+                    ((Activity) context).finish();
+                } else {
+                    Toast.makeText(context, "Belum Bayar.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

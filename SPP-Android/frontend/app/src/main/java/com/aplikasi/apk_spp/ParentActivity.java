@@ -24,6 +24,21 @@ public class ParentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parent);
 
+        String nisn = getIntent().getStringExtra("nisn");
+        if (nisn != null) {
+            DetailFragment fragment = new DetailFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("nisn", nisn);
+            fragment.setArguments(bundle);
+
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.frame_container, fragment)
+                    .commit();
+
+            return;
+        }
+
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, new HomeFragment()).commit();
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.home);
