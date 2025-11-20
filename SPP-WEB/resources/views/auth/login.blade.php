@@ -7,6 +7,7 @@
     <title>Login | SPP</title>
 
     <link href="{{ asset('bootstrap/css/bootstrap.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
     <style>
         @font-face {
@@ -31,18 +32,17 @@
             background: #ffffff;
             border: 1px solid #e5e9f2;
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            text-align: center;
         }
 
         .login-title {
             font-size: 26px;
             font-weight: 600;
             margin-bottom: 5px;
-            text-align: center;
             color: #25396f;
         }
 
         .login-sub {
-            text-align: center;
             color: #6c757d;
             margin-bottom: 25px;
             font-size: 14px;
@@ -51,6 +51,20 @@
         .form-control {
             border-radius: 10px;
             height: 48px;
+        }
+
+        /* Toggle button yang elegan */
+        .toggle-btn {
+            border: none;
+            background: transparent;
+            font-size: 20px;
+            color: #6c757d;
+            padding: 0 12px;
+            cursor: pointer;
+        }
+
+        .toggle-btn:hover {
+            color: #3752f5;
         }
 
         .btn-login {
@@ -71,42 +85,46 @@
 
     <div class="login-card">
 
+        <!-- Logo berada di tengah -->
+        <img src="{{ asset('image/logo_ti.png') }}" alt="logo TI" style="width: 80px; margin-bottom: 20px;">
+
         <h2 class="login-title">SppKita</h2>
         <p class="login-sub">Silakan masuk untuk melanjutkan</p>
 
         <form action="/login/proses" method="post" class="mb-4">
             @csrf
 
-            <div class="mb-3">
+            <div class="mb-3 text-start">
                 <label class="form-label">Username</label>
-                <input type="text" name="username" class="form-control" placeholder="Masukkan username..." required
-                    autocomplete="off">
+                <input type="text" name="username" class="form-control" placeholder="Masukkan username..." required autocomplete="off">
             </div>
 
-            <div class="mb-3">
+            <div class="mb-3 text-start">
                 <label class="form-label">Password</label>
                 <div class="input-group">
                     <input type="password" name="password" id="password" class="form-control"
                         placeholder="Masukkan password..." required autocomplete="off">
 
-                    <button type="button" class="btn btn-outline-secondary" style="border: 1px solid #ddd;" id="togglePassword">
-                        👀
+                    <button type="button" class="toggle-btn" id="togglePassword" style="border: 1px solid #ddd; border-top-right-radius: 8px; border-bottom-right-radius: 8px;">
+                        <i class="bi bi-eye"></i>
                     </button>
                 </div>
             </div>
 
+            <!-- Script toggle password -->
             <script>
                 const password = document.getElementById("password");
                 const togglePassword = document.getElementById("togglePassword");
 
                 togglePassword.addEventListener("click", function() {
-                    const type = password.getAttribute("type") === "password" ? "text" : "password";
-                    password.setAttribute("type", type);
+                    const type = password.type === "password" ? "text" : "password";
+                    password.type = type;
 
-                    this.textContent = type === "password" ? "👀" : "🫣";
+                    const icon = this.querySelector("i");
+                    icon.classList.toggle("bi-eye");
+                    icon.classList.toggle("bi-eye-slash");
                 });
             </script>
-
 
             <button type="submit" class="btn btn-primary w-100 btn-login">Login</button>
         </form>

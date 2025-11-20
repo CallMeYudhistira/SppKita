@@ -7,6 +7,8 @@
     <title>@yield('title')</title>
 
     <link href="{{ asset('bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/sidebar.css') }}" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
     <style>
         @font-face {
@@ -21,10 +23,6 @@
         h1,
         h2 {
             font-weight: 600;
-        }
-
-        .nav-item {
-            margin: 0 0.8rem;
         }
 
         .nav-link {
@@ -51,7 +49,6 @@
             transform: translateY(-1px);
         }
 
-        /* Hilangkan border saat fokus / diklik */
         .dropdown-toggle:focus,
         .dropdown-toggle:active {
             box-shadow: none !important;
@@ -59,18 +56,22 @@
             border-color: transparent !important;
         }
 
-        /* Hilangkan border ketika dropdown terbuka */
         .dropdown.show .dropdown-toggle {
             border-color: transparent !important;
             box-shadow: none !important;
             background-color: transparent !important;
-            /* opsional */
         }
 
         button.logout:hover {
             background-color: #dc2345;
             color: white;
             transform: translateY(-1px);
+        }
+
+        #content {
+            position: relative;
+            height: 100vh;
+            width: calc(100% - 280px);
         }
     </style>
 </head>
@@ -79,8 +80,10 @@
 
     @yield('navbar')
 
-    <div class="container py-3">
+    <div class="container-fluid p-5" id="content" style="margin-left: 280px;">
         @yield('content')
+
+        <div style="height: 5vh;"></div>
     </div>
 
     <script src="{{ asset('bootstrap/js/bootstrap.bundle.min.js') }}"></script>
