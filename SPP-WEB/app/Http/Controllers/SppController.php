@@ -25,6 +25,11 @@ class SppController extends Controller
 
     public function tambah(Request $request)
     {
+        $check = Spp::where('tahun', $request->tahun)->first();
+        if($check){
+            return redirect()->back()->with('error', 'Tahun Tersebut Sudah Memiliki Nominal!');
+        }
+
         Spp::create($request->validate([
             'tahun' => 'required',
             'nominal' => 'required',
@@ -34,6 +39,11 @@ class SppController extends Controller
 
     public function ubah(Request $request, $id)
     {
+        $check = Spp::where('tahun', $request->tahun)->first();
+        if($check && $id != $check->id_spp){
+            return redirect()->back()->with('error', 'Tahun Tersebut Sudah Memiliki Nominal!');
+        }
+
         Spp::find($id)->update($request->validate([
             'tahun' => 'required',
             'nominal' => 'required',
