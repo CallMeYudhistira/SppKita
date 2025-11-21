@@ -25,6 +25,9 @@ public class ParentActivity extends AppCompatActivity {
         setContentView(R.layout.activity_parent);
 
         String nisn = getIntent().getStringExtra("nisn");
+
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+
         if (nisn != null) {
             DetailFragment fragment = new DetailFragment();
             Bundle bundle = new Bundle();
@@ -35,35 +38,37 @@ public class ParentActivity extends AppCompatActivity {
                     .beginTransaction()
                     .replace(R.id.frame_container, fragment)
                     .commit();
-
-            return;
+            bottomNavigationView.setSelectedItemId(R.id.payment);
+        } else {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.frame_container, new HomeFragment())
+                    .commit();
+            bottomNavigationView.setSelectedItemId(R.id.home);
         }
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, new HomeFragment()).commit();
-        bottomNavigationView = findViewById(R.id.bottomNavigationView);
-        bottomNavigationView.setSelectedItemId(R.id.home);
-        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Fragment selectedFragment = null;
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            Fragment selectedFragment = null;
 
-                if (item.getItemId() == R.id.payment){
-                    if (Helper.level.equals("siswa")){
-                        selectedFragment = new DetailFragment();
-                        Bundle bundle = new Bundle();
-                        bundle.putString("nisn", Helper.id);
-                        selectedFragment.setArguments(bundle);
-                    } else {
-                        selectedFragment = new PembayaranFragment();
-                    }
-                } else if (item.getItemId() == R.id.home){
-                    selectedFragment = new HomeFragment();
+            if (item.getItemId() == R.id.payment) {
+                if (Helper.level.equals("siswa")) {
+                    selectedFragment = new DetailFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("nisn", Helper.id);
+                    selectedFragment.setArguments(bundle);
+                } else {
+                    selectedFragment = new PembayaranFragment();
                 }
-
-                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, selectedFragment).commit();
-
-                return true;
+            } else if (item.getItemId() == R.id.home) {
+                selectedFragment = new HomeFragment();
             }
+
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.frame_container, selectedFragment)
+                    .commit();
+
+            return true;
         });
     }
 }

@@ -24,7 +24,6 @@
                 android:layout_height="wrap_content"
                 android:text="KARTU SPP"
                 android:gravity="center"
-                android:textStyle="bold"
                 android:textSize="22sp"
                 android:textColor="#000"/>
 
@@ -33,7 +32,6 @@
                 android:layout_height="wrap_content"
                 android:text="SMK TI PEMBANGUNAN CIMAHI"
                 android:gravity="center"
-                android:textStyle="bold"
                 android:textSize="16sp"
                 android:textColor="#000"/>
 
@@ -155,8 +153,7 @@
                         android:gravity="center"
                         android:text="Bulan"
                         android:textColor="#fff"
-                        android:textSize="12sp"
-                        android:textStyle="bold"/>
+                        android:textSize="12sp"/>
 
                     <TextView
                         android:layout_width="0dp"
@@ -165,8 +162,7 @@
                         android:text="Jumlah"
                         android:gravity="center"
                         android:textColor="#fff"
-                        android:textSize="12sp"
-                        android:textStyle="bold"/>
+                        android:textSize="12sp"/>
 
                     <TextView
                         android:layout_width="0dp"
@@ -175,8 +171,7 @@
                         android:text="Tanggal Bayar"
                         android:gravity="center"
                         android:textColor="#fff"
-                        android:textSize="12sp"
-                        android:textStyle="bold"/>
+                        android:textSize="12sp"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -185,8 +180,7 @@
                         android:textColor="#fff"
                         android:gravity="center"
                         android:textSize="12sp"
-                        android:paddingRight="5dp"
-                        android:textStyle="bold"/>
+                        android:paddingRight="5dp"/>
 
                 </LinearLayout>
 
