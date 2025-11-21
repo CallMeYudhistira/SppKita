@@ -32,7 +32,6 @@
         <table class="table border-top mt-4">
             <thead>
                 <tr>
-                    <th scope="col" style="width: 20%;">#</th>
                     <th scope="col" style="width: 20%;">NISN</th>
                     <th scope="col" style="width: 20%;">NIS</th>
                     <th scope="col" style="width: 20%;">Nama</th>
@@ -47,7 +46,6 @@
             <tbody>
                 @foreach ($siswa as $i => $s)
                     <tr>
-                        <th scope="row">{{ $i + 1 }}</th>
                         <td>{{ $s->nisn }}</td>
                         <td>{{ $s->nis }}</td>
                         <td>{{ $s->nama }}</td>

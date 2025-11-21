@@ -62,5 +62,44 @@
             </div>
         </div>
 
+        @if (Auth::guard('petugas')->user()->level == 'admin')
+        <div class="card mt-4 shadow-sm">
+            <div class="card-header bg-success text-white">
+                Log Aktifitas
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Waktu</th>
+                            <th>Nama</th>
+                            <th>Hak Akses</th>
+                            <th>Aktifitas</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($logs as $row)
+                            <tr>
+                                <td>{{ $row->created_at->diffForHumans() }}</td>
+                                @if ($row->nisn && !$row->id_petugas)
+                                    <td>{{ $row->siswa->nama }}</td>
+                                    <td>Siswa</td>
+                                    <td>{{ $row->aktifitas }}</td>
+                                @elseif (!$row->nisn && $row->id_petugas)
+                                    <td>{{ $row->petugas->nama_petugas }}</td>
+                                    <td style="text-transform: capitalize;">{{ $row->petugas->level }}</td>
+                                    <td>{{ $row->aktifitas }}</td>
+                                @elseif ($row->nisn && $row->id_petugas)
+                                    <td>{{ $row->petugas->nama_petugas }}</td>
+                                    <td style="text-transform: capitalize;">{{ $row->petugas->level }}</td>
+                                    <td>{{ $row->aktifitas }} {{ $row->siswa->nama }}</td>
+                                @endif
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        @endif
     </div>
 @endsection

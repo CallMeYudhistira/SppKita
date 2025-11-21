@@ -6,7 +6,7 @@ namespace API_SPP.Helpers
     public class DB
     {
         private readonly string _connString =
-            "server=127.0.0.1;username=root;password=;database=db_spp";
+            "server=127.0.0.1;username=root;password=;database=db_spp_udis";
 
         public DataTable Query(string sql)
         {

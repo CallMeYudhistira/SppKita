@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Log;
 use App\Models\Pembayaran;
 use App\Models\Siswa;
 use Illuminate\Http\Request;
@@ -15,6 +16,7 @@ class HomeController extends Controller
         $totalSiswa = Siswa::count();
         $totalTransaksi = Pembayaran::count();
         $totalPembayaranHariIni = Pembayaran::whereDate('tgl_bayar', now()->toDateString())->sum('jumlah_bayar');
+        $logs = Log::with('petugas')->with('siswa')->latest()->take(5)->get();
 
         $riwayat = Pembayaran::latest()->take(5)->get();
 
@@ -22,7 +24,8 @@ class HomeController extends Controller
             'totalSiswa',
             'totalTransaksi',
             'totalPembayaranHariIni',
-            'riwayat'
+            'riwayat',
+            'logs'
         ));
     }
 

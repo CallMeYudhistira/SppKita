@@ -24,8 +24,7 @@
 
         <TextView
             android:id="@+id/tvJumlah"
-            android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_width="100dp"
             android:layout_height="22dp"
             android:gravity="center"
             android:textAlignment="textStart"
@@ -34,8 +33,7 @@
 
         <TextView
             android:id="@+id/tvTanggal"
-            android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_width="90dp"
             android:layout_height="22dp"
             android:gravity="center"
             android:textAlignment="textStart"
@@ -44,12 +42,15 @@
 
         <TextView
             android:id="@+id/tvPetugas"
-            android:layout_width="wrap_content"
+            android:layout_width="70dp"
             android:layout_height="22dp"
             android:gravity="center"
             android:textAlignment="textStart"
             android:text="Petugas"
-            android:textSize="12sp"/>
+            android:textSize="12sp"
+            android:scrollHorizontally="true"
+            android:ellipsize="end"
+            android:maxLines="1"/>
 
     </LinearLayout>
 

@@ -17,40 +17,70 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        // Kelas 12
         Kelas::create([
-            'nama_kelas' => '12 A',
+            'nama_kelas' => '12',
             'kompetensi_keahlian' => 'Rekayasa Perangkat Lunak',
+        ]);
+        
+        Kelas::create([
+            'nama_kelas' => '12',
+            'kompetensi_keahlian' => 'Teknik Komputer dan Jaringan',
+        ]);
+
+        // Kelas 11
+        Kelas::create([
+            'nama_kelas' => '11',
+            'kompetensi_keahlian' => 'Rekayasa Perangkat Lunak',
+        ]);
+        
+        Kelas::create([
+            'nama_kelas' => '11',
+            'kompetensi_keahlian' => 'Teknik Komputer dan Jaringan',
+        ]);
+        
+        Kelas::create([
+            'nama_kelas' => '11',
+            'kompetensi_keahlian' => 'Teknik Elektronika Industri',
+        ]);
+
+        // Kelas 10
+        Kelas::create([
+            'nama_kelas' => '10',
+            'kompetensi_keahlian' => 'Rekayasa Perangkat Lunak',
+        ]);
+        
+        Kelas::create([
+            'nama_kelas' => '10',
+            'kompetensi_keahlian' => 'Teknik Komputer dan Jaringan',
+        ]);
+        
+        Kelas::create([
+            'nama_kelas' => '10',
+            'kompetensi_keahlian' => 'Teknik Elektronika Industri',
+        ]);
+        
+        Kelas::create([
+            'nama_kelas' => '10',
+            'kompetensi_keahlian' => 'Teknik Pendingin dan Tata Udara',
+        ]);
+
+        Spp::create([
+            'tahun' => '2023',
+            'nominal' => '200000'
+        ]);
+
+        Spp::create([
+            'tahun' => '2024',
+            'nominal' => '220000'
         ]);
 
         Spp::create([
             'tahun' => '2025',
-            'nominal' => '200000'
+            'nominal' => '250000'
         ]);
 
-        Siswa::create([
-            'nisn' => '0012345678',
-            'nis' => '10123456',
-            'nama' => 'siswa',
-            'id_kelas' => '1',
-            'alamat' => '-',
-            'no_telp' => '08123456789',
-            'id_spp' => '1',
-            'username' => 'siswa',
-            'password' => Hash::make('siswa'),
-        ]);
-
-        Petugas::create([
-            'username' => 'admin',
-            'password' => Hash::make('admin'),
-            'nama_petugas' => 'admin',
-            'level' => 'admin',
-        ]);
-
-        Petugas::create([
-            'username' => 'petugas',
-            'password' => Hash::make('petugas'),
-            'nama_petugas' => 'petugas',
-            'level' => 'petugas',
-        ]);
+        Siswa::factory(50)->create();
+        Petugas::factory(20)->create();
     }
 }

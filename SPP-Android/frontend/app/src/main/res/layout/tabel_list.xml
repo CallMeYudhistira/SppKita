@@ -32,13 +32,15 @@
 
         <TextView
             android:id="@+id/tvPetugas"
-            android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_width="70dp"
             android:layout_height="35dp"
             android:gravity="center"
             android:text="Nama Petugas"
             android:textColor="@android:color/black"
-            android:textSize="12sp"/>
+            android:textSize="12sp"
+            android:scrollHorizontally="true"
+            android:ellipsize="end"
+            android:maxLines="1"/>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnCetak"

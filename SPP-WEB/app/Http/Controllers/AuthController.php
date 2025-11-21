@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Log;
 use App\Models\Petugas;
 use App\Models\Siswa;
-use Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -28,12 +29,24 @@ class AuthController extends Controller
         if ($petugas && Hash::check($request->password, $petugas->password)) {
             Auth::guard('petugas')->login($petugas);
             $request->session()->regenerate();
+
+            Log::create([
+                'aktifitas' => 'Melakukan login',
+                'id_petugas' => Auth::guard('petugas')->user()->id_petugas,
+            ]);
+
             return redirect('petugas/beranda');
         }
 
         if ($siswa && Hash::check($request->password, $siswa->password)) {
             Auth::guard('siswa')->login($siswa);
             $request->session()->regenerate();
+
+            Log::create([
+                'aktifitas' => 'Melakukan login',
+                'nisn' => Auth::guard('siswa')->user()->nisn,
+            ]);
+
             return redirect('siswa/beranda');
         }
 
@@ -43,10 +56,20 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         if (Auth::guard('petugas')->check()) {
+            Log::create([
+                'aktifitas' => 'Melakukan logout',
+                'id_petugas' => Auth::guard('petugas')->user()->id_petugas,
+            ]);
+
             Auth::guard('petugas')->logout();
         }
 
         if (Auth::guard('siswa')->check()) {
+            Log::create([
+                'aktifitas' => 'Melakukan logout',
+                'nisn' => Auth::guard('siswa')->user()->nisn,
+            ]);
+
             Auth::guard('siswa')->logout();
         }
 

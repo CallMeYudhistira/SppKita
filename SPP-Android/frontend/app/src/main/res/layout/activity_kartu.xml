@@ -156,8 +156,7 @@
                         android:textSize="12sp"/>
 
                     <TextView
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
+                        android:layout_width="100dp"
                         android:layout_height="30dp"
                         android:text="Jumlah"
                         android:gravity="center"
@@ -165,8 +164,7 @@
                         android:textSize="12sp"/>
 
                     <TextView
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
+                        android:layout_width="90dp"
                         android:layout_height="30dp"
                         android:text="Tanggal Bayar"
                         android:gravity="center"
@@ -174,7 +172,7 @@
                         android:textSize="12sp"/>
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="70dp"
                         android:layout_height="30dp"
                         android:text="Petugas"
                         android:textColor="#fff"
@@ -198,51 +196,42 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="10dp"
-        android:layout_marginTop="20dp">
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:layout_margin="10dp">
 
-        <LinearLayout
-            android:layout_width="300dp"
+        <androidx.appcompat.widget.AppCompatButton
+            android:background="@drawable/btn_bg"
+            android:textColor="@color/white"
+            android:id="@+id/btnSave"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_gravity="center"
-            android:layout_margin="12dp">
+            android:backgroundTint="#4CAF50"
+            android:layout_marginRight="7dp"
+            android:text="Save" />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:background="@drawable/btn_bg"
-                android:textColor="@color/white"
-                android:id="@+id/btnSave"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:backgroundTint="#4CAF50"
-                android:layout_marginRight="7dp"
-                android:text="Save" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:background="@drawable/btn_bg"
-                android:textColor="@color/white"
-                android:id="@+id/btnShare"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:backgroundTint="#3F51B5"
-                android:layout_marginLeft="7dp"
-                android:text="Share" />
-
-        </LinearLayout>
+        <androidx.appcompat.widget.AppCompatButton
+            android:background="@drawable/btn_bg"
+            android:textColor="@color/white"
+            android:id="@+id/btnShare"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="#3F51B5"
+            android:layout_marginLeft="7dp"
+            android:text="Share" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:background="@drawable/btn_bg"
             android:textColor="@color/white"
             android:id="@+id/btnClose"
-            android:layout_width="300dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginHorizontal="12dp"

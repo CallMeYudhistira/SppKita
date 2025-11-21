@@ -106,7 +106,7 @@
                         placeholder="Masukkan password..." required autocomplete="off">
 
                     <button type="button" class="toggle-btn" id="togglePassword" style="border: 1px solid #ddd; border-top-right-radius: 8px; border-bottom-right-radius: 8px;">
-                        <i class="bi bi-eye"></i>
+                        <i class="bx bx-show"></i>
                     </button>
                 </div>
             </div>
@@ -121,14 +121,26 @@
                     password.type = type;
 
                     const icon = this.querySelector("i");
-                    icon.classList.toggle("bi-eye");
-                    icon.classList.toggle("bi-eye-slash");
+                    icon.classList.toggle("bx-show");
+                    icon.classList.toggle("bx-hide");
                 });
             </script>
 
             <button type="submit" class="btn btn-primary w-100 btn-login">Login</button>
         </form>
     </div>
+
+    @if ($pesan = Session::get('success'))
+        <script>
+            alert('{{ $pesan }}');
+        </script>
+    @endif
+
+    @if ($pesan = Session::get('error'))
+        <script>
+            alert('{{ $pesan }}');
+        </script>
+    @endif
 
 </body>
 
