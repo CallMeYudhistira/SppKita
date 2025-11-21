@@ -123,11 +123,7 @@ public class PembayaranFragment extends Fragment {
                     .setMessage("Apakah anda ingin logout?")
                     .setPositiveButton("Ya", (dialog, i) -> {
                         Helper helper = new Helper();
-                        helper.flush();
-
-                        Intent intent = new Intent(getActivity(), MainActivity.class);
-                        startActivity(intent);
-                        getActivity().finish();
+                        helper.logout(getContext());
                     })
                     .setNegativeButton("Tidak", (dialog, i) -> dialog.dismiss())
                     .show();

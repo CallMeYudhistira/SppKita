@@ -116,11 +116,7 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Helper helper = new Helper();
-                        helper.flush();
-
-                        Intent intent = new Intent(getActivity(), MainActivity.class);
-                        startActivity(intent);
-                        getActivity().finish();
+                        helper.logout(getContext());
                     }
                 });
                 builder.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {

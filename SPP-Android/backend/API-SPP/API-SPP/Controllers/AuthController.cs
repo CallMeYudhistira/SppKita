@@ -48,6 +48,8 @@ public class AuthController : ControllerBase
             }
 
             string token = GenerateJwtToken(dto.Username);
+            string nisn = dtSiswa.Rows[0]["nisn"].ToString();
+            db.Execute($"INSERT INTO logs VALUES(NULL, 'Melakukan login', NULL, '{nisn}', NOW(), NOW())");
 
             return Ok(new
             {
@@ -70,6 +72,8 @@ public class AuthController : ControllerBase
             }
 
             string token = GenerateJwtToken(dto.Username);
+            string id_petugas = dtPetugas.Rows[0]["id_petugas"].ToString();
+            db.Execute($"INSERT INTO logs VALUES(NULL, 'Melakukan login', '{id_petugas}', NULL, NOW(), NOW())");
 
             return Ok(new
             {
@@ -80,6 +84,30 @@ public class AuthController : ControllerBase
         }
 
         return Unauthorized(new { message = "Username Tidak Ditemukan" });
+    }
+
+    public class LogoutRequest
+    {
+        public string level { get; set; }
+        public string id { get; set; }
+    }
+
+    [HttpPost("logout")]
+    public IActionResult Logout([FromBody] LogoutRequest data)
+    {
+        DB db = new DB();
+
+        if (data.level == "admin" || data.level == "petugas")
+        {
+            db.Execute($"INSERT INTO logs VALUES(NULL, 'Melakukan logout', '{data.id}', NULL, NOW(), NOW())");
+        }
+
+        if (data.level == "siswa")
+        {
+            db.Execute($"INSERT INTO logs VALUES(NULL, 'Melakukan logout', NULL, '{data.id}', NOW(), NOW())");
+        }
+
+        return Ok(new { message = "Logout berhasil!" });
     }
 
     private string GenerateJwtToken(string username)
