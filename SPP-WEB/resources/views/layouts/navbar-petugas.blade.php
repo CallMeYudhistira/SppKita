@@ -13,6 +13,19 @@
     </header>
 
     <div class="menu-bar">
+
+        <hr class="divider" style="margin-bottom: 1.3rem;">
+
+        <div class="profile-bar">
+            <div class="profile-info">
+                <i class='bx bx-user-circle icon profile-icon'></i>
+                <div class="profile-text">
+                    <span class="profile-name">{{ Auth::guard('petugas')->user()->nama_petugas }}</span>
+                    <span class="profile-level">{{ ucfirst(Auth::guard('petugas')->user()->level) }}</span>
+                </div>
+            </div>
+        </div>
+
         <div class="menu">
             <ul class="menu-links">
 

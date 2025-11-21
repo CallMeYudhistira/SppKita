@@ -13,6 +13,19 @@
     </header>
 
     <div class="menu-bar">
+
+        <hr class="divider" style="margin-bottom: 1.3rem;">
+
+        <div class="profile-bar">
+            <div class="profile-info">
+                <i class='bx bx-user-circle icon profile-icon'></i>
+                <div class="profile-text">
+                    <span class="profile-name">{{ Auth::guard('siswa')->user()->nama }}</span>
+                    <span class="profile-level">Siswa</span>
+                </div>
+            </div>
+        </div>
+
         <div class="menu">
             <ul class="menu-links">
 

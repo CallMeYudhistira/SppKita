@@ -181,3 +181,39 @@ body {
 #logoutBtn:hover {
     cursor: pointer;
 }
+
+.profile-bar {
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    background: #fefefe;
+    border-radius: 0 8px 8px 0;
+    border: 1px solid #eee;
+}
+
+.profile-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.profile-icon {
+    font-size: 32px;
+    color: #666;
+}
+
+.profile-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+.profile-name {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.profile-level {
+    font-size: 13px;
+    opacity: 0.8;
+}
