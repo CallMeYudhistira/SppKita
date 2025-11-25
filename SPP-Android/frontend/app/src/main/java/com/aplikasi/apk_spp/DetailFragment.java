@@ -107,11 +107,13 @@ public class DetailFragment extends Fragment {
         tvTunggakan = view.findViewById(R.id.tvTunggakan);
         btnCetakKartu = view.findViewById(R.id.btnCetakKartu);
         btnBayar = view.findViewById(R.id.btnBayar);
+        ivBack = view.findViewById(R.id.ivBack);
 
         if(Helper.level.equals("siswa")){
             btnBayar.setVisibility(View.GONE);
             tvToobar = view.findViewById(R.id.tvToolbar);
             tvToobar.setText("Riwayat Pembayaran");
+            ivBack.setVisibility(View.GONE);
         }
 
         if (getArguments() != null) {

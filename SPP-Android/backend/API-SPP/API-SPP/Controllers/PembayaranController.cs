@@ -149,7 +149,6 @@ namespace API_SPP.Controllers
 
             try
             {
-                // Ambil tahun dari tabel spp
                 var dtTahun = db.Query($"SELECT tahun FROM spp WHERE id_spp = {req.id_spp} LIMIT 1");
 
                 if (dtTahun.Rows.Count == 0)
@@ -157,15 +156,13 @@ namespace API_SPP.Controllers
 
                 string tahun = dtTahun.Rows[0]["tahun"].ToString();
 
-                // Loop insert pembayaran
                 foreach (var b in req.bulan)
                 {
                     string sql = $@"
                     INSERT INTO pembayaran 
                     (id_petugas, nisn, tgl_bayar, bulan_dibayar, tahun_dibayar, id_spp, jumlah_bayar, created_at)
                     VALUES
-                    ({req.id_petugas}, '{req.nisn}', CURDATE(), '{b}', '{tahun}', {req.id_spp}, {req.nominal}, NOW())
-                ";
+                    ({req.id_petugas}, '{req.nisn}', CURDATE(), '{b}', '{tahun}', {req.id_spp}, {req.nominal}, NOW())";
 
                     db.Execute(sql);
                 }

@@ -16,16 +16,25 @@ class HomeController extends Controller
         $totalSiswa = Siswa::count();
         $totalTransaksi = Pembayaran::count();
         $totalPembayaranHariIni = Pembayaran::whereDate('tgl_bayar', now()->toDateString())->sum('jumlah_bayar');
-        $logs = Log::with('petugas')->with('siswa')->latest()->take(5)->get();
+        $logs = Log::with('petugas')->with('siswa')->latest()->take(10)->get();
+        $pembayaran = Pembayaran::whereYear('tgl_bayar', now()->format('Y'))->get();
 
         $riwayat = Pembayaran::latest()->take(5)->get();
+
+        $color = ['#acf', '#aed', '#eba', '#fea', '#f49', '#abc', '#cba', '#bac', '#cab', '#edc', '#efa', '#fce'];
+        $bulan = ['Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni'];
+        $bulanNomer = ['07', '08', '09', '10', '11', '12', '01', '02', '03', '04', '05', '06'];
 
         return view('petugas.index', compact(
             'totalSiswa',
             'totalTransaksi',
             'totalPembayaranHariIni',
             'riwayat',
-            'logs'
+            'logs',
+            'bulan',
+            'color',
+            'pembayaran',
+            'bulanNomer'
         ));
     }
 

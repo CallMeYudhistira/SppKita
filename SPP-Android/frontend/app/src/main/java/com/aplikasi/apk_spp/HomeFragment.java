@@ -140,7 +140,7 @@ public class HomeFragment extends Fragment {
                     JSONObject jsonObject = new JSONObject(response);
                     NumberFormat format = NumberFormat.getCurrencyInstance(new Locale("ID", "id"));
 
-                    if(Helper.level.equals("siswa")){
+                    if (Helper.level.equals("siswa")) {
                         Double nominal_spp = jsonObject.getDouble("nominal_spp");
                         Double total_sudah_bayar = jsonObject.getDouble("total_sudah_bayar");
                         Double total_tunggakan = jsonObject.getDouble("total_tunggakan");

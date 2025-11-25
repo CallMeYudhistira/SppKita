@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Kelas;
 use App\Models\Pembayaran;
+use App\Models\Petugas;
 use App\Models\Siswa;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
@@ -49,8 +50,9 @@ class LaporanController extends Controller
         $bulan = ['Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni'];
         $totalKelas = 0;
         $tunggakanKelas = 0;
+        $keuangan = Petugas::where('level', 'admin')->orderBy('created_at', 'asc')->first()->nama_petugas;
 
-        $pdf = Pdf::loadView('petugas.laporan.cetak', compact('siswa', 'bulan', 'pembayaran', 'kelas', 'totalKelas', 'tunggakanKelas'))->setPaper('a4', 'landscape');
+        $pdf = Pdf::loadView('petugas.laporan.cetak', compact('siswa', 'bulan', 'pembayaran', 'kelas', 'totalKelas', 'tunggakanKelas', 'keuangan'))->setPaper('a4', 'landscape');
         return $pdf->stream('invoice.pdf');
     }
 }

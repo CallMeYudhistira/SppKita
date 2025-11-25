@@ -52,7 +52,7 @@
                     @endforeach
                     @php
                         $paidMonths = $pembayaran->where('nisn', $s->nisn)->pluck('bulan_dibayar')->toArray();
-                        $sudahLunas = count($paidMonths) >= 12;
+                        $sudahLunas = count($paidMonths) == 12;
                     @endphp
                     <td class="text-center">
                         @if ($sudahLunas)
