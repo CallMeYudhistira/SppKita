@@ -34,32 +34,50 @@
 
         </div>
 
-        <div class="card mt-4 shadow-sm">
-            <div class="card-header bg-primary text-white">
-                Riwayat Pembayaran Terbaru
+        <div class="row mt-4">
+
+            <div class="col-md-8">
+
+                <div class="card shadow-sm" style="height: 280;">
+                    <div class="card-header bg-primary text-white">
+                        Riwayat Pembayaran Terbaru
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>NISN</th>
+                                    <th>Tanggal</th>
+                                    <th>Bulan Dibayar</th>
+                                    <th>Jumlah</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($riwayat as $row)
+                                    <tr>
+                                        <td>{{ $row->nisn }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($row->tgl_bayar)->isoFormat('dddd, D MMMM Y') }}</td>
+                                        <td>{{ $row->bulan_dibayar }} {{ $row->tahun_dibayar }}</td>
+                                        <td>Rp {{ number_format($row->jumlah_bayar) }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-            <div class="card-body">
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>NISN</th>
-                            <th>Tanggal</th>
-                            <th>Bulan Dibayar</th>
-                            <th>Jumlah</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($riwayat as $row)
-                            <tr>
-                                <td>{{ $row->nisn }}</td>
-                                <td>{{ \Carbon\Carbon::parse($row->tgl_bayar)->isoFormat('dddd, D MMMM Y') }}</td>
-                                <td>{{ $row->bulan_dibayar }} {{ $row->tahun_dibayar }}</td>
-                                <td>Rp {{ number_format($row->jumlah_bayar) }}</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+
+            <div class="col-md-4">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-warning">
+                        Status Pembayaran SPP Bulan Ini
+                    </div>
+                    <div class="card-body">
+                        <div id="chartPie"></div>
+                    </div>
+                </div>
             </div>
+
         </div>
 
         <div class="card mt-4 shadow-sm">
@@ -67,31 +85,7 @@
                 Data Pembayaran Perbulan
             </div>
             <div class="card-body">
-                {{-- <canvas id="chartSPP"></canvas> --}}
-                <div class="d-flex" style="width: fit-content; margin: 6px auto;">
-                    @foreach ($bulan as $b)
-                        <div style="width: 90px; margin: 0 8px;" class="text-center">{{ $b }}</div>
-                    @endforeach
-                </div>
-                <div class="d-flex" style="width: fit-content; margin: 0 auto;">
-                    @foreach ($bulanNomer as $i => $b)
-                    @php
-                        $data = $pembayaran->whereBetween('tgl_bayar', [now()->format('Y') . '-' . $b . '-01', now()->format('Y') . '-' . $b . '-31'])->count();
-                    @endphp
-                        <div style="width: 90px; height: {{ $data > 0 ? $data . 'rem' : '0px' }}; background-color: {{ $color[$i] }}; margin: 0 8px; max-height: 400px;"></div>
-                    @php
-                        $i++;
-                    @endphp
-                    @endforeach
-                </div>
-                <div class="d-flex" style="width: fit-content; margin: 6px auto;">
-                    @foreach ($bulanNomer as $b)
-                    @php
-                        $data = $pembayaran->whereBetween('tgl_bayar', [now()->format('Y') . '-' . $b . '-01', now()->format('Y') . '-' . $b . '-31'])->count();
-                    @endphp
-                        <div style="width: 90px; margin: 3px 8px;" class="text-center">{{ $data }}</div>
-                    @endforeach
-                </div>
+                <div id="chart"></div>
             </div>
         </div>
 
@@ -135,4 +129,91 @@
             </div>
         @endif
     </div>
+
+    <script>
+        var options = {
+            series: [{
+                name: 'Total Pembayaran',
+                data: @json($totalBayarPerBulan)
+            }],
+            chart: {
+                height: 350,
+                type: 'bar',
+            },
+            colors: ['#2244FF', '#FF4422', '#22FF44', '#22BBAA', '#8AC23B', '#CBDFAB', 'FFFF00', '00FFFF', 'FF00FF'],
+            plotOptions: {
+                bar: {
+                    columnWidth: '45%',
+                    distributed: true,
+                }
+            },
+            dataLabels: {
+                enabled: false
+            },
+            legend: {
+                show: false
+            },
+            xaxis: {
+                categories: @json($bulan),
+                labels: {
+                    style: {
+                        colors: ['#000000'],
+                        fontSize: '12px',
+                        fontFamily: 'Elms Sans'
+                    }
+                }
+            },
+            yaxis: {
+                labels: {
+                    formatter: function(value) {
+                        return value.toLocaleString('id-ID', {
+                            style: "currency",
+                            currency: "IDR"
+                        });
+                    },
+                    style: {
+                        fontFamily: 'Elms Sans'
+                    }
+                },
+            },
+        };
+
+        var chart = new ApexCharts(document.querySelector("#chart"), options);
+        chart.render();
+    </script>
+
+    <script>
+        var pieOptions = {
+            series: [{{ $sudahBayar }}, {{ $belumBayar }}],
+            chart: {
+                width: 380,
+                height: 263,
+                type: 'pie',
+                fontFamily: 'Elms Sans', // 👈 font utama chart
+            },
+            labels: ['Sudah Bayar', 'Belum Bayar'], // 👈 perbaikan struktur
+            colors: ['#4CAF50', '#F44336'],
+            legend: {
+                position: 'bottom',
+                labels: {
+                    colors: '#000', // warna text legend
+                    useSeriesColors: false,
+                    fontFamily: 'Elms Sans' // font legend
+                }
+            },
+            dataLabels: {
+                style: {
+                    fontFamily: 'Elms Sans', // font angka di chart
+                    fontSize: '14px'
+                },
+                formatter: function(val, opts) {
+                    return opts.w.globals.series[opts.seriesIndex] + " siswa";
+                }
+            }
+        };
+
+        var pieChart = new ApexCharts(document.querySelector("#chartPie"), pieOptions);
+        pieChart.render();
+    </script>
+
 @endsection

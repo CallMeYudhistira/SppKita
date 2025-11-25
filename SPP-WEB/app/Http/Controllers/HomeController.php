@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Log;
 use App\Models\Pembayaran;
 use App\Models\Siswa;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -17,13 +18,30 @@ class HomeController extends Controller
         $totalTransaksi = Pembayaran::count();
         $totalPembayaranHariIni = Pembayaran::whereDate('tgl_bayar', now()->toDateString())->sum('jumlah_bayar');
         $logs = Log::with('petugas')->with('siswa')->latest()->take(10)->get();
-        $pembayaran = Pembayaran::whereYear('tgl_bayar', now()->format('Y'))->get();
-
         $riwayat = Pembayaran::latest()->take(5)->get();
 
-        $color = ['#acf', '#aed', '#eba', '#fea', '#f49', '#abc', '#cba', '#bac', '#cab', '#edc', '#efa', '#fce'];
         $bulan = ['Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni'];
-        $bulanNomer = ['07', '08', '09', '10', '11', '12', '01', '02', '03', '04', '05', '06'];
+        $totalBayarPerBulan = [];
+        foreach (range(7, 12) as $i) {
+            $totalBayarPerBulan[] = Pembayaran::whereYear('tgl_bayar', now()->year)
+                ->whereMonth('tgl_bayar', $i)
+                ->sum('jumlah_bayar');
+        }
+        foreach (range(1, 6) as $i) {
+            $totalBayarPerBulan[] = Pembayaran::whereYear('tgl_bayar', now()->year)
+                ->whereMonth('tgl_bayar', $i)
+                ->sum('jumlah_bayar');
+        }
+
+        $bulanIni = Carbon::parse(now())->translatedFormat('F');
+        $tahunIni = now()->format('Y');
+
+        $sudahBayar = Pembayaran::where('bulan_dibayar', $bulanIni)
+            ->whereYear('tgl_bayar', $tahunIni)
+            ->distinct('nisn')
+            ->count('nisn');
+
+        $belumBayar = $totalSiswa - $sudahBayar;
 
         return view('petugas.index', compact(
             'totalSiswa',
@@ -32,9 +50,9 @@ class HomeController extends Controller
             'riwayat',
             'logs',
             'bulan',
-            'color',
-            'pembayaran',
-            'bulanNomer'
+            'totalBayarPerBulan',
+            'sudahBayar',
+            'belumBayar'
         ));
     }
 
