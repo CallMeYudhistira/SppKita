@@ -35,9 +35,7 @@
         </div>
 
         <div class="row mt-4">
-
             <div class="col-md-8">
-
                 <div class="card shadow-sm" style="height: 280;">
                     <div class="card-header bg-primary text-white">
                         Riwayat Pembayaran Terbaru
@@ -66,7 +64,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="col-md-4">
                 <div class="card shadow-sm">
                     <div class="card-header bg-warning">
@@ -77,7 +74,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
 
         <div class="card mt-4 shadow-sm">

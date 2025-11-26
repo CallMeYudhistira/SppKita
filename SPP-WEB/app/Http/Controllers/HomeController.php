@@ -59,26 +59,44 @@ class HomeController extends Controller
     public function siswa(Request $request)
     {
         $nisn = Auth::guard('siswa')->user()->nisn;
-
         $siswa = Siswa::where('nisn', $nisn)->first();
-
         $totalSudahBayar = Pembayaran::where('nisn', $nisn)->sum('jumlah_bayar');
-
-        $riwayatTerakhir = Pembayaran::where('nisn', $nisn)
-            ->latest()
-            ->first();
-
         $tagihan = $siswa->spp->nominal;
+        $tahun = $siswa->spp->tahun;
         $totalSPP = $siswa->spp->nominal * 12;
-
         $tunggakan = $totalSPP - $totalSudahBayar;
+
+        $bulan = ['Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni'];
+        $semesterSatu = [];
+        $semesterDua = [];
+        foreach ($bulan as $i => $b) {
+            if ($i < 6) {
+                $pembayaran = Pembayaran::whereYear('tgl_bayar', now()->year)
+                    ->where('bulan_dibayar', $b)
+                    ->where('nisn', $nisn)->first();
+                $semesterSatu[] = [
+                    'bulan_dibayar' => $b,
+                    'jumlah_bayar' => $pembayaran ? $pembayaran->jumlah_bayar : null,
+                ];
+            } else {
+                $pembayaran = Pembayaran::whereYear('tgl_bayar', now()->year)
+                    ->where('bulan_dibayar', $b)
+                    ->where('nisn', $nisn)->first();
+                $semesterDua[] = [
+                    'bulan_dibayar' => $b,
+                    'jumlah_bayar' => $pembayaran ? $pembayaran->jumlah_bayar : null,
+                ];
+            }
+        }
 
         return view('siswa.index', compact(
             'siswa',
             'totalSudahBayar',
-            'riwayatTerakhir',
             'tunggakan',
-            'tagihan'
+            'tagihan',
+            'tahun',
+            'semesterSatu',
+            'semesterDua',
         ));
     }
 }
