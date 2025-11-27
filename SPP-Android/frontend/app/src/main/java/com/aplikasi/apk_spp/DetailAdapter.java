@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
@@ -53,13 +54,22 @@ public class DetailAdapter extends BaseAdapter {
         TextView tvPetugas = view.findViewById(R.id.tvPetugas);
         Button btnCetak = view.findViewById(R.id.btnCetak);
 
+        DateTimeFormatter inputFmt = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.forLanguageTag("in-ID"));
+        DateTimeFormatter outputFmt = DateTimeFormatter.ofPattern("dd-M-yyyy", Locale.forLanguageTag("in-ID"));
+
         if (!detail.getPesan().isEmpty()) {
             tvBulan.setText(detail.getBulan_dibayar());
             tvTanggal.setText(detail.getPesan());
             tvPetugas.setText("");
         } else {
+            try {
+                LocalDateTime dt = LocalDateTime.parse(detail.getTanggal_dibayar(), inputFmt);
+                tvTanggal.setText(dt.format(outputFmt));
+            } catch (Exception e) {
+                tvTanggal.setText(detail.getTanggal_dibayar());
+                e.printStackTrace();
+            }
             tvBulan.setText(detail.getBulan_dibayar());
-            tvTanggal.setText(detail.getTanggal_dibayar().replace("00:00:00", ""));
             tvPetugas.setText(detail.getNama_petugas());
         }
 

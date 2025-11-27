@@ -11,7 +11,7 @@ namespace API_SPP.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class PembayaranController : ControllerBase
     {
         [HttpGet]
@@ -235,6 +235,17 @@ namespace API_SPP.Controllers
                 pembayaran,
                 hasil
             });
+        }
+
+        [HttpGet("hapus")]
+        public IActionResult RiwayatHapus()
+        {
+            DB db = new DB();
+
+            DataTable hapusTable = db.Query("SELECT siswa.nis, siswa.nama, CONCAT(kelas.nama_kelas, ' ', kelas.kompetensi_keahlian) AS kelas, pembayaran.jumlah_bayar AS nominal, pembayaran.bulan_dibayar AS bulan, pembayaran.tgl_bayar, pembayaran.deleted_at FROM pembayaran INNER JOIN siswa ON siswa.nisn = pembayaran.nisn INNER JOIN kelas ON kelas.id_kelas = siswa.id_kelas WHERE deleted_at IS NOT NULL");
+            string hapusData = JsonConvert.SerializeObject(hapusTable);
+
+            return Ok(new { hapusData });
         }
     }
 }

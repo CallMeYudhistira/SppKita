@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -79,6 +80,8 @@ public class PembayaranFragment extends Fragment {
 
     boolean kelasLoaded = false;
 
+    Button btnRiwayatHapus;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_pembayaran, container, false);
@@ -87,6 +90,14 @@ public class PembayaranFragment extends Fragment {
         etSearch = view.findViewById(R.id.etSearch);
         listView = view.findViewById(R.id.listView);
         dropdown_kelas = view.findViewById(R.id.dropdown_kelas);
+        btnRiwayatHapus = view.findViewById(R.id.btnRiwayatHapus);
+
+        btnRiwayatHapus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, new HapusFragment()).commit();
+            }
+        });
 
         siswaList = new ArrayList<>();
 

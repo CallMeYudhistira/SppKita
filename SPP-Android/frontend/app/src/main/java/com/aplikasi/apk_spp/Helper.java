@@ -51,7 +51,7 @@ public class Helper {
         this.level = "";
     }
 
-    public static String IP = "http://172.16.25.28:5001/api/";
+    public static String IP = "http://10.109.96.197:5001/api/";
 
     public static String URLLogin = IP + "Auth/login";
     public static String URLLogout = IP + "Auth/logout";
@@ -62,6 +62,7 @@ public class Helper {
     public static String URLGetBulan = IP + "Pembayaran/bulan/";
     public static String URLPostPembayaran = IP + "Pembayaran/bayar";
     public static String URLGetKartu = IP + "Pembayaran/kartu/";
+    public static String URLGetHapus = IP + "Pembayaran/hapus";
 
     public void logout(Context context) {
         JSONObject body = new JSONObject();

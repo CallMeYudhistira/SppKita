@@ -13,31 +13,34 @@
 
         <TextView
             android:id="@+id/tvBulan"
-            android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_width="120dp"
             android:layout_height="35dp"
             android:gravity="center"
+            android:textAlignment="textStart"
             android:text="Bulan Dibayar"
             android:textColor="@android:color/black"
             android:textSize="12sp"/>
 
         <TextView
             android:id="@+id/tvTanggal"
-            android:layout_width="120dp"
+            android:layout_width="100dp"
             android:layout_height="35dp"
             android:gravity="center"
+            android:textAlignment="textStart"
             android:text="Tanggal Dibayar"
             android:textColor="@android:color/black"
             android:textSize="12sp"/>
 
         <TextView
             android:id="@+id/tvPetugas"
-            android:layout_width="70dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="35dp"
             android:gravity="center"
             android:text="Nama Petugas"
             android:textColor="@android:color/black"
             android:textSize="12sp"
+            android:textAlignment="textStart"
             android:scrollHorizontally="true"
             android:ellipsize="end"
             android:maxLines="1"/>
